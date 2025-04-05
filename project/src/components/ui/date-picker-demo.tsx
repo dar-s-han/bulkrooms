@@ -62,7 +62,12 @@ function DatePickerDemo({ value, onChange, required = false, error }: DatePicker
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-2" align="start">
-            <Calendar mode="range" selected={date} onSelect={handleDateChange} />
+            <Calendar 
+              mode="range" 
+              selected={date} 
+              onSelect={handleDateChange}
+              disabled={{ before: new Date() }}
+            />
           </PopoverContent>
         </Popover>
       </div>
