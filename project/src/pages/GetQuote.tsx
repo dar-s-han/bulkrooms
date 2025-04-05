@@ -24,6 +24,22 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
   });
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [dateError, setDateError] = useState<string>('');
+  const [daysCount, setDaysCount] = useState<number>(0);
+
+  const calculateDays = (range: DateRange | undefined) => {
+    if (range?.from && range?.to) {
+      const diffTime = Math.abs(range.to.getTime() - range.from.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      setDaysCount(diffDays);
+    } else {
+      setDaysCount(0);
+    }
+  };
+
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    setDateRange(range);
+    calculateDays(range);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,14 +113,22 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="form-group">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Date Range
           </label>
-          <DatePickerDemo
-            value={dateRange}
-            onChange={setDateRange}
-            required
-            error={dateError}
-          />
+          <div className="flex items-center gap-4">
+            <div className="w-[300px]">
+              <DatePickerDemo
+                value={dateRange}
+                onChange={handleDateRangeChange}
+                required
+                error={dateError}
+              />
+            </div>
+            {daysCount > 0 && (
+              <span className="text-sm text-gray-600">
+                {daysCount} {daysCount === 1 ? 'day' : 'days'}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </>
