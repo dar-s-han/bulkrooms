@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Building2, ArrowLeft, X } from 'lucide-react';
-import { DatePickerDemo } from "@/components/ui/date-picker-demo";
+import { DatePicker } from "@/components/ui/date-picker";
 import { DateRange } from "react-day-picker";
 
 interface GetQuoteProps {
@@ -126,7 +126,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
           </label>
           <div className="flex items-center gap-4">
             <div className="w-[300px]">
-              <DatePickerDemo
+              <DatePicker
                 value={dateRange}
                 onChange={handleDateRangeChange}
                 required

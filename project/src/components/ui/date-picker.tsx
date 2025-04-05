@@ -17,7 +17,7 @@ interface DatePickerDemoProps {
   error?: string;
 }
 
-function DatePickerDemo({ value, onChange, required = false, error }: DatePickerDemoProps) {
+function DatePicker({ value, onChange, required = false, error }: DatePickerDemoProps) {
   const id = useId();
   const [date, setDate] = useState<DateRange | undefined>(value);
 
@@ -76,4 +76,4 @@ function DatePickerDemo({ value, onChange, required = false, error }: DatePicker
   );
 }
 
-export { DatePickerDemo }; 
+export { DatePicker }; 
