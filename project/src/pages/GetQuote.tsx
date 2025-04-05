@@ -15,6 +15,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
     email: '',
     phone: '',
     eventType: '',
+    otherEventType: '',
     adults: '5',
     children: '0',
     startDate: '',
@@ -101,8 +102,27 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
           <option value="family-reunion">Family Reunion</option>
           <option value="birthday">Birthday</option>
           <option value="anniversary">Anniversary</option>
+          <option value="other">Other</option>
         </select>
       </div>
+
+      {formData.eventType === 'other' && (
+        <div className="form-group">
+          <label htmlFor="otherEventType" className="block text-sm font-medium text-gray-700 mb-2">
+            Please help us understand your event
+          </label>
+          <input
+            type="text"
+            id="otherEventType"
+            name="otherEventType"
+            value={formData.otherEventType}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            required
+            placeholder="Enter your event details"
+          />
+        </div>
+      )}
 
       <div className="form-group">
         <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
