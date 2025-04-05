@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, ArrowLeft } from 'lucide-react';
+import { Building2, ArrowLeft, X } from 'lucide-react';
 import { DatePickerDemo } from "@/components/ui/date-picker-demo";
 import { DateRange } from "react-day-picker";
 
@@ -9,12 +9,14 @@ interface GetQuoteProps {
 
 const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
   const [step, setStep] = useState(1);
+  const [showEmailPopup, setShowEmailPopup] = useState(false);
   const [formData, setFormData] = useState({
     contactName: '',
     email: '',
     phone: '',
     eventType: '',
-    attendees: '',
+    adults: '5',
+    children: '0',
     startDate: '',
     endDate: '',
     location: '',
@@ -56,9 +58,17 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
       });
       setStep(2);
     } else {
-      console.log('Quote requested:', formData);
-      onNavigate('thank-you');
+      setShowEmailPopup(true);
     }
+  };
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.email) {
+      return;
+    }
+    console.log('Quote requested:', formData);
+    onNavigate('thank-you');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -141,15 +151,37 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
           <label htmlFor="attendees" className="block text-sm font-medium text-gray-700 mb-2">
             Number of Attendees
           </label>
-          <input
-            type="number"
-            id="attendees"
-            name="attendees"
-            value={formData.attendees}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-            required
-          />
+          <div className="flex items-center gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  id="adults"
+                  name="adults"
+                  value={formData.adults}
+                  onChange={handleChange}
+                  className="w-24 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  required
+                  min="1"
+                />
+                <span className="text-sm text-gray-600 whitespace-nowrap">Adults</span>
+              </div>
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  id="children"
+                  name="children"
+                  value={formData.children}
+                  onChange={handleChange}
+                  className="w-24 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  min="0"
+                />
+                <span className="text-sm text-gray-600 whitespace-nowrap">Children</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
@@ -180,22 +212,6 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
           onChange={handleChange}
           className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
           placeholder="$1000 - $50000"
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-          Email Address
-          <span className="text-gray-500 text-xs block mt-1">If you're not booking for corporate, put your personal email</span>
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
           required
         />
       </div>
@@ -286,6 +302,48 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
           </form>
         </div>
       </div>
+
+      {showEmailPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-xl">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold text-gray-800">Almost there!</h3>
+              <button
+                onClick={() => setShowEmailPopup(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <form onSubmit={handleEmailSubmit}>
+              <div className="form-group">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                  <span className="text-gray-500 text-xs block mt-1">If you're not booking for corporate, put your personal email</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  required
+                  placeholder="Enter your email address"
+                />
+              </div>
+              <div className="mt-6">
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 font-medium text-lg shadow-lg hover:shadow-xl"
+                >
+                  Get Quote
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
