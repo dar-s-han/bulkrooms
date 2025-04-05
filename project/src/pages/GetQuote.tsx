@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Building2, ArrowLeft } from 'lucide-react';
+import { DatePickerDemo } from "@/components/ui/date-picker-demo";
+import { DateRange } from "react-day-picker";
 
 interface GetQuoteProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you') => void;
@@ -20,10 +22,22 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
     budget: '',
     additionalRequirements: ''
   });
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
+  const [dateError, setDateError] = useState<string>('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (step === 1) {
+      if (!dateRange?.from || !dateRange?.to) {
+        setDateError('Please select a date range');
+        return;
+      }
+      setDateError('');
+      setFormData({
+        ...formData,
+        startDate: dateRange.from.toISOString(),
+        endDate: dateRange.to.toISOString()
+      });
       setStep(2);
     } else {
       console.log('Quote requested:', formData);
@@ -82,32 +96,14 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="form-group">
-          <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
-            Check in
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Date Range
           </label>
-          <input
-            type="date"
-            id="startDate"
-            name="startDate"
-            value={formData.startDate}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          <DatePickerDemo
+            value={dateRange}
+            onChange={setDateRange}
             required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-2">
-            Check out
-          </label>
-          <input
-            type="date"
-            id="endDate"
-            name="endDate"
-            value={formData.endDate}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-            required
+            error={dateError}
           />
         </div>
       </div>
