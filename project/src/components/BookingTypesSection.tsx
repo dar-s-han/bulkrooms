@@ -14,16 +14,16 @@ const BookingTypesSection: React.FC = () => {
 
   const slides = [
     {
+      image: "https://images.unsplash.com/photo-1672632381551-3e0f1252c61f?q=60&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      title: "Birthday",
+      loading: "eager",
+      description: "Fun spaces to make your birthday special"
+    },
+    {
       image: "https://images.unsplash.com/photo-1708748144709-651ebdab3f96?q=60&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: "Wedding",
       loading: "eager",
       description: "Find the perfect venue for your special day"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1645619200527-c6786729c2da?q=60&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Corporate Stay",
-      loading: "eager",
-      description: "Professional accommodations for business travelers"
     },
     {
       image: "https://images.unsplash.com/photo-1679310289994-9033a196b136?q=60&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -38,6 +38,12 @@ const BookingTypesSection: React.FC = () => {
       description: "Professional accommodations for business travelers"
     },
     {
+      image: "https://images.unsplash.com/photo-1645619200527-c6786729c2da?q=60&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      title: "Corporate Retreat",
+      loading: "eager",
+      description: "Professional accommodations for business travelers"
+    },
+    {
       image: "https://images.unsplash.com/photo-1702303208608-fc27f8826b9a?q=60&w=3126&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: "Sports Event",
       loading: "eager",
@@ -48,12 +54,6 @@ const BookingTypesSection: React.FC = () => {
       title: "Family Reunion",
       loading: "eager",
       description: "Versatile venues for all types of events"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1672632381551-3e0f1252c61f?q=60&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Birthday",
-      loading: "eager",
-      description: "Fun spaces to make your birthday special"
     },
     {
       image: "https://images.unsplash.com/photo-1640162558363-88cb21a08021?q=60&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",

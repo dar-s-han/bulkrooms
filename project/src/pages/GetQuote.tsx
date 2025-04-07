@@ -361,7 +361,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
           onChange={handleChange}
           rows={4}
           className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
-          placeholder="Please specify any additional requirements, such as room preferences, dietary restrictions, etc"
+          placeholder="Please specify any additional requirements, such as room preferences, meal options, dietary restrictions, etc"
         ></textarea>
       </div>
     </>

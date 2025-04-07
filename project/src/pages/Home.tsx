@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building2, Clock, Hotel, MessageSquareQuote, PhoneCall, Users } from 'lucide-react';
+import { Building2, Clock, Hotel, MessageSquareQuote, PhoneCall, Users, Zap, List, Tag } from 'lucide-react';
 import BookingTypesSection from '../components/BookingTypesSection';
 import ServiceCard from '../components/ServiceCard';
 import FeatureCard from '../components/FeatureCard';
@@ -15,7 +15,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       <header className="relative h-[85vh] mb-[-200px]">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80"
+            src="https://images.unsplash.com/photo-1495365200479-c4ed1d35e1aa?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Business meeting room"
             className="w-full h-full object-cover opacity-100 transition-opacity duration-1000 ease-in-out fade-in-image"
             style={{ maxWidth: '1500px', maxHeight: '900px', margin: '0 auto' }}
@@ -45,9 +45,13 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </nav>
 
         <div className="relative z-10 flex flex-col items-center justify-start h-full text-center px-4 pt-40">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-8">
-            Planning a stay for 10+ guests?
+          <h1 className="text-4xl md:text-7xl font-bold text-white mb-8 leading-relaxed">
+            Get quotes within hours <br />
+            with a single request! 
           </h1>
+          <p className="text-white text-xl mb-8">
+            Planning a stay for 10+ guests?
+          </p>
           <button 
             onClick={() => onNavigate('get-quote')}
             className="bg-blue-600 text-white px-7 py-3 rounded-full text-lg hover:bg-blue-700 transition"
@@ -72,30 +76,30 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '200ms' }}>
               <ServiceCard
-                icon={<Building2 className="h-6 w-6" />}
-                title="Bulk Discounts"
-                description="Access special rates for booking 10+ rooms that aren't available elsewhere."
+                icon={<Zap className="h-6 w-6" />}
+                title="Instant Quotes"
+                description="Receive instant quotes from hotels within hours"
               />
             </div>
             <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '400ms' }}>
               <ServiceCard
                 icon={<Clock className="h-6 w-6" />}
                 title="Time Saving"
-                description="Request quotes from multiple hotels with a single submission."
+                description="Get quotes from multiple hotels with a single request"
               />
             </div>
             <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '600ms' }}>
               <ServiceCard
-                icon={<MessageSquareQuote className="h-6 w-6" />}
-                title="Guaranteed Best Rates"
-                description="We work directly with hotels to ensure you get the best possible group rates."
+                icon={<List className="h-6 w-6" />}
+                title="Plenty of Options"
+                description="Wide selection of hotels across your destination"
               />
             </div>
             <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '800ms' }}>
               <ServiceCard
-                icon={<Users className="h-6 w-6" />}
-                title="Dedicated Support"
-                description="Personal assistance from experts who specialize in group bookings."
+                icon={<Tag className="h-6 w-6" />}
+                title="Best Rates"
+                description="Access special rates that aren't available elsewhere"
               />
             </div>
           </div>
