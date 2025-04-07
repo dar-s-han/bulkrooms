@@ -3,6 +3,15 @@ import React, { useState, useEffect } from 'react';
 const BookingTypesSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
+
+  const handlePrevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
+  const handleNextSlide = () => {
+    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
+
   const slides = [
     {
       image: "https://images.unsplash.com/photo-1708748144709-651ebdab3f96?q=60&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -83,6 +92,24 @@ const BookingTypesSection: React.FC = () => {
 
   return (
     <section className="relative h-[300px] overflow-hidden rounded-2xl mx-8">
+      <button
+        onClick={handlePrevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+        aria-label="Previous slide"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        onClick={handleNextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+        aria-label="Next slide"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
       <div className="flex h-full transition-all duration-700 ease-in-out"
            style={{ transform: `translateX(-${currentSlide * (100 / 3)}%)` }}>
         {extendedSlides.map((slide, index) => (

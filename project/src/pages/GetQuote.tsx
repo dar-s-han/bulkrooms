@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, ArrowLeft, X } from 'lucide-react';
+import { Building2, ArrowLeft, Plus, X, Calendar } from 'lucide-react';
 import { DatePicker } from "@/components/ui/date-picker";
 import { DateRange } from "react-day-picker";
 
@@ -9,25 +9,41 @@ interface GetQuoteProps {
 
 const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
   const [step, setStep] = useState(1);
-  const [showEmailPopup, setShowEmailPopup] = useState(false);
+  const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [formData, setFormData] = useState({
     contactName: '',
     email: '',
     phone: '',
     eventType: '',
     otherEventType: '',
-    adults: '5',
-    children: '0',
+    adults: '25',
+    variation: '2',
+    dateType: 'specific', // 'specific' or 'flexible'
     startDate: '',
     endDate: '',
-    location: '',
-    roomsNeeded: '',
-    budget: '',
+    flexibleMonth: '', // Format: 'YYYY-MM'
+    locations: [''],
+    roomsNeeded: '13',
+    roomsVariation: '2',
     additionalRequirements: ''
   });
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [dateError, setDateError] = useState<string>('');
   const [daysCount, setDaysCount] = useState<number>(0);
+
+  // Generate next 12 months for flexible date selection
+  const getNextTwelveMonths = () => {
+    const months = [];
+    const today = new Date();
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
+      months.push({
+        value: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`,
+        label: `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`
+      });
+    }
+    return months;
+  };
 
   const calculateDays = (range: DateRange | undefined) => {
     if (range?.from && range?.to) {
@@ -42,73 +58,163 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
   const handleDateRangeChange = (range: DateRange | undefined) => {
     setDateRange(range);
     calculateDays(range);
+    // Clear date error if a valid range is selected
+    if (range?.from && range?.to) {
+      setDateError('');
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (step === 1) {
-      if (!dateRange?.from || !dateRange?.to) {
+      if (formData.dateType === 'specific' && (!dateRange?.from || !dateRange?.to)) {
         setDateError('Please select a date range');
         return;
       }
+      if (formData.dateType === 'flexible' && !formData.flexibleMonth) {
+        setDateError('Please select a month');
+        return;
+      }
+      // Clear any existing date error since validation passed
       setDateError('');
-      setFormData({
-        ...formData,
-        startDate: dateRange.from.toISOString(),
-        endDate: dateRange.to.toISOString()
-      });
+      if (formData.dateType === 'specific' && dateRange?.from && dateRange?.to) {
+        setFormData({
+          ...formData,
+          startDate: dateRange.from.toISOString(),
+          endDate: dateRange.to.toISOString()
+        });
+      }
       setStep(2);
     } else {
-      setShowEmailPopup(true);
+      console.log('Quote requested:', formData);
+      onNavigate('thank-you');
     }
-  };
-
-  const handleEmailSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.email) {
-      return;
-    }
-    console.log('Quote requested:', formData);
-    onNavigate('thank-you');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    if (typeof name === 'string' && name.startsWith('location-')) {
+      const index = parseInt(name.split('-')[1]);
+      const newLocations = [...formData.locations];
+      newLocations[index] = value;
+      setFormData({
+        ...formData,
+        locations: newLocations
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
+  };
+
+  const addLocation = () => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      locations: [...formData.locations, '']
     });
+  };
+
+  const removeLocation = (index: number) => {
+    if (formData.locations.length > 1) {
+      const newLocations = formData.locations.filter((_, i) => i !== index);
+      setFormData({
+        ...formData,
+        locations: newLocations
+      });
+    }
   };
 
   const renderStep1 = () => (
     <>
       <div className="form-group">
-        <label htmlFor="eventType" className="block text-sm font-medium text-gray-700 mb-6">
-          Event Type
+        <label htmlFor="email" className="block text-base font-medium text-gray-700 mb-2">
+          Email Address
+          <span className="text-gray-500 text-sm block mt-1">If you're not booking for corporate, put your personal email</span>
         </label>
-        <select
-          id="eventType"
-          name="eventType"
-          value={formData.eventType}
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
           onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
           required
-        >
-          <option value="">Select event type</option>
-          <option value="wedding">Wedding</option>
-          <option value="corporate-stay">Corporate Stay</option>
-          <option value="trip">Trip</option>
-          <option value="conference">Conference</option>
-          <option value="sports-event">Sports Event</option>
-          <option value="family-reunion">Family Reunion</option>
-          <option value="birthday">Birthday</option>
-          <option value="anniversary">Anniversary</option>
-          <option value="other">Other</option>
-        </select>
+          placeholder="Enter your email address"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="form-group">
+          <label htmlFor="eventType" className="block text-base font-medium text-gray-700 mb-2">
+            Event Type
+          </label>
+          <select
+            id="eventType"
+            name="eventType"
+            value={formData.eventType}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
+            required
+          >
+            <option value="">Select event type</option>
+            <option value="wedding">Wedding</option>
+            <option value="corporate-stay">Corporate Stay</option>
+            <option value="trip">Trip</option>
+            <option value="conference">Conference</option>
+            <option value="sports-event">Sports Event</option>
+            <option value="family-reunion">Family Reunion</option>
+            <option value="birthday">Birthday</option>
+            <option value="anniversary">Anniversary</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div className="form-group space-y-6">
+          <div className="flex flex-col space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-medium text-gray-700">
+                When would you like to stay?
+              </h3>
+            </div>
+
+            <div>
+              <div className="w-full">
+                <DatePicker
+                  value={dateRange}
+                  onChange={handleDateRangeChange}
+                  required
+                  error={dateError}
+                  dateType={formData.dateType}
+                  onDateTypeChange={(type) => {
+                    setFormData({ ...formData, dateType: type });
+                    setShowMonthPicker(type === 'flexible');
+                  }}
+                  flexibleMonth={formData.flexibleMonth}
+                  onFlexibleMonthChange={(month) => {
+                    setFormData({ ...formData, flexibleMonth: month });
+                    setDateError('');
+                    setShowMonthPicker(false);
+                  }}
+                  showMonthPicker={showMonthPicker}
+                  onShowMonthPickerChange={setShowMonthPicker}
+                  nextTwelveMonths={getNextTwelveMonths()}
+                />
+              </div>
+              {daysCount > 0 && formData.dateType === 'specific' && (
+                <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mt-2">
+                  {daysCount} {daysCount === 1 ? 'night' : 'nights'} selected
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {formData.eventType === 'other' && (
         <div className="form-group">
-          <label htmlFor="otherEventType" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="otherEventType" className="block text-base font-medium text-gray-700 mb-2">
             Please help us understand your event
           </label>
           <input
@@ -117,7 +223,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
             name="otherEventType"
             value={formData.otherEventType}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
             required
             placeholder="Enter your event details"
           />
@@ -125,40 +231,42 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
       )}
 
       <div className="form-group">
-        <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
-          Location
+        <label className="block text-base font-medium text-gray-700 mb-2">
+          Location/s
+          <span className="text-gray-500 text-sm block mt-1">Add one or more cities/regions</span>
         </label>
-        <input
-          type="text"
-          id="location"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-          required
-          placeholder="City or region"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="form-group">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-          </label>
-          <div className="flex items-center gap-4">
-            <div className="w-[300px]">
-              <DatePicker
-                value={dateRange}
-                onChange={handleDateRangeChange}
+        <div className="space-y-3">
+          {formData.locations.map((location, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <input
+                type="text"
+                name={`location-${index}`}
+                value={location}
+                onChange={handleChange}
+                className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
                 required
-                error={dateError}
+                placeholder="City or region"
               />
+              {formData.locations.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeLocation(index)}
+                  className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                  aria-label="Remove location"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
             </div>
-            {daysCount > 0 && (
-              <span className="text-sm text-gray-600">
-                {daysCount} {daysCount === 1 ? 'day' : 'days'}
-              </span>
-            )}
-          </div>
+          ))}
+          <button
+            type="button"
+            onClick={addLocation}
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add another location</span>
+          </button>
         </div>
       </div>
     </>
@@ -168,7 +276,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="form-group">
-          <label htmlFor="attendees" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="attendees" className="block text-base font-medium text-gray-700 mb-2">
             Number of Attendees
           </label>
           <div className="flex items-center gap-4">
@@ -180,64 +288,70 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
                   name="adults"
                   value={formData.adults}
                   onChange={handleChange}
-                  className="w-24 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="w-24 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
                   required
                   min="1"
                 />
-                <span className="text-sm text-gray-600 whitespace-nowrap">Adults</span>
+                <span className="text-base text-gray-600 whitespace-nowrap">Fixed</span>
               </div>
             </div>
+            <span className="text-gray-600 font-bold text-lg">±</span>
             <div className="flex-1">
               <div className="flex items-center gap-2">
                 <input
                   type="number"
-                  id="children"
-                  name="children"
-                  value={formData.children}
+                  id="variation"
+                  name="variation"
+                  value={formData.variation}
                   onChange={handleChange}
-                  className="w-24 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="w-24 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
                   min="0"
                 />
-                <span className="text-sm text-gray-600 whitespace-nowrap">Children</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="roomsNeeded" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="roomsNeeded" className="block text-base font-medium text-gray-700 mb-2">
             Number of Rooms Needed
           </label>
-          <input
-            type="number"
-            id="roomsNeeded"
-            name="roomsNeeded"
-            value={formData.roomsNeeded}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-            required
-          />
+          <div className="flex items-center gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  id="roomsNeeded"
+                  name="roomsNeeded"
+                  value={formData.roomsNeeded}
+                  onChange={handleChange}
+                  className="w-24 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
+                  required
+                  min="1"
+                />
+                <span className="text-base text-gray-600 whitespace-nowrap">Fixed</span>
+              </div>
+            </div>
+            <span className="text-gray-600 font-bold text-lg">±</span>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  id="roomsVariation"
+                  name="roomsVariation"
+                  value={formData.roomsVariation}
+                  onChange={handleChange}
+                  className="w-24 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
+                  min="0"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="form-group">
-        <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-2">
-          Budget (USD)
-        </label>
-        <input
-          type="text"
-          id="budget"
-          name="budget"
-          value={formData.budget}
-          onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-          placeholder="$1000 - $50000"
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="additionalRequirements" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="additionalRequirements" className="block text-base font-medium text-gray-700 mb-2">
           Additional Requirements
         </label>
         <textarea
@@ -246,8 +360,8 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
           value={formData.additionalRequirements}
           onChange={handleChange}
           rows={4}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-          placeholder="Please specify any additional requirements, such as catering, AV equipment, meeting room layouts, etc."
+          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
+          placeholder="Please specify any additional requirements, such as room preferences, dietary restrictions, etc"
         ></textarea>
       </div>
     </>
@@ -290,9 +404,41 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
                 : "Now, tell us more about your event requirements"}
             </p>
             <div className="flex justify-center mt-4">
-              <div className="flex items-center space-x-2">
-                <div className={`w-3 h-3 rounded-full ${step === 1 ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
-                <div className={`w-3 h-3 rounded-full ${step === 2 ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={() => {
+                    if (step !== 1) {
+                      setStep(1);
+                    }
+                  }}
+                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                    step === 1 
+                      ? 'bg-blue-600 cursor-default' 
+                      : 'bg-gray-300 hover:bg-blue-400 cursor-pointer'
+                  }`}
+                  aria-label="Go to step 1"
+                />
+                <button
+                  onClick={() => {
+                    if (step !== 2 && formData.email && dateRange?.from && dateRange?.to) {
+                      setDateError('');
+                      setFormData({
+                        ...formData,
+                        startDate: dateRange.from.toISOString(),
+                        endDate: dateRange.to.toISOString()
+                      });
+                      setStep(2);
+                    } else if (step !== 2 && (!dateRange?.from || !dateRange?.to)) {
+                      setDateError('Please select a date range');
+                    }
+                  }}
+                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                    step === 2 
+                      ? 'bg-blue-600 cursor-default' 
+                      : 'bg-gray-300 hover:bg-blue-400 cursor-pointer'
+                  }`}
+                  aria-label="Go to step 2"
+                />
               </div>
             </div>
           </div>
@@ -322,48 +468,6 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
           </form>
         </div>
       </div>
-
-      {showEmailPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-xl">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-semibold text-gray-800">Almost there!</h3>
-              <button
-                onClick={() => setShowEmailPopup(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            <form onSubmit={handleEmailSubmit}>
-              <div className="form-group">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
-                  <span className="text-gray-500 text-xs block mt-1">If you're not booking for corporate, put your personal email</span>
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  required
-                  placeholder="Enter your email address"
-                />
-              </div>
-              <div className="mt-6">
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 font-medium text-lg shadow-lg hover:shadow-xl"
-                >
-                  Get Quote
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

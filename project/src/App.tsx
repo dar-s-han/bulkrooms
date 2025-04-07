@@ -13,8 +13,8 @@ function App() {
 
   const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy') => {
     setCurrentPage(page);
-    if (page === 'home') {
-      // Reset scroll position when returning to home
+    if (page === 'home' || page === 'contact-us') {
+      // Reset scroll position when returning to home or navigating to contact us
       window.scrollTo(0, 0);
       // Add a small delay to ensure elements are in the viewport before triggering animations
       setTimeout(() => {

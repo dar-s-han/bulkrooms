@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, MapPin, PhoneCall, Mail } from 'lucide-react';
+import { Building2, MapPin, PhoneCall, Mail, ArrowUpRight } from 'lucide-react';
 
 interface ContactUsProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy') => void;
@@ -116,19 +116,25 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
                 <div>
                   <h3 className="font-semibold text-lg text-gray-800">Office Location</h3>
                   <p className="text-gray-600 mt-1">
-                    First floor, 249, 14th Main Rd<br />
-                    Sector 7, HSR Layout<br />
                     Bengaluru, India
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200">
-                <div className="p-3 bg-indigo-50 rounded-xl">
-                  <PhoneCall className="h-6 w-6 text-indigo-600" />
+                <div className="p-3 bg-blue-100 rounded-xl">
+                  <PhoneCall className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg text-gray-800">Phone</h3>
-                  <p className="text-gray-600 mt-1">+91 7425875024</p>
+                  <h3 className="font-semibold text-lg text-gray-800">WhatsApp</h3>
+                  <p className="text-gray-900 mt-1">+91 835605265</p>
+                  <a 
+                    href="https://wa.me/918356052653?text=Hello%20BulkRooms%2C%20I%20would%20like%20to%20inquire%20about%20your%20services"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 mt-2 text-blue-600 hover:text-blue-700 transition-colors duration-200 font-medium"
+                  >
+                    Chat on WhatsApp <ArrowUpRight className="h-4 w-4" />
+                  </a>
                 </div>
               </div>
               <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200">
