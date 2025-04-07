@@ -1,160 +1,317 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import { 
+  Heart, 
+  Plane, 
+  Briefcase, 
+  Trophy, 
+  Building2,
+  Calendar,
+  CheckCircle2,
+  ArrowRight
+} from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const BookingTypesSection: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(true);
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const handlePrevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
-
-  const handleNextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
-
-  const slides = [
+  const bookingTypes = [
     {
-      image: "https://images.unsplash.com/photo-1672632381551-3e0f1252c61f?q=60&w=3271&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Birthday",
-      loading: "eager",
-      description: "Fun spaces to make your birthday special"
+      title: "Wedding Venues",
+      description: "Fast stay options for wedding planners managing large guest lists",
+      icon: <Heart className="h-8 w-8 text-red-500" />,
+      features: [
+        "Quickly sourced hotels near wedding venues",
+        "Curated stays for different guest budgets",
+        "Faster than venue sales teams",
+        "Multiple options shared within hours"
+      ],
+      color: "from-red-50 to-red-100"
     },
     {
-      image: "https://images.unsplash.com/photo-1708748144709-651ebdab3f96?q=60&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Wedding",
-      loading: "eager",
-      description: "Find the perfect venue for your special day"
+      title: "Group Trip Stays",
+      description: "Effortless stay discovery for travel agents booking for tour groups or vacations",
+      icon: <Plane className="h-8 w-8 text-blue-500" />,
+      features: [
+        "Stay options across cities shared quickly",
+        "Great deals for bulk bookings",
+        "Filtered options based on group needs",
+        "One-stop sourcing instead of multiple follow-ups"
+      ],
+      color: "from-blue-50 to-blue-100"
     },
     {
-      image: "https://images.unsplash.com/photo-1679310289994-9033a196b136?q=60&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Trip",
-      loading: "eager",
-      description: "Perfect stays for your group trips and vacations"
+      title: "Corporate Travel Stays",
+      description: "Stay sourcing made easy for corporate admins and travel desks",
+      icon: <Briefcase className="h-8 w-8 text-purple-500" />,
+      features: [
+        "Hotels near offices or event venues sourced fast",
+        "Multiple stay options shared in hours",
+        "No back-and-forth with hotel sales teams",
+        "Helps admins save hours of coordination"
+      ],
+      color: "from-purple-50 to-purple-100"
     },
     {
-      image: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?q=60&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Conference",
-      loading: "eager",
-      description: "Professional accommodations for business travelers"
+      title: "Sports Team Stays",
+      description: "Quickly sourced accommodations for teams and support staff",
+      icon: <Trophy className="h-8 w-8 text-yellow-500" />,
+      features: [
+        "Nearby hotel options shared rapidly",
+        "Stay suggestions tailored to team size",
+        "Filtered by meal/facility preferences",
+        "Fast booking for tight schedules"
+      ],
+      color: "from-yellow-50 to-yellow-100"
     },
     {
-      image: "https://images.unsplash.com/photo-1645619200527-c6786729c2da?q=60&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Corporate Retreat",
-      loading: "eager",
-      description: "Professional accommodations for business travelers"
+      title: "Conference Venues",
+      description: "Speedy stay sourcing for conference planners and delegate groups",
+      icon: <Building2 className="h-8 w-8 text-indigo-500" />,
+      features: [
+        "Hotel options near venue sent within hours",
+        "Filtered by budget and room count",
+        "Save time chasing hotel sales teams",
+        "Ideal for last-minute requirements"
+      ],
+      color: "from-indigo-50 to-indigo-100"
     },
     {
-      image: "https://images.unsplash.com/photo-1702303208608-fc27f8826b9a?q=60&w=3126&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Sports Event",
-      loading: "eager",
-      description: "Convenient stays for teams, fans, and event attendees"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1611516818236-8faa056fb659?q=60&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Family Reunion",
-      loading: "eager",
-      description: "Versatile venues for all types of events"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1640162558363-88cb21a08021?q=60&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Anniversary",
-      loading: "eager",
-      description: "Cozy spots to celebrate your love"
-    },
-    
+      title: "Celebration Venues",
+      description: "Quick venue and stay sourcing for birthdays, anniversaries, and gatherings",
+      icon: <Calendar className="h-8 w-8 text-pink-500" />,
+      features: [
+        "Options shared within hours based on guest size",
+        "Helps planners avoid delays with direct venues",
+        "Only celebration-friendly stays included",
+        "Faster than calling hotels one by one"
+      ],
+      color: "from-pink-50 to-pink-100"
+    }
   ];
 
-  const extendedSlides = [...slides, slides[4], slides[1], slides[2], slides[3]];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => prev + 1);
-    }, 3000);
-    extendedSlides.forEach((slide) => {
-      const img = new Image();
-      img.src = slide.image;
-    });
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    if (currentSlide === slides.length) {
-      // After transition to fake slide, jump to real first slide with no animation
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentSlide(0);
-      }, 0); // match duration-700
-    } else {
-      // Always ensure transition is on for regular slides
-      setIsTransitioning(true);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
     }
-  }, [currentSlide, slides.length]);
+  };
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 50,
+      rotateX: -15,
+      scale: 0.8
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        mass: 0.5
+      }
+    },
+    hover: {
+      y: -10,
+      rotateX: 5,
+      scale: 1.02,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 20,
+        mass: 0.5
+      }
+    }
+  };
+
+  const iconVariants = {
+    initial: { scale: 1, rotate: 0 },
+    hover: { 
+      scale: 1.3,
+      rotate: 360,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 15,
+        mass: 0.5
+      }
+    }
+  };
+
+  const featureVariants = {
+    hidden: { 
+      opacity: 0,
+      x: -30,
+      scale: 0.8
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        mass: 0.5
+      }
+    }
+  };
 
   return (
-    <section className="relative h-[300px] overflow-hidden rounded-2xl mx-8">
-      <button
-        onClick={handlePrevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-        aria-label="Previous slide"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-      <button
-        onClick={handleNextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-        aria-label="Next slide"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-      <div className="flex h-full transition-all duration-700 ease-in-out"
-           style={{ transform: `translateX(-${currentSlide * (100 / 3)}%)` }}>
-        {extendedSlides.map((slide, index) => (
-          <div
-            key={index}
-            className="w-1/3 flex-shrink-0 relative px-3 transition-all duration-700"
-          >
-            <div className={`h-full w-full rounded-xl overflow-hidden backdrop-blur-sm bg-white/30 shadow-lg transition-all duration-700 ease-in-out ${
-              index === currentSlide + 1 ? 'scale-110 z-10' : 'scale-90'
-            }`}>
-              <div className="relative h-full p-1 bg-white transition-all duration-700">
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="w-full h-full object-cover rounded-lg shadow-sm transition-transform duration-700 ease-in-out hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent transition-opacity duration-700"></div>
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 transition-all duration-700">
-                  <h2 className={`text-xl font-bold text-white mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition-all duration-700 ${
-                    index === currentSlide + 1 ? 'text-2xl' : 'text-lg'
-                  }`}>
-                    {slide.title}
-                  </h2>
-                  <p className={`text-sm text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition-all duration-700 ${
-                    index === currentSlide + 1 ? 'text-base' : 'text-xs'
-                  }`}>
-                    {slide.description}
-                  </p>
-                </div>
+    <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.h2 
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            type: "spring",
+            stiffness: 100,
+            damping: 15,
+            mass: 0.5
+          }}
+          className="text-3xl font-bold text-center mb-12 text-gray-900"
+        >
+          Types of Bookings We Handle
+        </motion.h2>
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {bookingTypes.map((type, index) => (
+            <motion.div
+              key={index}
+              variants={cardVariants}
+              whileHover="hover"
+              className="relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-300 overflow-hidden perspective-1000"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              style={{
+                transformStyle: 'preserve-3d',
+                boxShadow: hoveredIndex === index 
+                  ? '0 25px 30px -10px rgba(0, 0, 0, 0.15)' 
+                  : '0 10px 15px -5px rgba(0, 0, 0, 0.1)'
+              }}
+            >
+              <motion.div 
+                className={`absolute inset-0 bg-gradient-to-br ${type.color} opacity-0 transition-opacity duration-300`}
+                animate={{ opacity: hoveredIndex === index ? 0.1 : 0 }}
+              />
+              <div className="relative flex flex-col items-center text-center">
+                <motion.div 
+                  className={`mb-4 p-3 rounded-full transition-colors duration-300 ${
+                    hoveredIndex === index ? 'bg-opacity-20' : 'bg-opacity-10'
+                  } ${type.color.split(' ')[1].replace('from-', 'bg-')}`}
+                  variants={iconVariants}
+                  animate={hoveredIndex === index ? "hover" : "initial"}
+                >
+                  {type.icon}
+                </motion.div>
+                <motion.h3 
+                  className={`text-xl font-semibold mb-2 transition-colors duration-300 ${
+                    hoveredIndex === index ? 'text-blue-600' : 'text-gray-900'
+                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 20,
+                    mass: 0.5
+                  }}
+                >
+                  {type.title}
+                </motion.h3>
+                <motion.p 
+                  className={`transition-colors duration-300 ${
+                    hoveredIndex === index ? 'text-gray-800' : 'text-gray-600'
+                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 20,
+                    mass: 0.5,
+                    delay: 0.1
+                  }}
+                >
+                  {type.description}
+                </motion.p>
+                
+                <motion.div
+                  className="mt-4 w-full"
+                  initial="hidden"
+                  animate={hoveredIndex === index ? "visible" : "hidden"}
+                  variants={{
+                    hidden: { 
+                      opacity: 0, 
+                      height: 0,
+                      transition: {
+                        duration: 0.3,
+                        ease: [0.4, 0, 0.2, 1]
+                      }
+                    },
+                    visible: { 
+                      opacity: 1, 
+                      height: "auto",
+                      transition: {
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 20,
+                        mass: 0.5
+                      }
+                    }
+                  }}
+                >
+                  <div className="space-y-2 text-left">
+                    {type.features.map((feature, featureIndex) => (
+                      <motion.div
+                        key={featureIndex}
+                        className="flex items-center gap-2 text-sm text-gray-600"
+                        variants={featureVariants}
+                        initial="hidden"
+                        animate={hoveredIndex === index ? "visible" : "hidden"}
+                        transition={{ 
+                          delay: featureIndex * 0.1,
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 20,
+                          mass: 0.5
+                        }}
+                      >
+                        <CheckCircle2 className="h-4 w-4 text-green-500" />
+                        <span>{feature}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-        {slides.slice(0, slides.length - 2).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ease-in-out ${
-              index === currentSlide ? 'bg-white scale-125' : 'bg-white/50'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
+              <motion.div 
+                className="absolute bottom-0 left-0 right-0 h-1 bg-blue-500"
+                initial={{ width: 0 }}
+                animate={{ width: hoveredIndex === index ? '100%' : '0%' }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 20,
+                  mass: 0.5
+                }}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
