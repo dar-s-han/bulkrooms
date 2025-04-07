@@ -33,7 +33,6 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
             onClick={() => onNavigate('home')}
             className="flex items-center gap-2 cursor-pointer w-fit hover:opacity-80 transition-opacity"
           >
-            <Building2 className="h-8 w-8 text-indigo-600" />
             <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">BulkRooms</span>
           </div>
         </div>

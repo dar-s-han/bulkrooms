@@ -31,7 +31,6 @@ const QuoteThankYou: React.FC<QuoteThankYouProps> = ({ onNavigate }) => {
             onClick={() => onNavigate('home')}
             className="flex items-center gap-2 cursor-pointer w-fit"
           >
-            <Building2 className="h-8 w-8 text-blue-600" />
             <span className="text-2xl font-bold">BulkRooms</span>
           </div>
         </div>

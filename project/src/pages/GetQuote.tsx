@@ -376,7 +376,6 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('home')}
               className="flex items-center gap-2 cursor-pointer w-fit group"
             >
-              <Building2 className="h-8 w-8 text-blue-600 group-hover:text-blue-700 transition-colors" />
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 BulkRooms
               </span>

@@ -40,7 +40,6 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('home')}
               className="text-2xl font-bold flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
             >
-              <Building2 className="h-8 w-8" />
               BulkRooms
             </div>
             <button 

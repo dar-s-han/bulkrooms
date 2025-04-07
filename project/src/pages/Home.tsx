@@ -25,7 +25,6 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         
         <nav className="relative z-10 flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
           <div className="text-white text-2xl font-bold flex items-center gap-2">
-            <Building2 className="h-8 w-8" />
             BulkRooms
           </div>
           <div className="flex gap-4">
