@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Building2, Clock, Hotel, MessageSquareQuote, PhoneCall, Users, Zap, List, Tag } from 'lucide-react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import CountUp from 'react-countup';
+import { motion } from 'framer-motion';
 import BookingTypesSection from '../components/BookingTypesSection';
 import ServiceCard from '../components/ServiceCard';
 import FeatureCard from '../components/FeatureCard';
@@ -9,10 +12,82 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
+  const [hours, setHours] = useState(Number(localStorage.getItem('totalHours') || '100'));
+  const [savings, setSavings] = useState(Number(localStorage.getItem('totalSavings') || '50000'));
+  const [initialAnimation, setInitialAnimation] = useState(!localStorage.getItem('initialAnimationCompleted'));
+  const [animatedHours, setAnimatedHours] = useState(0);
+  const [animatedSavings, setAnimatedSavings] = useState(0);
+
+  useEffect(() => {
+    // Initialize values from localStorage
+    const storedHours = Number(localStorage.getItem('totalHours') || '100');
+    const storedSavings = Number(localStorage.getItem('totalSavings') || '50000');
+    setHours(storedHours);
+    setSavings(storedSavings);
+    setAnimatedHours(storedHours % 10);
+    setAnimatedSavings(storedSavings % 100);
+
+    // Initial fast animation (only runs once)
+    if (initialAnimation && !localStorage.getItem('initialAnimationCompleted')) {
+      const animationInterval = setInterval(() => {
+        const newHours = hours + 10;
+        const newSavings = savings + 100;
+        
+        setHours(newHours);
+        setSavings(newSavings);
+        setAnimatedHours(newHours % 10);
+        setAnimatedSavings(newSavings % 100);
+        
+        localStorage.setItem('totalHours', newHours.toString());
+        localStorage.setItem('totalSavings', newSavings.toString());
+      }, 100);
+
+      // Stop initial animation after 2 seconds and mark it as completed
+      setTimeout(() => {
+        clearInterval(animationInterval);
+        setInitialAnimation(false);
+        localStorage.setItem('initialAnimationCompleted', 'true');
+      }, 2000);
+    } else {
+      // Normal incremental counting
+      const interval = setInterval(() => {
+        // Hours increment once every few minutes (random between 3-5 minutes)
+        const hoursIncrement = Math.random() < 0.03 ? 1 : 0; // 3% chance to increment every 5 seconds
+        
+        // Savings increment randomly between 10-15 dollars every 5 seconds
+        const savingsIncrement = Math.floor(Math.random() * 6) + 10; // Random between 10-15
+        
+        const newHours = hours + hoursIncrement;
+        const newSavings = savings + savingsIncrement;
+        
+        setHours(newHours);
+        setSavings(newSavings);
+        setAnimatedHours(newHours % 10);
+        setAnimatedSavings(newSavings % 100);
+        
+        localStorage.setItem('totalHours', newHours.toString());
+        localStorage.setItem('totalSavings', newSavings.toString());
+      }, 5000); // Check every 5 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [hours, savings, initialAnimation]);
+
+  // Helper function to format numbers with animated parts
+  const formatNumber = (number: number, animatedPart: number, digits: number) => {
+    const staticPart = Math.floor(number / Math.pow(10, digits));
+    const animatedStr = animatedPart.toString();
+    let padding = '';
+    for (let i = 0; i < digits - animatedStr.length; i++) {
+      padding += '0';
+    }
+    return `${staticPart}${padding}${animatedStr}`;
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <header className="relative h-[85vh] mb-[-200px]">
+      <header className="relative h-[85vh]">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1495365200479-c4ed1d35e1aa?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -46,10 +121,10 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         <div className="relative z-10 flex flex-col items-center justify-start h-full text-center px-4 pt-40">
           <h1 className="text-4xl md:text-7xl font-bold text-white mb-8 leading-relaxed">
             Get quotes within hours <br />
-            with a single request! 
+            from hotels worldwide! 
           </h1>
           <p className="text-white text-xl mb-8">
-            Planning a stay for 10+ guests?
+            Planning a stay for 10+ guests? We connect you with hotels globally.
           </p>
           <button 
             onClick={() => onNavigate('get-quote')}
@@ -60,46 +135,134 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       </header>
 
+      {/* Numbers Section */}
+      <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="text-center">
+              <h3 className="text-4xl font-bold text-blue-900 mb-2">
+                <CountUp 
+                  end={formatNumber(hours, animatedHours, 1)} 
+                  duration={2} 
+                  separator=","
+                />+
+              </h3>
+              <p className="text-xl text-gray-600">Hours Saved on Research</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-4xl font-bold text-blue-900 mb-2">
+                <CountUp 
+                  end={formatNumber(savings, animatedSavings, 2)} 
+                  duration={2} 
+                  separator=","
+                />
+              </h3>
+              <p className="text-xl text-gray-600">Saved on Bulk Bookings</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Booking Types Section */}
-      <div className="relative z-10">
+      <div className="relative z-10 bg-white">
         <BookingTypesSection />
       </div>
 
       {/* Why Book With Us Section */}
       <section id="why-book" className="py-16 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-8 fade-in text-blue-900">Why Book With Us</h2>
-          <p className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto fade-in">
-            BulkRooms simplifies the complex process of booking multiple hotel rooms, saving you time and money.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '200ms' }}>
-              <ServiceCard
-                icon={<Zap className="h-6 w-6" />}
-                title="Instant Quotes"
-                description="Receive instant quotes from hotels within hours"
-              />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Title and Description */}
+            <div className="fade-in flex flex-col justify-center h-full">
+              <h2 className="text-4xl font-bold mb-8 text-blue-900">Why Book With Us</h2>
+              <p className="text-lg text-gray-600">
+                BulkRooms simplifies the complex process of booking multiple hotel rooms, saving you time and money.
+              </p>
             </div>
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '400ms' }}>
-              <ServiceCard
-                icon={<Clock className="h-6 w-6" />}
-                title="Time Saving"
-                description="Get quotes from multiple hotels with a single request"
-              />
-            </div>
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '600ms' }}>
-              <ServiceCard
-                icon={<List className="h-6 w-6" />}
-                title="Plenty of Options"
-                description="Wide selection of hotels across your destination"
-              />
-            </div>
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '800ms' }}>
-              <ServiceCard
-                icon={<Tag className="h-6 w-6" />}
-                title="Best Rates"
-                description="Access special rates that aren't available elsewhere"
-              />
+
+            {/* Right Side - Feature Blocks */}
+            <div className="grid grid-cols-2 gap-6">
+              {/* Instant Quotes Block with Animation */}
+              <div className="relative overflow-hidden bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col items-center justify-start text-center hover:shadow-xl transition-shadow duration-300">
+                {/* Speed Lines Animation */}
+                {[...Array(10)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-24 h-1 bg-white opacity-30 rounded"
+                    style={{
+                      top: `${Math.random() * 100}%`,
+                      left: `${Math.random() * 100}%`,
+                    }}
+                    initial={{
+                      x: -200,
+                      opacity: 0,
+                      scaleX: 0.5,
+                    }}
+                    animate={{
+                      x: '110vw',
+                      opacity: [0, 0.8, 0],
+                      scaleX: [0.5, 1.2],
+                    }}
+                    transition={{
+                      duration: Math.random() * 1 + 0.8,
+                      repeat: Infinity,
+                      delay: Math.random() * 2,
+                      ease: 'easeIn',
+                    }}
+                  />
+                ))}
+                <div className="relative z-10 w-full">
+                  <div className="bg-blue-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Zap className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-2">Instant Quotes</h3>
+                  <p className="text-gray-300 text-sm">Receive instant quotes from hotels within hours</p>
+                </div>
+              </div>
+
+              {/* Other Feature Blocks */}
+              {[
+                
+                {
+                  icon: <DotLottieReact
+                    src="https://lottie.host/37715cdb-4baf-4fbe-b7fd-f2d61f0f0edd/TzsE0TYdA1.lottie"
+                    loop
+                    autoplay
+                    style={{ width: '50px', height: '50px' }}
+                  />,
+                  title: "Plenty of Options",
+                  description: "Wide selection of hotels across your destination"
+                },
+                {
+                  icon: <Tag className="h-8 w-8" />,
+                  title: "Best Rates",
+                  description: "Access special rates that aren't available elsewhere"
+                  
+                },
+                {
+                  icon: <DotLottieReact
+                    src="https://lottie.host/4a5e8473-056c-4e41-882f-bb63d66c7ef7/c6iHMIu1wA.lottie"
+                    loop
+                    autoplay
+                    style={{ width: '50px', height: '50px' }}
+                  />,
+                  title: "Time Saving",
+                  description: "Get quotes from multiple hotels with a single request",
+                  bgColor: "bg-gray-800"
+                },
+                
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className={`p-6 rounded-2xl shadow-lg flex flex-col items-center justify-center text-center hover:shadow-xl transition-shadow duration-300 ${feature.bgColor || 'bg-white'}`}
+                >
+                  <div className={`${feature.bgColor ? 'bg-gray-700' : 'bg-blue-100'} w-14 h-14 rounded-full flex items-center justify-center mb-4`}>
+                    {feature.icon}
+                  </div>
+                  <h3 className={`text-xl font-semibold ${feature.bgColor ? 'text-white' : 'text-blue-900'} mb-2`}>{feature.title}</h3>
+                  <p className={`${feature.bgColor ? 'text-gray-300' : 'text-gray-600'} text-sm`}>{feature.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -248,6 +411,33 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
         </div>
       </footer>
+
+      <style>
+        {`
+          @keyframes slideInOut {
+            0% {
+              transform: translateX(100%);
+              opacity: 0;
+            }
+            5% {
+              transform: translateX(0);
+              opacity: 1;
+            }
+            75% {
+              transform: translateX(0);
+              opacity: 1;
+            }
+            80% {
+              transform: translateX(-100%);
+              opacity: 0;
+            }
+            100% {
+              transform: translateX(-100%);
+              opacity: 0;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
