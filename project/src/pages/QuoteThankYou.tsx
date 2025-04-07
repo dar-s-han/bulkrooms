@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Building2, CheckCircle2 } from 'lucide-react';
 
 interface QuoteThankYouProps {
@@ -6,6 +6,23 @@ interface QuoteThankYouProps {
 }
 
 const QuoteThankYou: React.FC<QuoteThankYouProps> = ({ onNavigate }) => {
+  const [countdown, setCountdown] = useState(5);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          onNavigate('home');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [onNavigate]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm">
@@ -28,6 +45,9 @@ const QuoteThankYou: React.FC<QuoteThankYouProps> = ({ onNavigate }) => {
           <h2 className="text-3xl font-bold mb-4">Thank You!</h2>
           <p className="text-gray-600 mb-8">
             Your quote request has been received. Our team will review your requirements and get back to you shortly with a customized quote.
+          </p>
+          <p className="text-gray-500 mb-8">
+            Redirecting to home page in {countdown} seconds...
           </p>
           <button
             onClick={() => onNavigate('home')}

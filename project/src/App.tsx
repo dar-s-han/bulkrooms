@@ -6,6 +6,7 @@ import GetQuote from './pages/GetQuote';
 import QuoteThankYou from './pages/QuoteThankYou';
 import ContactUsThankYou from './pages/ContactUsThankYou';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import CookiePolicy from './pages/CookiePolicy';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy'>('home');
@@ -60,7 +61,7 @@ function App() {
     case 'privacy-policy':
       return <PrivacyPolicy onNavigate={navigateTo} />;
     case 'cookie-policy':
-      return <PrivacyPolicy onNavigate={navigateTo} />; // Using PrivacyPolicy as a placeholder for now
+      return <CookiePolicy onNavigate={navigateTo} />;
     default:
       return <Home onNavigate={navigateTo} />;
   }

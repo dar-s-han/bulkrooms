@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Building2 } from 'lucide-react';
 
-interface PrivacyPolicyProps {
+interface CookiePolicyProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy') => void;
 }
 
-const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onNavigate }) => {
+const CookiePolicy: React.FC<CookiePolicyProps> = ({ onNavigate }) => {
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
@@ -55,76 +55,70 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onNavigate }) => {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-6 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8 fade-in">Privacy Policy</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-8 fade-in">Cookie Policy</h1>
         <p className="text-gray-600 mb-8 fade-in">Last updated: March 2025</p>
 
         <div className="space-y-8">
           <section className="fade-in">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">1. Introduction</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">1. What Are Cookies</h2>
             <p className="text-gray-600 mb-4">
-              At BulkRooms, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
+              Cookies are small text files that are placed on your computer or mobile device when you visit our website. They help us provide you with a better experience and allow certain features to work properly.
             </p>
           </section>
 
           <section className="fade-in">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">2. Information We Collect</h2>
-            <p className="text-gray-600 mb-4">We collect several types of information from and about users of our service, including:</p>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">2. Types of Cookies We Use</h2>
+            <p className="text-gray-600 mb-4">We use the following types of cookies:</p>
             <ul className="list-disc pl-6 text-gray-600 space-y-2">
-              <li>Personal identification information (name, email address, phone number)</li>
-              <li>Booking information (dates, number of guests, room preferences)</li>
-              <li>Payment information (processed securely through our payment partners)</li>
-              <li>Usage data (how you interact with our website)</li>
+              <li>Essential Cookies: Required for the website to function properly</li>
+              <li>Analytics Cookies: Help us understand how visitors use our website</li>
+              <li>Functionality Cookies: Remember your preferences and settings</li>
+              <li>Marketing Cookies: Used to deliver relevant advertisements</li>
             </ul>
           </section>
 
           <section className="fade-in">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">3. How We Use Your Information</h2>
-            <p className="text-gray-600 mb-4">We use the information we collect to:</p>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">3. How We Use Cookies</h2>
+            <p className="text-gray-600 mb-4">We use cookies to:</p>
             <ul className="list-disc pl-6 text-gray-600 space-y-2">
-              <li>Process and manage your bookings</li>
-              <li>Communicate with you about your bookings and our services</li>
-              <li>Improve our website and services</li>
-              <li>Send you marketing communications (with your consent)</li>
-              <li>Comply with legal obligations</li>
+              <li>Remember your preferences and settings</li>
+              <li>Analyze website traffic and usage patterns</li>
+              <li>Improve our website's functionality</li>
+              <li>Personalize your experience</li>
+              <li>Show relevant advertisements</li>
             </ul>
           </section>
 
           <section className="fade-in">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">4. Information Sharing</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">4. Third-Party Cookies</h2>
             <p className="text-gray-600 mb-4">
-              We may share your information with:
+              Some cookies are placed by third-party services that appear on our pages. These include:
             </p>
             <ul className="list-disc pl-6 text-gray-600 space-y-2">
-              <li>Hotel partners to fulfill your bookings</li>
-              <li>Payment processors to handle transactions</li>
-              <li>Service providers who assist in our operations</li>
-              <li>Law enforcement when required by law</li>
+              <li>Google Analytics for website analytics</li>
+              <li>Social media platforms for sharing features</li>
+              <li>Advertising networks for relevant ads</li>
             </ul>
           </section>
 
           <section className="fade-in">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">5. Data Security</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">5. Managing Cookies</h2>
             <p className="text-gray-600 mb-4">
-              We implement appropriate security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure, and we cannot guarantee absolute security.
+              You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed. However, if you do this, you may have to manually adjust some preferences every time you visit our site.
             </p>
           </section>
 
           <section className="fade-in">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">6. Your Rights</h2>
-            <p className="text-gray-600 mb-4">You have the right to:</p>
-            <ul className="list-disc pl-6 text-gray-600 space-y-2">
-              <li>Access your personal information</li>
-              <li>Correct inaccurate information</li>
-              <li>Request deletion of your information</li>
-              <li>Opt-out of marketing communications</li>
-              <li>Withdraw consent where applicable</li>
-            </ul>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">6. Changes to This Policy</h2>
+            <p className="text-gray-600 mb-4">
+              We may update this Cookie Policy from time to time. We will notify you of any changes by posting the new Cookie Policy on this page and updating the "Last updated" date.
+            </p>
           </section>
 
           <section className="fade-in">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">7. Contact Us</h2>
             <p className="text-gray-600 mb-4">
-              If you have any questions about this Privacy Policy, please contact us at:
+              If you have any questions about our Cookie Policy, please contact us at:
             </p>
             <p className="text-gray-600">
               Email: info@bulkrooms.com<br />
@@ -194,4 +188,4 @@ const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ onNavigate }) => {
   );
 };
 
-export default PrivacyPolicy; 
+export default CookiePolicy; 
