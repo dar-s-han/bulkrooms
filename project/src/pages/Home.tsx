@@ -20,8 +20,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
   useEffect(() => {
     // Initialize values from localStorage
-    const storedHours = Number(localStorage.getItem('totalHours') || '100');
-    const storedSavings = Number(localStorage.getItem('totalSavings') || '50000');
+    const storedHours = Number(localStorage.getItem('totalHours') || '150000');
+    const storedSavings = Number(localStorage.getItem('totalSavings') || '1254000');
     setHours(storedHours);
     setSavings(storedSavings);
     setAnimatedHours(storedHours % 10);
@@ -142,7 +142,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <div className="text-center">
               <h3 className="text-4xl font-bold text-blue-900 mb-2">
                 <CountUp 
-                  end={formatNumber(hours, animatedHours, 1)} 
+                  end={hours} 
                   duration={2} 
                   separator=","
                 />+
@@ -152,7 +152,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <div className="text-center">
               <h3 className="text-4xl font-bold text-blue-900 mb-2">
                 <CountUp 
-                  end={formatNumber(savings, animatedSavings, 2)} 
+                  end={savings} 
                   duration={2} 
                   separator=","
                 />
