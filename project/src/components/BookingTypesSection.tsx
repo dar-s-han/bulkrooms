@@ -64,7 +64,7 @@ const BookingTypesSection: React.FC = () => {
     
   ];
 
-  const extendedSlides = [...slides, slides[0], slides[1], slides[2], slides[3]];
+  const extendedSlides = [...slides, slides[4], slides[1], slides[2], slides[3]];
 
   useEffect(() => {
     const timer = setInterval(() => {
