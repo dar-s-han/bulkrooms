@@ -5,7 +5,7 @@ import ServiceCard from '../components/ServiceCard';
 import FeatureCard from '../components/FeatureCard';
 
 interface HomeProps {
-  onNavigate: (page: 'home' | 'contact-us' | 'get-quote') => void;
+  onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy') => void;
 }
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
@@ -226,7 +226,21 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               </div>
             </div>
             <div className="w-full border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-              © 2024 BulkRooms. All rights reserved.
+              <div className="flex justify-center gap-6 mb-4">
+                <button 
+                  onClick={() => onNavigate('privacy-policy')}
+                  className="hover:text-white transition"
+                >
+                  Privacy Policy
+                </button>
+                <button 
+                  onClick={() => onNavigate('cookie-policy')}
+                  className="hover:text-white transition"
+                >
+                  Cookie Policy
+                </button>
+              </div>
+              © 2025 BulkRooms. All rights reserved.
             </div>
           </div>
         </div>

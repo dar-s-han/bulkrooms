@@ -5,11 +5,12 @@ import ContactUs from './pages/ContactUs';
 import GetQuote from './pages/GetQuote';
 import QuoteThankYou from './pages/QuoteThankYou';
 import ContactUsThankYou from './pages/ContactUsThankYou';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy'>('home');
 
-  const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you') => {
+  const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy') => {
     setCurrentPage(page);
     if (page === 'home') {
       // Reset scroll position when returning to home
@@ -56,6 +57,10 @@ function App() {
       return <QuoteThankYou onNavigate={navigateTo} />;
     case 'contact-us-thank-you':
       return <ContactUsThankYou onNavigate={navigateTo} />;
+    case 'privacy-policy':
+      return <PrivacyPolicy onNavigate={navigateTo} />;
+    case 'cookie-policy':
+      return <PrivacyPolicy onNavigate={navigateTo} />; // Using PrivacyPolicy as a placeholder for now
     default:
       return <Home onNavigate={navigateTo} />;
   }
