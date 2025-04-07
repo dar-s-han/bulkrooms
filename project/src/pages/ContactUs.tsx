@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Building2, MapPin, PhoneCall, Mail } from 'lucide-react';
 
 interface ContactUsProps {
-  onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you') => void;
+  onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy') => void;
 }
 
 const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
@@ -27,7 +27,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <nav className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+      <nav className="bg-white/80 shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div 
             onClick={() => onNavigate('home')}
@@ -42,7 +42,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 transform hover:scale-[1.01] transition-transform duration-300">
+          <div className="bg-white rounded-2xl shadow-xl p-8 transform hover:scale-[1.01] transition-transform duration-300">
             <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">Get in Touch</h2>
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="space-y-2">
@@ -106,7 +106,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
           </div>
 
           {/* Contact Information */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 transform hover:scale-[1.01] transition-transform duration-300">
+          <div className="bg-white rounded-2xl shadow-xl p-8 transform hover:scale-[1.01] transition-transform duration-300">
             <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">Contact Information</h2>
             <div className="space-y-8">
               <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200">
@@ -144,6 +144,53 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col items-center gap-8">
+            <div className="grid md:grid-cols-2 gap-12 w-full max-w-4xl">
+              <div className="flex flex-col items-center text-center gap-4">
+                <h3 className="text-xl font-semibold">Need Quick Pricing?</h3>
+                <p className="text-gray-300 mb-2">Get instant quotes for your group booking in minutes. Compare rates from multiple hotels.</p>
+                <button 
+                  onClick={() => onNavigate('get-quote')}
+                  className="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-gray-200 transition text-lg font-semibold"
+                >
+                  Get Instant Quote
+                </button>
+              </div>
+              <div className="flex flex-col items-center text-center gap-4">
+                <h3 className="text-xl font-semibold">Looking for something else?</h3>
+                <p className="text-gray-300 mb-2">Speak with our group booking specialists who can help plan your perfect stay.</p>
+                <button 
+                  onClick={() => onNavigate('contact-us')}
+                  className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition text-lg font-semibold"
+                >
+                  Contact Us
+                </button>
+              </div>
+            </div>
+            <div className="w-full border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+              <div className="flex justify-center gap-6 mb-4">
+                <button 
+                  onClick={() => onNavigate('privacy-policy')}
+                  className="hover:text-white transition"
+                >
+                  Privacy Policy
+                </button>
+                <button 
+                  onClick={() => onNavigate('cookie-policy')}
+                  className="hover:text-white transition"
+                >
+                  Cookie Policy
+                </button>
+              </div>
+              © 2025 BulkRooms. All rights reserved.
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
