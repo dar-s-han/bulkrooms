@@ -6,6 +6,432 @@ import { motion } from 'framer-motion';
 import BookingTypesSection from '../components/BookingTypesSection';
 import ServiceCard from '../components/ServiceCard';
 import FeatureCard from '../components/FeatureCard';
+import { World } from '../components/ui/globe';
+
+// Sample globe data
+const sampleGlobeData = [
+  {
+    order: 1,
+    startLat: 40.7128,
+    startLng: -74.0060,
+    endLat: 51.5074,
+    endLng: -0.1278,
+    arcAlt: 0.4,
+    color: '#0077CC'
+  },
+  {
+    order: 2,
+    startLat: 51.5074,
+    startLng: -0.1278,
+    endLat: 48.8566,
+    endLng: 2.3522,
+    arcAlt: 0.3,
+    color: '#0077CC'
+  },
+  {
+    order: 3,
+    startLat: 48.8566,
+    startLng: 2.3522,
+    endLat: 41.9028,
+    endLng: 12.4964,
+    arcAlt: 0.3,
+    color: '#0077CC'
+  },
+  {
+    order: 4,
+    startLat: 35.6762,
+    startLng: 139.6503,
+    endLat: 22.3193,
+    endLng: 114.1694,
+    arcAlt: 0.4,
+    color: '#00AAFF'
+  },
+  {
+    order: 5,
+    startLat: 22.3193,
+    startLng: 114.1694,
+    endLat: 1.3521,
+    endLng: 103.8198,
+    arcAlt: 0.3,
+    color: '#00AAFF'
+  },
+  {
+    order: 6,
+    startLat: -33.8688,
+    startLng: 151.2093,
+    endLat: 40.7128,
+    endLng: -74.0060,
+    arcAlt: 0.8,
+    color: '#00CCAA'
+  },
+  {
+    order: 7,
+    startLat: 19.0760,
+    startLng: 72.8777,
+    endLat: 35.6762,
+    endLng: 139.6503,
+    arcAlt: 0.6,
+    color: '#FF5500'
+  },
+  {
+    order: 8,
+    startLat: 19.0760,
+    startLng: 72.8777,
+    endLat: 25.2048,
+    endLng: 55.2708,
+    arcAlt: 0.3,
+    color: '#FF5500'
+  },
+  {
+    order: 9,
+    startLat: 25.2048,
+    startLng: 55.2708,
+    endLat: 41.9028,
+    endLng: 12.4964,
+    arcAlt: 0.5,
+    color: '#9933FF'
+  },
+  {
+    order: 10,
+    startLat: 55.7558,
+    startLng: 37.6173,
+    endLat: 48.8566,
+    endLng: 2.3522,
+    arcAlt: 0.4,
+    color: '#9933FF'
+  },
+  // New data points
+  {
+    order: 11,
+    startLat: -22.9068,
+    startLng: -43.1729,
+    endLat: 40.7128,
+    endLng: -74.0060,
+    arcAlt: 0.7,
+    color: '#FF3366'
+  },
+  {
+    order: 12,
+    startLat: -22.9068,
+    startLng: -43.1729,
+    endLat: -34.6037,
+    endLng: -58.3816,
+    arcAlt: 0.3,
+    color: '#FF3366'
+  },
+  {
+    order: 13,
+    startLat: 13.7563,
+    startLng: 100.5018,
+    endLat: 1.3521,
+    endLng: 103.8198,
+    arcAlt: 0.2,
+    color: '#33CCFF'
+  },
+  {
+    order: 14,
+    startLat: 31.2304,
+    startLng: 121.4737,
+    endLat: 35.6762,
+    endLng: 139.6503,
+    arcAlt: 0.4,
+    color: '#66DD00'
+  },
+  {
+    order: 15,
+    startLat: 31.2304,
+    startLng: 121.4737,
+    endLat: 22.3193,
+    endLng: 114.1694,
+    arcAlt: 0.3,
+    color: '#66DD00'
+  },
+  {
+    order: 16,
+    startLat: 28.6139,
+    startLng: 77.2090,
+    endLat: 19.0760,
+    endLng: 72.8777,
+    arcAlt: 0.2,
+    color: '#FF8800'
+  },
+  {
+    order: 17,
+    startLat: 37.7749,
+    startLng: -122.4194,
+    endLat: 40.7128,
+    endLng: -74.0060,
+    arcAlt: 0.3,
+    color: '#8844FF'
+  },
+  {
+    order: 18,
+    startLat: 37.7749,
+    startLng: -122.4194,
+    endLat: 35.6762,
+    endLng: 139.6503,
+    arcAlt: 0.9,
+    color: '#8844FF'
+  },
+  {
+    order: 19,
+    startLat: 34.0522,
+    startLng: -118.2437,
+    endLat: 37.7749,
+    endLng: -122.4194,
+    arcAlt: 0.2,
+    color: '#FF5500'
+  },
+  {
+    order: 20,
+    startLat: 52.5200,
+    startLng: 13.4050,
+    endLat: 48.8566,
+    endLng: 2.3522,
+    arcAlt: 0.2,
+    color: '#9933FF'
+  },
+  {
+    order: 21,
+    startLat: 52.5200,
+    startLng: 13.4050,
+    endLat: 55.7558,
+    endLng: 37.6173,
+    arcAlt: 0.3,
+    color: '#9933FF'
+  },
+  {
+    order: 22,
+    startLat: 41.9028,
+    startLng: 12.4964,
+    endLat: 40.4168,
+    endLng: -3.7038,
+    arcAlt: 0.2,
+    color: '#33AACC'
+  },
+  {
+    order: 23,
+    startLat: 40.4168,
+    startLng: -3.7038,
+    endLat: 51.5074,
+    endLng: -0.1278,
+    arcAlt: 0.3,
+    color: '#33AACC'
+  },
+  {
+    order: 24,
+    startLat: -37.8136,
+    startLng: 144.9631,
+    endLat: -33.8688,
+    endLng: 151.2093,
+    arcAlt: 0.2,
+    color: '#00CCAA'
+  },
+  {
+    order: 25,
+    startLat: -37.8136,
+    startLng: 144.9631,
+    endLat: 1.3521,
+    endLng: 103.8198,
+    arcAlt: 0.7,
+    color: '#00CCAA'
+  },
+  // Additional Indian connections
+  {
+    order: 26,
+    startLat: 19.0760, // Mumbai
+    startLng: 72.8777,
+    endLat: 12.9716, // Bangalore
+    endLng: 77.5946,
+    arcAlt: 0.2,
+    color: '#FF7700'
+  },
+  {
+    order: 27,
+    startLat: 28.6139, // Delhi
+    startLng: 77.2090,
+    endLat: 22.5726, // Kolkata
+    endLng: 88.3639,
+    arcAlt: 0.25,
+    color: '#FF7700'
+  },
+  {
+    order: 28,
+    startLat: 12.9716, // Bangalore
+    startLng: 77.5946,
+    endLat: 13.0827, // Chennai
+    endLng: 80.2707,
+    arcAlt: 0.15,
+    color: '#FF7700'
+  },
+  {
+    order: 29,
+    startLat: 17.3850, // Hyderabad
+    startLng: 78.4867,
+    endLat: 28.6139, // Delhi
+    endLng: 77.2090,
+    arcAlt: 0.3,
+    color: '#FF7700'
+  },
+  {
+    order: 30,
+    startLat: 13.0827, // Chennai
+    startLng: 80.2707,
+    endLat: 7.8731, // Colombo
+    endLng: 80.7718,
+    arcAlt: 0.3,
+    color: '#FF5500'
+  },
+  {
+    order: 31,
+    startLat: 19.0760, // Mumbai
+    startLng: 72.8777,
+    endLat: 3.1390, // Singapore
+    endLng: 101.6869,
+    arcAlt: 0.5,
+    color: '#FF5500'
+  },
+  {
+    order: 32,
+    startLat: 28.6139, // Delhi
+    startLng: 77.2090,
+    endLat: 25.2048, // Dubai
+    endLng: 55.2708,
+    arcAlt: 0.4,
+    color: '#FF5500'
+  },
+  {
+    order: 33,
+    startLat: 19.0760, // Mumbai
+    startLng: 72.8777,
+    endLat: -1.2921, // Nairobi
+    endLng: 36.8219,
+    arcAlt: 0.6,
+    color: '#FF3366'
+  },
+  {
+    order: 34,
+    startLat: 28.6139, // Delhi
+    startLng: 77.2090,
+    endLat: 51.5074, // London
+    endLng: -0.1278,
+    arcAlt: 0.7,
+    color: '#9933FF'
+  },
+  {
+    order: 35,
+    startLat: 28.6139, // Delhi
+    startLng: 77.2090,
+    endLat: 35.6762, // Tokyo
+    endLng: 139.6503,
+    arcAlt: 0.6,
+    color: '#33CCFF'
+  },
+  // Additional data points for more highlights
+  {
+    order: 36,
+    startLat: 40.7128, // New York
+    startLng: -74.0060,
+    endLat: 32.7767, // San Diego
+    endLng: -117.2346,
+    arcAlt: 0.35,
+    color: '#66DD00'
+  },
+  {
+    order: 37,
+    startLat: 35.6762, // Tokyo
+    startLng: 139.6503,
+    endLat: 37.5665, // Seoul
+    endLng: 126.9780,
+    arcAlt: 0.25,
+    color: '#33CCFF'
+  },
+  {
+    order: 38,
+    startLat: 55.7558, // Moscow
+    startLng: 37.6173,
+    endLat: 59.9343, // Oslo
+    endLng: 10.6450,
+    arcAlt: 0.35,
+    color: '#9933FF'
+  },
+  {
+    order: 39,
+    startLat: -33.8688, // Sydney
+    startLng: 151.2093,
+    endLat: -41.2865, // Wellington
+    endLng: 174.7762,
+    arcAlt: 0.3,
+    color: '#00CCAA'
+  },
+  {
+    order: 40,
+    startLat: 25.2048, // Dubai
+    startLng: 55.2708,
+    endLat: 24.4539, // Doha
+    endLng: 54.3773,
+    arcAlt: 0.15,
+    color: '#FF5500'
+  },
+  {
+    order: 41,
+    startLat: 48.8566, // Paris
+    startLng: 2.3522,
+    endLat: 45.4642, // Milan
+    endLng: 9.1900,
+    arcAlt: 0.2,
+    color: '#33AACC'
+  },
+  {
+    order: 42,
+    startLat: -22.9068, // Rio
+    startLng: -43.1729,
+    endLat: -15.7801, // Salvador
+    endLng: -47.9292,
+    arcAlt: 0.25,
+    color: '#FF3366'
+  },
+  {
+    order: 43,
+    startLat: 51.5074, // London
+    startLng: -0.1278,
+    endLat: 55.9533, // Edinburgh
+    endLng: -3.1883,
+    arcAlt: 0.18,
+    color: '#33AACC'
+  },
+  {
+    order: 44,
+    startLat: 12.9716, // Bangalore
+    startLng: 77.5946,
+    endLat: 28.7041, // Delhi
+    endLng: 77.1025,
+    arcAlt: 0.3,
+    color: '#FF7700'
+  },
+  {
+    order: 45,
+    startLat: 1.3521, // Singapore
+    startLng: 103.8198,
+    endLat: 3.1390, // Kuala Lumpur
+    endLng: 101.6869,
+    arcAlt: 0.15,
+    color: '#33CCFF'
+  }
+];
+
+// Globe config
+const globeConfig = {
+  globeColor: '#1d072e',
+  atmosphereColor: '#ffffff',
+  ambientLight: '#ffffff',
+  directionalLeftLight: '#ffffff',
+  directionalTopLight: '#ffffff',
+  pointLight: '#ffffff',
+  autoRotate: true,
+  autoRotateSpeed: 0.7,
+  atmosphereAltitude: 0.18
+};
 
 interface HomeProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy') => void;
@@ -54,7 +480,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         // Hours increment once every few minutes (random between 3-5 minutes)
         const hoursIncrement = Math.random() < 0.03 ? 1 : 0; // 3% chance to increment every 5 seconds
         
-        // Savings increment randomly between 10-15 dollars every 5 seconds
+        // Savings increment randomly between 10-15 dollars every 15 seconds
         const savingsIncrement = Math.floor(Math.random() * 6) + 10; // Random between 10-15
         
         const newHours = hours + hoursIncrement;
@@ -67,7 +493,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         
         localStorage.setItem('totalHours', newHours.toString());
         localStorage.setItem('totalSavings', newSavings.toString());
-      }, 5000); // Check every 5 seconds
+      }, 15000); // Check every 15 seconds
 
       return () => clearInterval(interval);
     }
@@ -87,13 +513,13 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <header className="relative h-[85vh]">
+      <header className="relative h-[90vh] overflow-hidden">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1495365200479-c4ed1d35e1aa?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Business meeting room"
             className="w-full h-full object-cover opacity-100 transition-opacity duration-1000 ease-in-out fade-in-image"
-            style={{ maxWidth: '1500px', maxHeight: '900px', margin: '0 auto' }}
+            style={{ maxWidth: '1600px', maxHeight: '900px', margin: '0 auto' }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/40"></div>
         </div>
@@ -107,7 +533,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('get-quote')}
               className="bg-white text-blue-600 px-6 py-2 rounded-full hover:bg-gray-100 transition"
             >
-              Get Instant Quote
+              Get Quick Quote
             </button>
             <button 
               onClick={() => onNavigate('contact-us')}
@@ -118,20 +544,33 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
         </nav>
 
-        <div className="relative z-10 flex flex-col items-center justify-start h-full text-center px-4 pt-40">
-          <h1 className="text-4xl md:text-7xl font-bold text-white mb-8 leading-relaxed">
-            Get quotes within hours <br />
-            from hotels worldwide! 
-          </h1>
-          <p className="text-white text-xl mb-8">
-            Planning a stay for 10+ guests? We connect you with hotels globally.
-          </p>
-          <button 
-            onClick={() => onNavigate('get-quote')}
-            className="bg-blue-600 text-white px-7 py-3 rounded-full text-lg hover:bg-blue-700 transition"
-          >
-            Get Instant Quote
-          </button>
+        <div className="relative z-10 flex flex-col md:flex-row items-center h-full px-4 pt-16 md:pt-2 max-w-7xl mx-auto">
+          {/* Left side - Text content */}
+          <div className="text-center md:text-left md:w-2/5 md:mr-8">
+            <p className="text-white text-2xl mb-6 font-semibold">
+              Planning a stay for 10+ guests?
+            </p>
+            <h1 className="text-4xl md:text-7xl font-bold text-white mb-8 leading-relaxed">
+              Get 5+ quotes within <span className="relative">
+                <span className="line-through opacity-70">weeks</span>
+                <span className="text-blue-400 absolute -right-2 transform translate-x-full">hours</span>
+              </span>
+            </h1>
+            <button 
+              onClick={() => onNavigate('get-quote')}
+              className="bg-blue-600 text-white px-7 py-3 rounded-full text-lg hover:bg-blue-700 transition"
+            >
+              Get Quick Quote
+            </button>
+          </div>
+          
+          {/* Right side - Globe visualization */}
+          <div className="w-full md:w-3/5 h-[450px] md:h-[750px] relative md:-mt-16 md:absolute md:right-0 md:top-0 md:pt-24">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-transparent z-10 pointer-events-none"></div>
+            <div className="w-full h-full overflow-hidden md:translate-x-40">
+              <World globeConfig={globeConfig} data={sampleGlobeData} />
+            </div>
+          </div>
         </div>
       </header>
 
