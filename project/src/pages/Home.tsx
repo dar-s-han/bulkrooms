@@ -20,8 +20,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
   useEffect(() => {
     // Initialize values from localStorage
-    const storedHours = Number(localStorage.getItem('totalHours') || '150000');
-    const storedSavings = Number(localStorage.getItem('totalSavings') || '1255000');
+    const storedHours = Number(localStorage.getItem('totalHours') || '162000');
+    const storedSavings = Number(localStorage.getItem('totalSavings') || '1355000');
     setHours(storedHours);
     setSavings(storedSavings);
     setAnimatedHours(storedHours % 10);
