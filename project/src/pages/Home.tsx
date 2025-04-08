@@ -6,435 +6,9 @@ import { motion } from 'framer-motion';
 import BookingTypesSection from '../components/BookingTypesSection';
 import ServiceCard from '../components/ServiceCard';
 import FeatureCard from '../components/FeatureCard';
-import { World } from '../components/ui/globe';
-
-// Sample globe data
-const sampleGlobeData = [
-  {
-    order: 1,
-    startLat: 40.7128,
-    startLng: -74.0060,
-    endLat: 51.5074,
-    endLng: -0.1278,
-    arcAlt: 0.4,
-    color: '#0077CC'
-  },
-  {
-    order: 2,
-    startLat: 51.5074,
-    startLng: -0.1278,
-    endLat: 48.8566,
-    endLng: 2.3522,
-    arcAlt: 0.3,
-    color: '#0077CC'
-  },
-  {
-    order: 3,
-    startLat: 48.8566,
-    startLng: 2.3522,
-    endLat: 41.9028,
-    endLng: 12.4964,
-    arcAlt: 0.3,
-    color: '#0077CC'
-  },
-  {
-    order: 4,
-    startLat: 35.6762,
-    startLng: 139.6503,
-    endLat: 22.3193,
-    endLng: 114.1694,
-    arcAlt: 0.4,
-    color: '#00AAFF'
-  },
-  {
-    order: 5,
-    startLat: 22.3193,
-    startLng: 114.1694,
-    endLat: 1.3521,
-    endLng: 103.8198,
-    arcAlt: 0.3,
-    color: '#00AAFF'
-  },
-  {
-    order: 6,
-    startLat: -33.8688,
-    startLng: 151.2093,
-    endLat: 40.7128,
-    endLng: -74.0060,
-    arcAlt: 0.8,
-    color: '#00CCAA'
-  },
-  {
-    order: 7,
-    startLat: 19.0760,
-    startLng: 72.8777,
-    endLat: 35.6762,
-    endLng: 139.6503,
-    arcAlt: 0.6,
-    color: '#FF5500'
-  },
-  {
-    order: 8,
-    startLat: 19.0760,
-    startLng: 72.8777,
-    endLat: 25.2048,
-    endLng: 55.2708,
-    arcAlt: 0.3,
-    color: '#FF5500'
-  },
-  {
-    order: 9,
-    startLat: 25.2048,
-    startLng: 55.2708,
-    endLat: 41.9028,
-    endLng: 12.4964,
-    arcAlt: 0.5,
-    color: '#9933FF'
-  },
-  {
-    order: 10,
-    startLat: 55.7558,
-    startLng: 37.6173,
-    endLat: 48.8566,
-    endLng: 2.3522,
-    arcAlt: 0.4,
-    color: '#9933FF'
-  },
-  // New data points
-  {
-    order: 11,
-    startLat: -22.9068,
-    startLng: -43.1729,
-    endLat: 40.7128,
-    endLng: -74.0060,
-    arcAlt: 0.7,
-    color: '#FF3366'
-  },
-  {
-    order: 12,
-    startLat: -22.9068,
-    startLng: -43.1729,
-    endLat: -34.6037,
-    endLng: -58.3816,
-    arcAlt: 0.3,
-    color: '#FF3366'
-  },
-  {
-    order: 13,
-    startLat: 13.7563,
-    startLng: 100.5018,
-    endLat: 1.3521,
-    endLng: 103.8198,
-    arcAlt: 0.2,
-    color: '#33CCFF'
-  },
-  {
-    order: 14,
-    startLat: 31.2304,
-    startLng: 121.4737,
-    endLat: 35.6762,
-    endLng: 139.6503,
-    arcAlt: 0.4,
-    color: '#66DD00'
-  },
-  {
-    order: 15,
-    startLat: 31.2304,
-    startLng: 121.4737,
-    endLat: 22.3193,
-    endLng: 114.1694,
-    arcAlt: 0.3,
-    color: '#66DD00'
-  },
-  {
-    order: 16,
-    startLat: 28.6139,
-    startLng: 77.2090,
-    endLat: 19.0760,
-    endLng: 72.8777,
-    arcAlt: 0.2,
-    color: '#FF8800'
-  },
-  {
-    order: 17,
-    startLat: 37.7749,
-    startLng: -122.4194,
-    endLat: 40.7128,
-    endLng: -74.0060,
-    arcAlt: 0.3,
-    color: '#8844FF'
-  },
-  {
-    order: 18,
-    startLat: 37.7749,
-    startLng: -122.4194,
-    endLat: 35.6762,
-    endLng: 139.6503,
-    arcAlt: 0.9,
-    color: '#8844FF'
-  },
-  {
-    order: 19,
-    startLat: 34.0522,
-    startLng: -118.2437,
-    endLat: 37.7749,
-    endLng: -122.4194,
-    arcAlt: 0.2,
-    color: '#FF5500'
-  },
-  {
-    order: 20,
-    startLat: 52.5200,
-    startLng: 13.4050,
-    endLat: 48.8566,
-    endLng: 2.3522,
-    arcAlt: 0.2,
-    color: '#9933FF'
-  },
-  {
-    order: 21,
-    startLat: 52.5200,
-    startLng: 13.4050,
-    endLat: 55.7558,
-    endLng: 37.6173,
-    arcAlt: 0.3,
-    color: '#9933FF'
-  },
-  {
-    order: 22,
-    startLat: 41.9028,
-    startLng: 12.4964,
-    endLat: 40.4168,
-    endLng: -3.7038,
-    arcAlt: 0.2,
-    color: '#33AACC'
-  },
-  {
-    order: 23,
-    startLat: 40.4168,
-    startLng: -3.7038,
-    endLat: 51.5074,
-    endLng: -0.1278,
-    arcAlt: 0.3,
-    color: '#33AACC'
-  },
-  {
-    order: 24,
-    startLat: -37.8136,
-    startLng: 144.9631,
-    endLat: -33.8688,
-    endLng: 151.2093,
-    arcAlt: 0.2,
-    color: '#00CCAA'
-  },
-  {
-    order: 25,
-    startLat: -37.8136,
-    startLng: 144.9631,
-    endLat: 1.3521,
-    endLng: 103.8198,
-    arcAlt: 0.7,
-    color: '#00CCAA'
-  },
-  // Additional Indian connections
-  {
-    order: 26,
-    startLat: 19.0760, // Mumbai
-    startLng: 72.8777,
-    endLat: 12.9716, // Bangalore
-    endLng: 77.5946,
-    arcAlt: 0.2,
-    color: '#FF7700'
-  },
-  {
-    order: 27,
-    startLat: 28.6139, // Delhi
-    startLng: 77.2090,
-    endLat: 22.5726, // Kolkata
-    endLng: 88.3639,
-    arcAlt: 0.25,
-    color: '#FF7700'
-  },
-  {
-    order: 28,
-    startLat: 12.9716, // Bangalore
-    startLng: 77.5946,
-    endLat: 13.0827, // Chennai
-    endLng: 80.2707,
-    arcAlt: 0.15,
-    color: '#FF7700'
-  },
-  {
-    order: 29,
-    startLat: 17.3850, // Hyderabad
-    startLng: 78.4867,
-    endLat: 28.6139, // Delhi
-    endLng: 77.2090,
-    arcAlt: 0.3,
-    color: '#FF7700'
-  },
-  {
-    order: 30,
-    startLat: 13.0827, // Chennai
-    startLng: 80.2707,
-    endLat: 7.8731, // Colombo
-    endLng: 80.7718,
-    arcAlt: 0.3,
-    color: '#FF5500'
-  },
-  {
-    order: 31,
-    startLat: 19.0760, // Mumbai
-    startLng: 72.8777,
-    endLat: 3.1390, // Singapore
-    endLng: 101.6869,
-    arcAlt: 0.5,
-    color: '#FF5500'
-  },
-  {
-    order: 32,
-    startLat: 28.6139, // Delhi
-    startLng: 77.2090,
-    endLat: 25.2048, // Dubai
-    endLng: 55.2708,
-    arcAlt: 0.4,
-    color: '#FF5500'
-  },
-  {
-    order: 33,
-    startLat: 19.0760, // Mumbai
-    startLng: 72.8777,
-    endLat: -1.2921, // Nairobi
-    endLng: 36.8219,
-    arcAlt: 0.6,
-    color: '#FF3366'
-  },
-  {
-    order: 34,
-    startLat: 28.6139, // Delhi
-    startLng: 77.2090,
-    endLat: 51.5074, // London
-    endLng: -0.1278,
-    arcAlt: 0.7,
-    color: '#9933FF'
-  },
-  {
-    order: 35,
-    startLat: 28.6139, // Delhi
-    startLng: 77.2090,
-    endLat: 35.6762, // Tokyo
-    endLng: 139.6503,
-    arcAlt: 0.6,
-    color: '#33CCFF'
-  },
-  // Additional data points for more highlights
-  {
-    order: 36,
-    startLat: 40.7128, // New York
-    startLng: -74.0060,
-    endLat: 32.7767, // San Diego
-    endLng: -117.2346,
-    arcAlt: 0.35,
-    color: '#66DD00'
-  },
-  {
-    order: 37,
-    startLat: 35.6762, // Tokyo
-    startLng: 139.6503,
-    endLat: 37.5665, // Seoul
-    endLng: 126.9780,
-    arcAlt: 0.25,
-    color: '#33CCFF'
-  },
-  {
-    order: 38,
-    startLat: 55.7558, // Moscow
-    startLng: 37.6173,
-    endLat: 59.9343, // Oslo
-    endLng: 10.6450,
-    arcAlt: 0.35,
-    color: '#9933FF'
-  },
-  {
-    order: 39,
-    startLat: -33.8688, // Sydney
-    startLng: 151.2093,
-    endLat: -41.2865, // Wellington
-    endLng: 174.7762,
-    arcAlt: 0.3,
-    color: '#00CCAA'
-  },
-  {
-    order: 40,
-    startLat: 25.2048, // Dubai
-    startLng: 55.2708,
-    endLat: 24.4539, // Doha
-    endLng: 54.3773,
-    arcAlt: 0.15,
-    color: '#FF5500'
-  },
-  {
-    order: 41,
-    startLat: 48.8566, // Paris
-    startLng: 2.3522,
-    endLat: 45.4642, // Milan
-    endLng: 9.1900,
-    arcAlt: 0.2,
-    color: '#33AACC'
-  },
-  {
-    order: 42,
-    startLat: -22.9068, // Rio
-    startLng: -43.1729,
-    endLat: -15.7801, // Salvador
-    endLng: -47.9292,
-    arcAlt: 0.25,
-    color: '#FF3366'
-  },
-  {
-    order: 43,
-    startLat: 51.5074, // London
-    startLng: -0.1278,
-    endLat: 55.9533, // Edinburgh
-    endLng: -3.1883,
-    arcAlt: 0.18,
-    color: '#33AACC'
-  },
-  {
-    order: 44,
-    startLat: 12.9716, // Bangalore
-    startLng: 77.5946,
-    endLat: 28.7041, // Delhi
-    endLng: 77.1025,
-    arcAlt: 0.3,
-    color: '#FF7700'
-  },
-  {
-    order: 45,
-    startLat: 1.3521, // Singapore
-    startLng: 103.8198,
-    endLat: 3.1390, // Kuala Lumpur
-    endLng: 101.6869,
-    arcAlt: 0.15,
-    color: '#33CCFF'
-  }
-];
-
-// Globe config
-const globeConfig = {
-  globeColor: '#1d072e',
-  atmosphereColor: '#ffffff',
-  ambientLight: '#ffffff',
-  directionalLeftLight: '#ffffff',
-  directionalTopLight: '#ffffff',
-  pointLight: '#ffffff',
-  autoRotate: true,
-  autoRotateSpeed: 0.7,
-  atmosphereAltitude: 0.18
-};
 
 interface HomeProps {
-  onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy') => void;
+  onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy', params?: any) => void;
 }
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
@@ -443,6 +17,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [initialAnimation, setInitialAnimation] = useState(!localStorage.getItem('initialAnimationCompleted'));
   const [animatedHours, setAnimatedHours] = useState(0);
   const [animatedSavings, setAnimatedSavings] = useState(0);
+  const [searchLocation, setSearchLocation] = useState('');
+  const [searchEventType, setSearchEventType] = useState('');
 
   useEffect(() => {
     // Initialize values from localStorage
@@ -510,18 +86,28 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     return `${staticPart}${padding}${animatedStr}`;
   };
 
+  const handleQuickQuote = () => {
+    // Pass location and eventType values to the GetQuote page
+    const params = { 
+      location: searchLocation, 
+      eventType: searchEventType 
+    };
+    console.log("Passing params to GetQuote:", params);
+    onNavigate('get-quote', params);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <header className="relative h-[90vh] overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1495365200479-c4ed1d35e1aa?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="https://images.unsplash.com/photo-1564469780933-37609ec45780?q=80&w=3174&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Business meeting room"
             className="w-full h-full object-cover opacity-100 transition-opacity duration-1000 ease-in-out fade-in-image"
             style={{ maxWidth: '1600px', maxHeight: '900px', margin: '0 auto' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/30"></div>
         </div>
         
         <nav className="relative z-10 flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
@@ -530,46 +116,86 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
           <div className="flex gap-4">
             <button 
-              onClick={() => onNavigate('get-quote')}
-              className="bg-white text-blue-600 px-6 py-2 rounded-full hover:bg-gray-100 transition"
+              onClick={handleQuickQuote}
+              className="bg-white text-blue-600 px-6 py-2 rounded-full hover:bg-gray-100 transition relative z-30"
             >
               Get Quick Quote
             </button>
             <button 
               onClick={() => onNavigate('contact-us')}
-              className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+              className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition relative z-30"
             >
               Contact Us
             </button>
           </div>
         </nav>
 
-        <div className="relative z-10 flex flex-col md:flex-row items-center h-full px-4 pt-16 md:pt-2 max-w-7xl mx-auto">
-          {/* Left side - Text content */}
-          <div className="text-center md:text-left md:w-2/5 md:mr-8">
+        <div className="relative z-10 flex items-center justify-center h-full px-4 pt-16 md:pt-2 max-w-7xl mx-auto">
+          {/* Centered Text content */}
+          <div className="text-center w-full max-w-3xl">
             <p className="text-white text-2xl mb-6 font-semibold">
-              Planning a stay for 10+ guests?
+              Tired of endless follow-ups?
             </p>
             <h1 className="text-4xl md:text-7xl font-bold text-white mb-8 leading-relaxed">
-              Get 5+ quotes within <span className="relative">
-                <span className="line-through opacity-70">weeks</span>
-                <span className="text-blue-400 absolute -right-2 transform translate-x-full">hours</span>
-              </span>
+              {/* <br /> */}
+              Get Quotes within{" "}
+              <span className="line-through">weeks</span>
+              <span className="text-green-400 ml-4">hours</span>,
+              <span className="mt-2 inline-block text-6xl">without any Follow-Ups</span>
             </h1>
+            {/* Search Bar */}
+            <div className="bg-white/90 backdrop-blur-md rounded-xl p-2 mb-8 shadow-lg mx-auto max-w-3xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+                <div className="relative">
+                  <label htmlFor="location" className="sr-only">Location</label>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Building2 className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input 
+                    type="text" 
+                    id="location" 
+                    placeholder="Country, city, or region" 
+                    className="w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 bg-transparent"
+                    value={searchLocation}
+                    onChange={(e) => setSearchLocation(e.target.value)}
+                  />
+                </div>
+                <div className="relative">
+                  <label htmlFor="eventType" className="sr-only">Event Type</label>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Users className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <select 
+                    id="eventType" 
+                    className="w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 appearance-none bg-transparent"
+                    value={searchEventType}
+                    onChange={(e) => setSearchEventType(e.target.value)}
+                  >
+                    <option value="">Select event type</option>
+                    <option value="wedding">Wedding</option>
+                    <option value="corporate-stay">Corporate Stay</option>
+                    <option value="trip">Trip</option>
+                    <option value="conference">Conference</option>
+                    <option value="sports-event">Sports Event</option>
+                    <option value="family-reunion">Family Reunion</option>
+                    <option value="birthday">Birthday</option>
+                    <option value="anniversary">Anniversary</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <button 
-              onClick={() => onNavigate('get-quote')}
-              className="bg-blue-600 text-white px-7 py-3 rounded-full text-lg hover:bg-blue-700 transition"
+              onClick={handleQuickQuote}
+              className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-blue-700 transition relative z-20 shadow-lg hover:shadow-xl transform hover:scale-105 duration-200"
             >
               Get Quick Quote
             </button>
-          </div>
-          
-          {/* Right side - Globe visualization */}
-          <div className="w-full md:w-3/5 h-[450px] md:h-[750px] relative md:-mt-16 md:absolute md:right-0 md:top-0 md:pt-24">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-transparent z-10 pointer-events-none"></div>
-            <div className="w-full h-full overflow-hidden md:translate-x-40">
-              <World globeConfig={globeConfig} data={sampleGlobeData} />
-            </div>
           </div>
         </div>
       </header>
@@ -712,7 +338,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-16 fade-in text-indigo-900">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '200ms' }}>
+            <div className="fade-in transform hover:scale-105 transition-transform duration-300 flex flex-col" style={{ transitionDelay: '200ms' }}>
+              <div className="text-4xl font-bold text-purple-600 mb-4 text-center">1</div>
               <div className="bg-white p-8 rounded-2xl text-center h-full shadow-lg hover:shadow-xl transition-shadow">
                 <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <MessageSquareQuote className="h-8 w-8 text-purple-600" />
@@ -721,7 +348,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                 <p className="text-gray-600">Tell us your requirements and we'll start working on finding the perfect venues for you</p>
               </div>
             </div>
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '400ms' }}>
+            <div className="fade-in transform hover:scale-105 transition-transform duration-300 flex flex-col" style={{ transitionDelay: '400ms' }}>
+              <div className="text-4xl font-bold text-indigo-600 mb-4 text-center">2</div>
               <div className="bg-white p-8 rounded-2xl text-center h-full shadow-lg hover:shadow-xl transition-shadow">
                 <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Building2 className="h-8 w-8 text-indigo-600" />
@@ -730,7 +358,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                 <p className="text-gray-600">Receive competitive quotes from multiple hotels tailored to your needs</p>
               </div>
             </div>
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '600ms' }}>
+            <div className="fade-in transform hover:scale-105 transition-transform duration-300 flex flex-col" style={{ transitionDelay: '600ms' }}>
+              <div className="text-4xl font-bold text-pink-600 mb-4 text-center">3</div>
               <div className="bg-white p-8 rounded-2xl text-center h-full shadow-lg hover:shadow-xl transition-shadow">
                 <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Hotel className="h-8 w-8 text-pink-600" />
@@ -874,7 +503,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               transform: translateX(-100%);
               opacity: 0;
             }
-          }
+          }a
         `}
       </style>
     </div>
