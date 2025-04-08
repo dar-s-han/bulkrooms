@@ -12,10 +12,48 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    onNavigate('contact-us-thank-you');
+    try {
+      setIsSubmitting(true);
+      setSubmitError('');
+
+      // Prepare the data to send to Google Sheets
+      const submissionData = {
+        sheetName: 'ContactUsSubmission',
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        timestamp: new Date().toISOString()
+      };
+
+      console.log('Submitting data:', submissionData);
+
+      // Send data to Google Sheets
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbx_nYCWFAHc5HlZTl5rNO9ISRqV7STIEbxF3yqAvK9nEgHOf2UhcrDbhSmD5AdMGVdI/exec';
+      
+      const response = await fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData)
+      });
+      
+      // Since 'no-cors' mode doesn't give us access to response details,
+      // we'll assume success if no error is thrown
+      console.log('Form submitted successfully');
+      onNavigate('contact-us-thank-you');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitError('Failed to submit form. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -88,11 +126,17 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-6 py-4 rounded-xl hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
+                disabled={isSubmitting}
+                className={`w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white px-6 py-4 rounded-xl hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
+            {submitError && (
+              <div className="mt-4 bg-red-50 text-red-700 px-4 py-3 rounded-md">
+                {submitError}
+              </div>
+            )}
             <div className="mt-8 text-center">
               <p className="text-gray-600 mb-4">Looking to book instead?</p>
               <button

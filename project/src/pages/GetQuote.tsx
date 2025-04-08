@@ -1,16 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Building2, ArrowLeft, Plus, X, Calendar } from 'lucide-react';
 import { DatePicker } from "@/components/ui/date-picker";
 import { DateRange } from "react-day-picker";
 
 interface GetQuoteProps {
-  onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you') => void;
+  onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you', params?: any) => void;
+  params?: {
+    location?: string;
+    eventType?: string;
+  };
 }
 
-const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
+// Define the form data interface with proper typing
+interface FormData {
+  contactName: string;
+  email: string;
+  phone: string;
+  eventType: string;
+  otherEventType: string;
+  adults: string;
+  variation: string;
+  dateType: 'specific' | 'flexible';
+  startDate: string;
+  endDate: string;
+  flexibleMonth: string;
+  locations: string[];
+  roomsNeeded: string;
+  roomsVariation: string;
+  additionalRequirements: string;
+}
+
+const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
   const [step, setStep] = useState(1);
   const [showMonthPicker, setShowMonthPicker] = useState(false);
-  const [formData, setFormData] = useState({
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [formData, setFormData] = useState<FormData>({
     contactName: '',
     email: '',
     phone: '',
@@ -18,15 +43,45 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
     otherEventType: '',
     adults: '25',
     variation: '2',
-    dateType: 'specific', // 'specific' or 'flexible'
+    dateType: 'specific',
     startDate: '',
     endDate: '',
-    flexibleMonth: '', // Format: 'YYYY-MM'
+    flexibleMonth: '',
     locations: [''],
     roomsNeeded: '13',
     roomsVariation: '2',
     additionalRequirements: ''
   });
+
+  // Use params from navigation if available
+  useEffect(() => {
+    console.log("GetQuote received params:", params);
+    
+    if (params) {
+      // Set location if provided
+      if (params.location && params.location.trim() !== '') {
+        console.log("Setting location:", params.location);
+        setFormData(prev => ({
+          ...prev,
+          locations: [params.location || '']
+        }));
+      }
+      
+      // Set event type if provided and valid
+      if (params.eventType && params.eventType.trim() !== '') {
+        const validEventTypes = ['wedding', 'corporate-stay', 'trip', 'conference', 'sports-event', 
+                               'family-reunion', 'birthday', 'anniversary', 'other'];
+        if (validEventTypes.includes(params.eventType)) {
+          console.log("Setting event type:", params.eventType);
+          setFormData(prev => ({
+            ...prev,
+            eventType: params.eventType || ''
+          }));
+        }
+      }
+    }
+  }, [params]);
+
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [dateError, setDateError] = useState<string>('');
   const [daysCount, setDaysCount] = useState<number>(0);
@@ -64,7 +119,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step === 1) {
       if (formData.dateType === 'specific' && (!dateRange?.from || !dateRange?.to)) {
@@ -86,8 +141,52 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
       }
       setStep(2);
     } else {
-      console.log('Quote requested:', formData);
-      onNavigate('thank-you');
+      try {
+        setIsSubmitting(true);
+        setSubmitError('');
+        
+        // Prepare the data to send to Google Sheets
+        const submissionData = {
+          sheetName: 'GetQuoteSubmission',
+          contactName: formData.contactName,
+          email: formData.email,
+          phone: formData.phone,
+          eventType: formData.eventType === 'other' ? formData.otherEventType : formData.eventType,
+          adults: `${formData.adults} ± ${formData.variation}`,
+          dateType: formData.dateType,
+          startDate: formData.dateType === 'specific' ? new Date(formData.startDate).toLocaleDateString() : '',
+          endDate: formData.dateType === 'specific' ? new Date(formData.endDate).toLocaleDateString() : '',
+          flexibleMonth: formData.dateType === 'flexible' ? formData.flexibleMonth : '',
+          locations: formData.locations.join(', '),
+          roomsNeeded: `${formData.roomsNeeded} ± ${formData.roomsVariation}`,
+          additionalRequirements: formData.additionalRequirements,
+          timestamp: new Date().toISOString()
+        };
+
+        console.log('Submitting data:', submissionData);
+
+        // Send data to Google Sheets
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbx_nYCWFAHc5HlZTl5rNO9ISRqV7STIEbxF3yqAvK9nEgHOf2UhcrDbhSmD5AdMGVdI/exec';
+        
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData)
+        });
+        
+        // Since 'no-cors' mode doesn't give us access to response details,
+        // we'll assume success if no error is thrown
+        console.log('Form submitted successfully');
+        onNavigate('thank-you');
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        setSubmitError('Failed to submit form. Please try again later.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -447,21 +546,29 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate }) => {
               {step === 1 ? renderStep1() : renderStep2()}
             </div>
 
+            {submitError && (
+              <div className="bg-red-50 text-red-700 px-4 py-3 rounded-md">
+                {submitError}
+              </div>
+            )}
+
             <div className="flex justify-between">
               {step === 2 && (
                 <button
                   type="button"
                   onClick={() => setStep(1)}
                   className="px-6 py-4 text-gray-600 hover:text-blue-600 transition-colors"
+                  disabled={isSubmitting}
                 >
                   Back
                 </button>
               )}
               <button
                 type="submit"
-                className={`${step === 1 ? 'ml-auto' : ''} bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 font-medium text-lg shadow-lg hover:shadow-xl`}
+                disabled={isSubmitting}
+                className={`${step === 1 ? 'ml-auto' : ''} bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 font-medium text-lg shadow-lg hover:shadow-xl ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                {step === 1 ? 'Continue' : 'Request Quote'}
+                {isSubmitting ? 'Submitting...' : (step === 1 ? 'Continue' : 'Request Quote')}
               </button>
             </div>
           </form>
