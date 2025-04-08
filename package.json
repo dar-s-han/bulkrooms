@@ -6,6 +6,7 @@
     "@react-three/fiber": "^9.1.2",
     "@types/react-datepicker": "^7.0.0",
     "@types/react-responsive": "^9.0.0",
+    "axios": "^1.8.4",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.6.3",
