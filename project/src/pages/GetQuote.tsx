@@ -55,16 +55,21 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
 
   // Use params from navigation if available
   useEffect(() => {
-    console.log("GetQuote received params:", params);
+    console.log("GetQuote: Received params:", params);
+    console.log("GetQuote: Current formData:", formData);
     
     if (params) {
       // Set location if provided
       if (params.location && params.location.trim() !== '') {
-        console.log("Setting location:", params.location);
-        setFormData(prev => ({
-          ...prev,
-          locations: [params.location || '']
-        }));
+        console.log("GetQuote: Setting location:", params.location);
+        setFormData(prev => {
+          const newData = {
+            ...prev,
+            locations: [params.location || '']
+          };
+          console.log("GetQuote: Updated formData with location:", newData);
+          return newData;
+        });
       }
       
       // Set event type if provided and valid
@@ -72,11 +77,15 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
         const validEventTypes = ['wedding', 'corporate-stay', 'trip', 'conference', 'sports-event', 
                                'family-reunion', 'birthday', 'anniversary', 'other'];
         if (validEventTypes.includes(params.eventType)) {
-          console.log("Setting event type:", params.eventType);
-          setFormData(prev => ({
-            ...prev,
-            eventType: params.eventType || ''
-          }));
+          console.log("GetQuote: Setting event type:", params.eventType);
+          setFormData(prev => {
+            const newData = {
+              ...prev,
+              eventType: params.eventType || ''
+            };
+            console.log("GetQuote: Updated formData with event type:", newData);
+            return newData;
+          });
         }
       }
     }

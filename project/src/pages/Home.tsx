@@ -92,7 +92,11 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       location: searchLocation || '', 
       eventType: searchEventType || '' 
     };
-    console.log("Passing params to GetQuote:", params);
+    console.log("Home: Passing params to GetQuote:", {
+      searchLocation,
+      searchEventType,
+      params
+    });
     onNavigate('get-quote', params);
   };
 

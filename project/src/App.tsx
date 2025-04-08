@@ -10,9 +10,17 @@ import CookiePolicy from './pages/CookiePolicy';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy'>('home');
+  const [pageParams, setPageParams] = useState<any>(null);
 
-  const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy') => {
+  const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy', params?: any) => {
+    console.log("App: Navigating to", page, "with params:", params);
     setCurrentPage(page);
+    if (params) {
+      setPageParams(params);
+    } else {
+      setPageParams(null);
+    }
+    
     if (page === 'home' || page === 'contact-us') {
       // Reset scroll position when returning to home or navigating to contact us
       window.scrollTo(0, 0);
@@ -53,7 +61,7 @@ function App() {
     case 'contact-us':
       return <ContactUs onNavigate={navigateTo} />;
     case 'get-quote':
-      return <GetQuote onNavigate={navigateTo} />;
+      return <GetQuote onNavigate={navigateTo} params={pageParams} />;
     case 'thank-you':
       return <QuoteThankYou onNavigate={navigateTo} />;
     case 'contact-us-thank-you':
