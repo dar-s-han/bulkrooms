@@ -89,8 +89,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const handleQuickQuote = () => {
     // Pass location and eventType values to the GetQuote page
     const params = { 
-      location: searchLocation, 
-      eventType: searchEventType 
+      location: searchLocation || '', 
+      eventType: searchEventType || '' 
     };
     console.log("Passing params to GetQuote:", params);
     onNavigate('get-quote', params);
@@ -105,7 +105,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             src="https://images.unsplash.com/photo-1564469780933-37609ec45780?q=80&w=3174&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Business meeting room"
             className="w-full h-full object-cover opacity-100 transition-opacity duration-1000 ease-in-out fade-in-image"
-            style={{ maxWidth: '1600px', maxHeight: '900px', margin: '0 auto' }}
+            style={{ maxWidth: '2500px', maxHeight: '2000px', margin: '0 auto' }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/30"></div>
         </div>
