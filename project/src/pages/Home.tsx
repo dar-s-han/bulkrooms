@@ -134,20 +134,20 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
         </nav>
 
-        <div className="relative z-10 flex items-center justify-center h-full px-4 pt-8 sm:pt-16 md:pt-2 max-w-7xl mx-auto">
+        <div className="relative z-10 flex items-center justify-center h-full px-4 -mt-8 sm:-mt-12 md:-mt-16 max-w-7xl mx-auto">
           {/* Centered Text content */}
           <div className="text-center w-full max-w-3xl">
-            <p className="text-white text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold">
+            <p className="text-white text-xl sm:text-2xl mb-2 sm:mb-4 font-semibold">
               Tired of endless follow-ups?
             </p>
-            <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold text-white mb-6 sm:mb-8 leading-tight sm:leading-relaxed">
+            <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold text-white mb-16 sm:mb-20 leading-tight sm:leading-relaxed">
               Get Quotes within{" "}
               <span className="line-through">weeks</span>
               <span className="text-green-400 ml-2 sm:ml-4">hours</span>,
               <span className="mt-2 inline-block text-3xl sm:text-4xl md:text-6xl">without any Follow-Ups</span>
             </h1>
             {/* Search Bar */}
-            <div className="bg-white/90 backdrop-blur-md rounded-xl p-2 mb-6 sm:mb-8 shadow-lg mx-auto max-w-3xl">
+            <div className="bg-white/90 backdrop-blur-md rounded-xl p-2 mb-6 sm:mb-8 shadow-lg mx-auto max-w-3xl mt-8 sm:mt-10">
               <div className="grid grid-cols-1 gap-2 sm:gap-1 sm:grid-cols-2">
                 <div className="relative">
                   <label htmlFor="location" className="sr-only">Location</label>
