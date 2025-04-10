@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import BookingTypesSection from '../components/BookingTypesSection';
 import ServiceCard from '../components/ServiceCard';
 import FeatureCard from '../components/FeatureCard';
+import { siteConfig } from '../metadata';
 
 interface HomeProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy', params?: any) => void;
@@ -21,6 +22,26 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [searchEventType, setSearchEventType] = useState('');
 
   useEffect(() => {
+    // Set document metadata
+    document.title = siteConfig.name;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', siteConfig.description);
+    document.querySelector('meta[name="keywords"]')?.setAttribute('content', siteConfig.keywords.join(', '));
+    
+    // Open Graph metadata
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', siteConfig.openGraph.title);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', siteConfig.openGraph.description);
+    document.querySelector('meta[property="og:image"]')?.setAttribute('content', siteConfig.ogImage);
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', siteConfig.url);
+    document.querySelector('meta[property="og:type"]')?.setAttribute('content', siteConfig.openGraph.type);
+    document.querySelector('meta[property="og:site_name"]')?.setAttribute('content', siteConfig.openGraph.siteName);
+    
+    // Twitter metadata
+    document.querySelector('meta[name="twitter:card"]')?.setAttribute('content', siteConfig.twitter.card);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', siteConfig.twitter.title);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', siteConfig.twitter.description);
+    document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', siteConfig.twitter.images[0]);
+    document.querySelector('meta[name="twitter:creator"]')?.setAttribute('content', siteConfig.twitter.creator);
+
     // Initialize values from localStorage
     const storedHours = Number(localStorage.getItem('totalHours') || '162000');
     const storedSavings = Number(localStorage.getItem('totalSavings') || '1355000');
