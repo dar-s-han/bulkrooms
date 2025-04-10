@@ -500,7 +500,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-gray-100">
+        <div className="bg-white/95 rounded-2xl shadow-xl p-8 border border-gray-100">
           <div className="text-center mb-8">
             <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
               Request a Quote

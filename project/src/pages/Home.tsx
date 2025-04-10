@@ -114,42 +114,41 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/30"></div>
         </div>
         
-        <nav className="relative z-10 flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
-          <div className="text-white text-2xl font-bold flex items-center gap-2">
+        <nav className="relative z-10 flex flex-wrap justify-between items-center px-4 sm:px-6 py-4 max-w-7xl mx-auto">
+          <div className="text-white text-xl sm:text-2xl font-bold flex items-center gap-2">
             BulkRooms
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-2 sm:gap-4">
             <button 
               onClick={handleQuickQuote}
-              className="bg-white text-blue-600 px-6 py-2 rounded-full hover:bg-gray-100 transition relative z-30"
+              className="bg-white text-blue-600 px-4 sm:px-6 py-2 rounded-full hover:bg-gray-100 transition relative z-30 text-sm sm:text-base"
             >
               Get Quick Quote
             </button>
             <button 
               onClick={() => onNavigate('contact-us')}
-              className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition relative z-30"
+              className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-full hover:bg-blue-700 transition relative z-30 text-sm sm:text-base"
             >
               Contact Us
             </button>
           </div>
         </nav>
 
-        <div className="relative z-10 flex items-center justify-center h-full px-4 pt-16 md:pt-2 max-w-7xl mx-auto">
+        <div className="relative z-10 flex items-center justify-center h-full px-4 pt-8 sm:pt-16 md:pt-2 max-w-7xl mx-auto">
           {/* Centered Text content */}
           <div className="text-center w-full max-w-3xl">
-            <p className="text-white text-2xl mb-6 font-semibold">
+            <p className="text-white text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold">
               Tired of endless follow-ups?
             </p>
-            <h1 className="text-4xl md:text-7xl font-bold text-white mb-8 leading-relaxed">
-              {/* <br /> */}
+            <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold text-white mb-6 sm:mb-8 leading-tight sm:leading-relaxed">
               Get Quotes within{" "}
               <span className="line-through">weeks</span>
-              <span className="text-green-400 ml-4">hours</span>,
-              <span className="mt-2 inline-block text-6xl">without any Follow-Ups</span>
+              <span className="text-green-400 ml-2 sm:ml-4">hours</span>,
+              <span className="mt-2 inline-block text-3xl sm:text-4xl md:text-6xl">without any Follow-Ups</span>
             </h1>
             {/* Search Bar */}
-            <div className="bg-white/90 backdrop-blur-md rounded-xl p-2 mb-8 shadow-lg mx-auto max-w-3xl">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+            <div className="bg-white/90 backdrop-blur-md rounded-xl p-2 mb-6 sm:mb-8 shadow-lg mx-auto max-w-3xl">
+              <div className="grid grid-cols-1 gap-2 sm:gap-1 sm:grid-cols-2">
                 <div className="relative">
                   <label htmlFor="location" className="sr-only">Location</label>
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -159,7 +158,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     type="text" 
                     id="location" 
                     placeholder="Country, city, or region" 
-                    className="w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 bg-transparent"
+                    className="w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 bg-transparent text-sm sm:text-base"
                     value={searchLocation}
                     onChange={(e) => setSearchLocation(e.target.value)}
                   />
@@ -171,7 +170,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   </div>
                   <select 
                     id="eventType" 
-                    className="w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 appearance-none bg-transparent"
+                    className="w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 appearance-none bg-transparent text-sm sm:text-base"
                     value={searchEventType}
                     onChange={(e) => setSearchEventType(e.target.value)}
                   >
@@ -205,9 +204,9 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </header>
 
       {/* Numbers Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <section className="py-12 sm:py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
             <div className="text-center">
               <h3 className="text-4xl font-bold text-blue-900 mb-2">
                 <CountUp 
@@ -238,19 +237,19 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </div>
 
       {/* Why Book With Us Section */}
-      <section id="why-book" className="py-16 px-6 bg-white">
+      <section id="why-book" className="py-12 sm:py-16 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Left Side - Title and Description */}
-            <div className="fade-in flex flex-col justify-center h-full">
-              <h2 className="text-4xl font-bold mb-8 text-blue-900">Why Book With Us</h2>
-              <p className="text-lg text-gray-600">
+            <div className="fade-in flex flex-col justify-center h-full text-center lg:text-left">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-blue-900">Why Book With Us</h2>
+              <p className="text-base sm:text-lg text-gray-600">
                 BulkRooms simplifies the complex process of booking multiple hotel rooms, saving you time and money.
               </p>
             </div>
 
             {/* Right Side - Feature Blocks */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {/* Instant Quotes Block with Animation */}
               <div className="relative overflow-hidden bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col items-center justify-start text-center hover:shadow-xl transition-shadow duration-300">
                 {/* Speed Lines Animation */}
@@ -338,10 +337,10 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* 3-Step Process */}
-      <section id="process" className="bg-gradient-to-b from-blue-50 to-indigo-50 py-20 px-6">
+      <section id="process" className="bg-gradient-to-b from-blue-50 to-indigo-50 py-16 sm:py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-16 fade-in text-indigo-900">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12 sm:mb-16 fade-in text-indigo-900">How It Works</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
             <div className="fade-in transform hover:scale-105 transition-transform duration-300 flex flex-col" style={{ transitionDelay: '200ms' }}>
               <div className="text-4xl font-bold text-purple-600 mb-4 text-center">1</div>
               <div className="bg-white p-8 rounded-2xl text-center h-full shadow-lg hover:shadow-xl transition-shadow">
@@ -377,13 +376,13 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 px-6 bg-gradient-to-b from-indigo-50 to-white">
+      <section id="testimonials" className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-b from-indigo-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4 fade-in text-indigo-900">What Our Customers Say</h2>
-          <p className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto fade-in">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-3 sm:mb-4 fade-in text-indigo-900">What Our Customers Say</h2>
+          <p className="text-base sm:text-lg text-gray-600 text-center mb-8 sm:mb-12 max-w-3xl mx-auto fade-in">
             Join thousands of satisfied customers who have simplified their group booking experience.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '200ms' }}>
               <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border-l-4 border-blue-500 h-full">
                 <div className="flex items-center mb-4">
@@ -431,33 +430,26 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* Footer Section */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col items-center gap-8">
-            {/* <div className="text-3xl font-bold flex items-center gap-3">
-              <Building2 className="h-10 w-10" />
-              BulkRooms
-            </div>
-            <p className="text-gray-300 text-center max-w-2xl">
-              Simplify your group booking experience with BulkRooms. Get the best rates for 10+ rooms and enjoy dedicated support throughout your booking journey.
-            </p> */}
-            <div className="grid md:grid-cols-2 gap-12 w-full max-w-4xl">
-              <div className="flex flex-col items-center text-center gap-4">
-                <h3 className="text-xl font-semibold">Need Quick Pricing?</h3>
-                <p className="text-gray-300 mb-2">Get instant quotes for your group booking in minutes. Compare rates from multiple hotels.</p>
+      <footer className="bg-gray-900 text-white py-12 sm:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col items-center gap-6 sm:gap-8">
+            <div className="grid sm:grid-cols-2 gap-8 sm:gap-12 w-full max-w-4xl">
+              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+                <h3 className="text-lg sm:text-xl font-semibold">Need Quick Pricing?</h3>
+                <p className="text-gray-300 mb-2 text-sm sm:text-base">Get instant quotes for your group booking in minutes. Compare rates from multiple hotels.</p>
                 <button 
                   onClick={() => onNavigate('get-quote')}
-                  className="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-gray-200 transition text-lg font-semibold"
+                  className="bg-white text-blue-600 px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:bg-gray-200 transition text-base sm:text-lg font-semibold w-full sm:w-auto"
                 >
                   Get Instant Quote
                 </button>
               </div>
-              <div className="flex flex-col items-center text-center gap-4">
-                <h3 className="text-xl font-semibold">Looking for something else?</h3>
-                <p className="text-gray-300 mb-2">Speak with our group booking specialists who can help plan your perfect stay.</p>
+              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
+                <h3 className="text-lg sm:text-xl font-semibold">Looking for something else?</h3>
+                <p className="text-gray-300 mb-2 text-sm sm:text-base">Speak with our group booking specialists who can help plan your perfect stay.</p>
                 <button 
                   onClick={() => onNavigate('contact-us')}
-                  className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition text-lg font-semibold"
+                  className="bg-blue-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:bg-blue-700 transition text-base sm:text-lg font-semibold w-full sm:w-auto"
                 >
                   Contact Us
                 </button>
