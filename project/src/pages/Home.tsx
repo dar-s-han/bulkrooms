@@ -176,7 +176,7 @@ const NumbersSection = memo(() => {
             <div className="text-center">
               <div className="backdrop-blur-sm rounded-3xl p-8">
                 <h3 className="text-4xl font-bold text-blue-900 mb-2">
-                  ${savings.toLocaleString()}
+                  ${savings.toLocaleString()}+
                 </h3>
                 <p className="text-xl text-gray-600">Saved on Bulk Bookings</p>
               </div>
@@ -254,7 +254,7 @@ const NumbersSection = memo(() => {
                   end={savings} 
                   duration={1.5}
                   separator=","
-                  formattingFn={(value) => `$ ${Math.floor(value).toLocaleString()}`}
+                  formattingFn={(value) => `$ ${Math.floor(value).toLocaleString()}+`}
                 />
               </h3>
               <p className="text-xl text-gray-600">Saved on Bulk Bookings</p>
