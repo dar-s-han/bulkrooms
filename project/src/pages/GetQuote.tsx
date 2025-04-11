@@ -30,11 +30,17 @@ interface FormData {
   additionalRequirements: string;
 }
 
+interface LocationInfo {
+  ip: string;
+  country: string;
+}
+
 const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
   const [step, setStep] = useState(1);
   const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
   const [formData, setFormData] = useState<FormData>({
     contactName: '',
     email: '',
@@ -90,6 +96,25 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
       }
     }
   }, [params]);
+
+  // Fetch IP and country information
+  useEffect(() => {
+    const fetchLocationInfo = () => {
+      fetch('https://ipapi.co/json/')
+        .then(response => response.json())
+        .then(data => {
+          setLocationInfo({
+            ip: data.ip,
+            country: data.country_name
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching location info:', error);
+        });
+    };
+
+    fetchLocationInfo();
+  }, []);
 
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [dateError, setDateError] = useState<string>('');
@@ -581,6 +606,12 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
             {submitError && (
               <div className="bg-red-50 text-red-700 px-4 py-3 rounded-md">
                 {submitError}
+              </div>
+            )}
+
+            {locationInfo && (
+              <div className="text-sm text-gray-500 text-center mt-4">
+                <p>Your IP: {locationInfo.ip} | Country: {locationInfo.country}</p>
               </div>
             )}
 
