@@ -13,8 +13,8 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
-  const [hours, setHours] = useState(Number(localStorage.getItem('totalHours') || '100'));
-  const [savings, setSavings] = useState(Number(localStorage.getItem('totalSavings') || '50000'));
+  const [hours, setHours] = useState(1620000);
+  const [savings, setSavings] = useState(13550000);
   const [initialAnimation, setInitialAnimation] = useState(!localStorage.getItem('initialAnimationCompleted'));
   const [animatedHours, setAnimatedHours] = useState(0);
   const [animatedSavings, setAnimatedSavings] = useState(0);
@@ -45,8 +45,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     document.querySelector('meta[name="twitter:creator"]')?.setAttribute('content', siteConfig.twitter.creator);
 
     // Initialize values from localStorage
-    const storedHours = Number(localStorage.getItem('totalHours') || '162000');
-    const storedSavings = Number(localStorage.getItem('totalSavings') || '1355000');
+    const storedHours = Number(localStorage.getItem('totalHours') || '1620000');
+    const storedSavings = Number(localStorage.getItem('totalSavings') || '13550000');
     setHours(storedHours);
     setSavings(storedSavings);
     setAnimatedHours(storedHours % 10);
@@ -386,6 +386,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   end={hours} 
                   duration={2} 
                   separator=","
+                  formattingFn={(value) => Math.floor(value).toLocaleString()}
                 />+
               </h3>
               <p className="text-xl text-gray-600">Hours Saved on Research</p>
@@ -396,6 +397,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   end={savings} 
                   duration={2} 
                   separator=","
+                  formattingFn={(value) => `$ ${Math.floor(value).toLocaleString()}`}
                 />
               </h3>
               <p className="text-xl text-gray-600">Saved on Bulk Bookings</p>

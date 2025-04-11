@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { 
   Heart, 
@@ -15,6 +15,34 @@ import { motion } from 'framer-motion';
 const BookingTypesSection: React.FC = () => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeout = React.useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolling(true);
+      setHoveredIndex(null);
+
+      // Clear the previous timeout
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+
+      // Set a new timeout to mark scrolling as finished after 150ms of no scroll events
+      scrollTimeout.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
+  }, []);
 
   const bookingTypes = [
     {
@@ -105,31 +133,21 @@ const BookingTypesSection: React.FC = () => {
   const cardVariants = {
     hidden: { 
       opacity: 0,
-      y: 50,
-      rotateX: -15,
-      scale: 0.8
+      y: 20
     },
     visible: {
       opacity: 1,
       y: 0,
-      rotateX: 0,
-      scale: 1,
       transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 20,
-        mass: 0.5
+        duration: 0.3,
+        ease: "easeOut"
       }
     },
     hover: {
-      y: -10,
-      rotateX: 5,
-      scale: 1.02,
+      y: -4,
       transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 20,
-        mass: 0.5
+        duration: 0.2,
+        ease: "easeOut"
       }
     }
   };
@@ -181,7 +199,7 @@ const BookingTypesSection: React.FC = () => {
           }}
           className="text-3xl font-bold text-center mb-12 text-gray-900"
         >
-          Types of Bookings We Handle
+          Bookings Tailored to Every Occasion
         </motion.h2>
         <motion.div 
           variants={containerVariants}
@@ -193,49 +211,43 @@ const BookingTypesSection: React.FC = () => {
             <motion.div
               key={index}
               variants={cardVariants}
-              whileHover="hover"
+              whileHover={!isScrolling ? "hover" : "visible"}
               className="relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-300 overflow-hidden perspective-1000"
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
+              onMouseEnter={() => !isScrolling && setHoveredIndex(index)}
+              onMouseLeave={() => !isScrolling && setHoveredIndex(null)}
               style={{
                 transformStyle: 'preserve-3d',
-                boxShadow: hoveredIndex === index 
+                boxShadow: !isScrolling && hoveredIndex === index 
                   ? '0 25px 30px -10px rgba(0, 0, 0, 0.15)' 
                   : '0 10px 15px -5px rgba(0, 0, 0, 0.1)'
               }}
             >
               <motion.div 
                 className={`absolute inset-0 bg-gradient-to-br ${type.color} opacity-0 transition-opacity duration-300`}
-                animate={{ opacity: hoveredIndex === index ? 0.1 : 0 }}
+                animate={{ opacity: !isScrolling && hoveredIndex === index ? 0.1 : 0 }}
               />
               <div className="relative flex flex-col items-center text-center">
                 <motion.div 
                   className={`mb-4 p-3 rounded-full transition-colors duration-300 ${
-                    hoveredIndex === index ? 'bg-opacity-20' : 'bg-opacity-10'
+                    !isScrolling && hoveredIndex === index ? 'bg-opacity-20' : 'bg-opacity-10'
                   } ${type.color.split(' ')[1].replace('from-', 'bg-')}`}
                   variants={iconVariants}
-                  animate={hoveredIndex === index ? "hover" : "initial"}
+                  animate={!isScrolling && hoveredIndex === index ? "hover" : "initial"}
                 >
                   {type.icon}
                 </motion.div>
                 <motion.h3 
                   className={`text-xl font-semibold mb-2 transition-colors duration-300 ${
-                    hoveredIndex === index ? 'text-blue-600' : 'text-gray-900'
+                    !isScrolling && hoveredIndex === index ? 'text-indigo-900' : 'text-gray-900'
                   }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    type: "spring",
-                    stiffness: 200,
-                    damping: 20,
-                    mass: 0.5
-                  }}
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
                 >
                   {type.title}
                 </motion.h3>
                 <motion.p 
                   className={`transition-colors duration-300 ${
-                    hoveredIndex === index ? 'text-gray-800' : 'text-gray-600'
+                    !isScrolling && hoveredIndex === index ? 'text-gray-800' : 'text-gray-600'
                   }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -253,7 +265,7 @@ const BookingTypesSection: React.FC = () => {
                 <motion.div
                   className="mt-4 w-full"
                   initial="hidden"
-                  animate={hoveredIndex === index ? "visible" : "hidden"}
+                  animate={!isScrolling && hoveredIndex === index ? "visible" : "hidden"}
                   variants={{
                     hidden: { 
                       opacity: 0, 
@@ -282,7 +294,7 @@ const BookingTypesSection: React.FC = () => {
                         className="flex items-center gap-2 text-sm text-gray-600"
                         variants={featureVariants}
                         initial="hidden"
-                        animate={hoveredIndex === index ? "visible" : "hidden"}
+                        animate={!isScrolling && hoveredIndex === index ? "visible" : "hidden"}
                         transition={{ 
                           delay: featureIndex * 0.1,
                           type: "spring",
@@ -301,7 +313,7 @@ const BookingTypesSection: React.FC = () => {
               <motion.div 
                 className="absolute bottom-0 left-0 right-0 h-1 bg-blue-500"
                 initial={{ width: 0 }}
-                animate={{ width: hoveredIndex === index ? '100%' : '0%' }}
+                animate={{ width: !isScrolling && hoveredIndex === index ? '100%' : '0%' }}
                 transition={{ 
                   type: "spring",
                   stiffness: 200,
