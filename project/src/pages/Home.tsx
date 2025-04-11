@@ -554,48 +554,90 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 relative shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="absolute -top-6 left-8">
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                  <span className="text-blue-600 font-bold text-lg">VS</span>
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
+                  <img 
+                    src="https://media.licdn.com/dms/image/v2/D5635AQFCnliMMCChaQ/profile-framedphoto-shrink_800_800/B56ZWPjex_GQAg-/0/1741870198204?e=1744966800&v=beta&t=TKHrQr8IyO5XfQtuUtKg2U_31kblgmeXidXT6jGsVVk" 
+                    alt="Vaishnavi Somani"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
               <div className="mt-6">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center justify-between mb-4">
                   <div>
                     <h4 className="font-semibold text-gray-900">Vaishnavi Somani</h4>
                     <p className="text-sm text-gray-500">Founder, Local Narratives</p>
                   </div>
+                  <a 
+                    href="https://www.linkedin.com/in/vaishnavi-somani-940276168/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-700 transition-colors"
+                  >
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                  </a>
                 </div>
                 <p className="text-gray-600 italic">"I was able to find the perfect accommodation for my trip with BulkRooms. The team was very helpful and the rates were great."</p>
               </div>
             </div>
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 relative shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="absolute -top-6 left-8">
-                <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
-                  <span className="text-indigo-600 font-bold text-lg">AS</span>
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
+                  <img 
+                    src="https://media.licdn.com/dms/image/v2/D5603AQFycsRBoi_e9A/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1703441076527?e=1749686400&v=beta&t=h_7gloJdt2bfIno3fs_Utb6JsDwJxKefbT0rP3zp6sA" 
+                    alt="Adithyaa Sriram"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
               <div className="mt-6">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center justify-between mb-4">
                   <div>
                     <h4 className="font-semibold text-gray-900">Adithyaa Sriram</h4>
                     <p className="text-sm text-gray-500">Founder, The Unbored Club</p>
                   </div>
+                  <a 
+                    href="https://www.linkedin.com/in/adithyaa-sriram/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-700 transition-colors"
+                  >
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                  </a>
                 </div>
                 <p className="text-gray-600 italic">"I received the quotes instantly. The team helped us get the perfect accommodations for all our guests."</p>
               </div>
             </div>
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 relative shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="absolute -top-6 left-8">
-                <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                  <span className="text-purple-600 font-bold text-lg">PG</span>
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
+                  <img 
+                    src="https://media.licdn.com/dms/image/v2/D5603AQE8FyxuWifV9w/profile-displayphoto-shrink_800_800/B56ZYVf5tEGoA8-/0/1744117413670?e=1749686400&v=beta&t=17sowF0iMffTvF8jspP4sdq3Q255NSpDsK1E-z_eB4U"
+                    alt="Parth Garg"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
               <div className="mt-6">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center justify-between mb-4">
                   <div>
                     <h4 className="font-semibold text-gray-900">Parth Garg</h4>
                     <p className="text-sm text-gray-500">CEO, Aspora</p>
                   </div>
+                  <a 
+                    href="https://www.linkedin.com/in/parth29/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-700 transition-colors"
+                  >
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                  </a>
                 </div>
                 <p className="text-gray-600 italic">"The experience was seamless. We had multiple location options within hours, and everything was handled with utmost professionalism"</p>
               </div>
