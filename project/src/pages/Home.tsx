@@ -163,20 +163,16 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       {/* Sidebar Navigation */}
       <div 
         id="sidebar"
-        className={`fixed right-0 top-0 h-full w-72 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-[100] ${
+        className={`fixed right-0 top-0 h-full w-72 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
           isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
-        style={{ 
-          pointerEvents: 'auto',
-          willChange: 'transform'
-        }}
       >
         <div className="p-4 h-full flex flex-col">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-800">BulkRooms</h2>
             <button 
               onClick={() => setIsSidebarOpen(false)}
-              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors pointer-events-auto"
               aria-label="Close sidebar"
             >
               <X className="h-5 w-5 text-gray-600" />
@@ -186,82 +182,73 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <div className="space-y-1">
               <button 
                 onClick={() => {
+                  onNavigate('home');
                   setIsSidebarOpen(false);
-                  setTimeout(() => onNavigate('home'), 300);
                 }}
-                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group"
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group pointer-events-auto relative z-10"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors pointer-events-none">
                     <Building2 className="h-4 w-4 text-blue-600" />
                   </div>
                   <span className="text-gray-700 font-medium">Home</span>
                 </div>
-                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600" />
+                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600 pointer-events-none" />
               </button>
 
               <button 
-                onClick={() => {
-                  setIsSidebarOpen(false);
-                  setTimeout(() => scrollToSection('process'), 300);
-                }}
-                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group"
+                onClick={() => scrollToSection('process')}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group pointer-events-auto relative z-10"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors pointer-events-none">
                     <Clock className="h-4 w-4 text-blue-600" />
                   </div>
                   <span className="text-gray-700 font-medium">How to Book</span>
                 </div>
-                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600" />
+                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600 pointer-events-none" />
               </button>
 
               <button 
-                onClick={() => {
-                  setIsSidebarOpen(false);
-                  setTimeout(() => scrollToSection('why-book'), 300);
-                }}
-                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group"
+                onClick={() => scrollToSection('why-book')}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group pointer-events-auto relative z-10"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors pointer-events-none">
                     <Zap className="h-4 w-4 text-blue-600" />
                   </div>
                   <span className="text-gray-700 font-medium">Why Book With Us</span>
                 </div>
-                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600" />
+                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600 pointer-events-none" />
               </button>
 
               <button 
-                onClick={() => {
-                  setIsSidebarOpen(false);
-                  setTimeout(() => scrollToSection('testimonials'), 300);
-                }}
-                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group"
+                onClick={() => scrollToSection('testimonials')}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group pointer-events-auto relative z-10"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors pointer-events-none">
                     <MessageSquareQuote className="h-4 w-4 text-blue-600" />
                   </div>
                   <span className="text-gray-700 font-medium">Testimonials</span>
                 </div>
-                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600" />
+                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600 pointer-events-none" />
               </button>
 
               <button 
                 onClick={() => {
+                  onNavigate('get-quote');
                   setIsSidebarOpen(false);
-                  setTimeout(() => onNavigate('get-quote'), 300);
                 }}
-                className="w-full flex items-center justify-between p-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors text-left group mt-4"
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors text-left group mt-4 pointer-events-auto relative z-10"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors pointer-events-none">
                     <Tag className="h-4 w-4 text-white" />
                   </div>
                   <span className="text-white font-medium">Get Quote</span>
                 </div>
-                <ChevronRight className="h-4 w-4 text-white/80 group-hover:text-white" />
+                <ChevronRight className="h-4 w-4 text-white/80 group-hover:text-white pointer-events-none" />
               </button>
             </div>
           </nav>
@@ -297,46 +284,10 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       {/* Overlay when sidebar is open */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-[99] transition-opacity duration-300"
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
           onClick={() => setIsSidebarOpen(false)}
-          style={{ 
-            pointerEvents: 'auto',
-            willChange: 'opacity'
-          }}
         />
       )}
-
-      {/* Speed Lines Animation */}
-      <div className="fixed inset-0 pointer-events-none z-0" style={{ willChange: 'transform' }}>
-        {[...Array(10)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-24 h-1 bg-white opacity-30 rounded"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              pointerEvents: 'none',
-              willChange: 'transform, opacity'
-            }}
-            initial={{
-              x: -200,
-              opacity: 0,
-              scaleX: 0.5,
-            }}
-            animate={{
-              x: '110vw',
-              opacity: [0, 0.8, 0],
-              scaleX: [0.5, 1.2],
-            }}
-            transition={{
-              duration: Math.random() * 1 + 0.8,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-              ease: 'easeIn',
-            }}
-          />
-        ))}
-      </div>
 
       {/* Hero Section */}
       <header className="relative h-[90vh] overflow-hidden">
@@ -474,6 +425,33 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {/* Instant Quotes Block with Animation */}
               <div className="relative overflow-hidden bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col items-center justify-start text-center hover:shadow-xl transition-shadow duration-300">
+                {/* Speed Lines Animation */}
+                {[...Array(10)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-24 h-1 bg-white opacity-30 rounded"
+                    style={{
+                      top: `${Math.random() * 100}%`,
+                      left: `${Math.random() * 100}%`,
+                    }}
+                    initial={{
+                      x: -200,
+                      opacity: 0,
+                      scaleX: 0.5,
+                    }}
+                    animate={{
+                      x: '110vw',
+                      opacity: [0, 0.8, 0],
+                      scaleX: [0.5, 1.2],
+                    }}
+                    transition={{
+                      duration: Math.random() * 1 + 0.8,
+                      repeat: Infinity,
+                      delay: Math.random() * 2,
+                      ease: 'easeIn',
+                    }}
+                  />
+                ))}
                 <div className="relative z-10 w-full">
                   <div className="bg-blue-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Zap className="h-8 w-8" />
