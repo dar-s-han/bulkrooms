@@ -41,6 +41,10 @@ function DatePicker({
   const [date, setDate] = useState<DateRange | undefined>(value);
 
   const handleDateChange = (newDate: DateRange | undefined) => {
+    if (newDate?.from && newDate?.to && newDate.from.getTime() === newDate.to.getTime()) {
+      // If start and end dates are the same, only keep the start date
+      newDate = { from: newDate.from };
+    }
     setDate(newDate);
     onChange?.(newDate);
   };

@@ -131,9 +131,15 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step === 1) {
-      if (formData.dateType === 'specific' && (!dateRange?.from || !dateRange?.to)) {
-        setDateError('Please select a date range');
-        return;
+      if (formData.dateType === 'specific') {
+        if (!dateRange?.from || !dateRange?.to) {
+          setDateError('Please select a date range');
+          return;
+        }
+        if (dateRange.from.getTime() === dateRange.to.getTime()) {
+          setDateError('Start and end dates cannot be the same');
+          return;
+        }
       }
       if (formData.dateType === 'flexible' && !formData.flexibleMonth) {
         setDateError('Please select a month');
