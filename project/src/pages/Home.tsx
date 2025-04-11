@@ -512,95 +512,92 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* 3-Step Process */}
-      <section id="process" className="bg-gradient-to-b from-blue-50 to-indigo-50 py-16 sm:py-20 px-4 sm:px-6">
+      <section id="process" className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-b from-blue-50 to-indigo-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12 sm:mb-16 fade-in text-indigo-900">How It Works</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-indigo-900 mb-4">How It Works</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Our simple 3-step process makes booking group accommodations effortless</p>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300 flex flex-col" style={{ transitionDelay: '200ms' }}>
-              <div className="text-4xl font-bold text-purple-600 mb-4 text-center">1</div>
-              <button 
-                onClick={() => onNavigate('get-quote')}
-                className="bg-white p-8 rounded-2xl text-center h-full shadow-lg hover:shadow-xl transition-shadow cursor-pointer w-full"
-              >
-                <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <MessageSquareQuote className="h-8 w-8 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-purple-900 mb-4">Send Request</h3>
-                <p className="text-gray-600">Tell us your requirements and we'll start working on finding the perfect venues for you</p>
-              </button>
-            </div>
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300 flex flex-col" style={{ transitionDelay: '400ms' }}>
-              <div className="text-4xl font-bold text-indigo-600 mb-4 text-center">2</div>
-              <div className="bg-white p-8 rounded-2xl text-center h-full shadow-lg hover:shadow-xl transition-shadow">
-                <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Building2 className="h-8 w-8 text-indigo-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-indigo-900 mb-4">Get Quotes</h3>
-                <p className="text-gray-600">Receive competitive quotes from multiple hotels tailored to your needs</p>
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                <MessageSquareQuote className="h-8 w-8 text-blue-600" />
               </div>
+              <h3 className="text-xl font-semibold text-blue-900 mb-4 text-center">1. Send Request</h3>
+              <p className="text-gray-600 text-center">Tell us your requirements and we'll start working on finding the perfect venues for you</p>
             </div>
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300 flex flex-col" style={{ transitionDelay: '600ms' }}>
-              <div className="text-4xl font-bold text-pink-600 mb-4 text-center">3</div>
-              <div className="bg-white p-8 rounded-2xl text-center h-full shadow-lg hover:shadow-xl transition-shadow">
-                <div className="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Hotel className="h-8 w-8 text-pink-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-pink-900 mb-4">Book & Save</h3>
-                <p className="text-gray-600">Secure your booking and enjoy exclusive savings on your group stay</p>
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+              <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Building2 className="h-8 w-8 text-indigo-600" />
               </div>
+              <h3 className="text-xl font-semibold text-indigo-900 mb-4 text-center">2. Get Quotes</h3>
+              <p className="text-gray-600 text-center">Receive competitive quotes from multiple hotels tailored to your needs</p>
+            </div>
+            <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Hotel className="h-8 w-8 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-purple-900 mb-4 text-center">3. Book & Save</h3>
+              <p className="text-gray-600 text-center">Secure your booking and enjoy exclusive savings on your group stay</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-b from-indigo-50 to-white">
+      <section id="testimonials" className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-3 sm:mb-4 fade-in text-indigo-900">What Our Customers Say</h2>
-          <p className="text-base sm:text-lg text-gray-600 text-center mb-8 sm:mb-12 max-w-3xl mx-auto fade-in">
-            Join thousands of satisfied customers who have simplified their group booking experience.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '200ms' }}>
-              <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border-l-4 border-blue-500 h-full">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-indigo-900 mb-4">What Our Customers Say</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Join thousands of satisfied customers who have simplified their group booking experience</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 relative shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="absolute -top-6 left-8">
+                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                  <span className="text-blue-600 font-bold text-lg">VS</span>
+                </div>
+              </div>
+              <div className="mt-6">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 mr-4 flex items-center justify-center">
-                    <span className="text-blue-600 font-bold">VS</span>
-                  </div>
                   <div>
-                    <h4 className="font-semibold">Vaishnavi Somani</h4>
+                    <h4 className="font-semibold text-gray-900">Vaishnavi Somani</h4>
                     <p className="text-sm text-gray-500">Founder, Local Narratives</p>
                   </div>
                 </div>
-                <p className="text-gray-600">"I was able to find the perfect accommodation for my trip with BulkRooms. The team was very helpful and the rates were great."</p>
+                <p className="text-gray-600 italic">"I was able to find the perfect accommodation for my trip with BulkRooms. The team was very helpful and the rates were great."</p>
               </div>
             </div>
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '400ms' }}>
-              <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border-l-4 border-indigo-500 h-full">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 relative shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="absolute -top-6 left-8">
+                <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                  <span className="text-indigo-600 font-bold text-lg">AS</span>
+                </div>
+              </div>
+              <div className="mt-6">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-indigo-100 mr-4 flex items-center justify-center">
-                    <span className="text-indigo-600 font-bold">AS</span>
-                  </div>
                   <div>
-                    <h4 className="font-semibold">Adithyaa Sriram</h4>
+                    <h4 className="font-semibold text-gray-900">Adithyaa Sriram</h4>
                     <p className="text-sm text-gray-500">Founder, The Unbored Club</p>
                   </div>
                 </div>
-                <p className="text-gray-600">"I received the quotes instantly. The team helped us get the perfect accommodations for all our guests."</p>
+                <p className="text-gray-600 italic">"I received the quotes instantly. The team helped us get the perfect accommodations for all our guests."</p>
               </div>
             </div>
-            <div className="fade-in transform hover:scale-105 transition-transform duration-300" style={{ transitionDelay: '600ms' }}>
-              <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border-l-4 border-purple-500 h-full">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 relative shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="absolute -top-6 left-8">
+                <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+                  <span className="text-purple-600 font-bold text-lg">PG</span>
+                </div>
+              </div>
+              <div className="mt-6">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-purple-100 mr-4 flex items-center justify-center">
-                    <span className="text-purple-600 font-bold">PG</span>
-                  </div>
                   <div>
-                    <h4 className="font-semibold">Parth Garg</h4>
+                    <h4 className="font-semibold text-gray-900">Parth Garg</h4>
                     <p className="text-sm text-gray-500">CEO, Aspora</p>
                   </div>
                 </div>
-                <p className="text-gray-600">"The experience was seamless. We had multiple location options within hours, and everything was handled with utmost professionalism"</p>
+                <p className="text-gray-600 italic">"The experience was seamless. We had multiple location options within hours, and everything was handled with utmost professionalism"</p>
               </div>
             </div>
           </div>
@@ -608,10 +605,11 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-12 sm:py-16 px-4 sm:px-6 bg-white">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-xl sm:text-2xl font-bold text-center mb-2 sm:mb-3 fade-in text-indigo-900">Frequently Asked Questions</h2>
-          <p className="text-sm sm:text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-2xl mx-auto fade-in">
+      <section id="faq" className="py-12 sm:py-16 px-4 sm:px-6 bg-[#f8f9ff] relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiLz48Y2lyY2xlIGZpbGw9IiNlZWVlZWUiIGZpbGwtb3BhY2l0eT0iMC4yIiBjeD0iMjAiIGN5PSIyMCIgcj0iMyIvPjwvZz48L3N2Zz4=')]"></div>
+        <div className="max-w-3xl mx-auto relative">
+          <h2 className="text-xl sm:text-2xl font-bold text-center mb-2 sm:mb-3 text-indigo-900">Frequently Asked Questions</h2>
+          <p className="text-sm sm:text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-2xl mx-auto">
             Find answers to common questions about our group booking services.
           </p>
           <div className="space-y-4">
@@ -639,7 +637,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             ].map((faq, index) => (
               <div 
                 key={index}
-                className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow duration-300 fade-in"
+                className="bg-white/80 backdrop-blur-sm rounded-lg p-4 hover:shadow-md transition-shadow duration-300"
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div 
