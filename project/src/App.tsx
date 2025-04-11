@@ -82,6 +82,8 @@ function App() {
       }
     });
 
+    console.log("App: Current page is", currentPage);
+
     return () => observer.disconnect();
   }, [currentPage]); // Re-run when page changes
 
