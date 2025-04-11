@@ -276,11 +276,18 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
       locations: newLocations
     });
 
-    if (value.length > 0 && locationInfo?.countryCode) {
+    if (locationInfo?.countryCode) {
       fetchLocationSuggestions(value, locationInfo.countryCode);
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
+    }
+  };
+
+  const handleLocationFocus = () => {
+    setShowSuggestions(true);
+    if (locationInfo?.countryCode) {
+      fetchLocationSuggestions('', locationInfo.countryCode);
     }
   };
 
@@ -483,6 +490,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
                 onFocus={() => {
                   setShowSuggestions(true);
                   setActiveInputIndex(index);
+                  handleLocationFocus();
                 }}
                 onBlur={() => {
                   setTimeout(() => {

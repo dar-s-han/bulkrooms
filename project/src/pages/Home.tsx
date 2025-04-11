@@ -223,11 +223,18 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     const { value } = e.target;
     setSearchLocation(value);
 
-    if (value.length > 0 && locationInfo?.countryCode) {
+    if (locationInfo?.countryCode) {
       fetchLocationSuggestions(value, locationInfo.countryCode);
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
+    }
+  };
+
+  const handleLocationFocus = () => {
+    setShowSuggestions(true);
+    if (locationInfo?.countryCode) {
+      fetchLocationSuggestions('', locationInfo.countryCode);
     }
   };
 
@@ -431,7 +438,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     value={searchLocation}
                     onChange={handleLocationChange}
                     onKeyDown={handleKeyDown}
-                    onFocus={() => setShowSuggestions(true)}
+                    onFocus={handleLocationFocus}
                     onBlur={() => {
                       setTimeout(() => {
                         setShowSuggestions(false);
