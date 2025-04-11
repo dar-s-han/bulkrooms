@@ -10,11 +10,11 @@ import CookiePolicy from './pages/CookiePolicy';
 import Careers from './pages/Careers';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy' | 'careers'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy' | 'careers' | 'terms-of-service' | 'thank-you' | 'contact-us-thank-you'>('home');
   const [pageParams, setPageParams] = useState<any>(null);
   const [navigationHistory, setNavigationHistory] = useState<Array<{page: string, params: any}>>([]);
 
-  const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy' | 'careers', params?: any) => {
+  const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy' | 'careers' | 'terms-of-service' | 'thank-you' | 'contact-us-thank-you', params?: any) => {
     console.log("App: Navigating to", page, "with params:", params);
     
     // Add current page to history before navigating
