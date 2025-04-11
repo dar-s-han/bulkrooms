@@ -12,9 +12,14 @@ import Careers from './pages/Careers';
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy' | 'careers'>('home');
   const [pageParams, setPageParams] = useState<any>(null);
+  const [navigationHistory, setNavigationHistory] = useState<Array<{page: string, params: any}>>([]);
 
   const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy' | 'careers', params?: any) => {
     console.log("App: Navigating to", page, "with params:", params);
+    
+    // Add current page to history before navigating
+    setNavigationHistory(prev => [...prev, { page: currentPage, params: pageParams }]);
+    
     setCurrentPage(page);
     if (params) {
       setPageParams(params);
@@ -35,6 +40,30 @@ function App() {
       }, 100);
     }
   };
+
+  // Handle browser back button
+  useEffect(() => {
+    const handlePopState = () => {
+      if (navigationHistory.length > 0) {
+        const previousPage = navigationHistory[navigationHistory.length - 1];
+        setNavigationHistory(prev => prev.slice(0, -1));
+        setCurrentPage(previousPage.page as any);
+        setPageParams(previousPage.params);
+      } else {
+        // If no history, go to home
+        setCurrentPage('home');
+        setPageParams(null);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [navigationHistory]);
+
+  // Update browser history when page changes
+  useEffect(() => {
+    window.history.pushState({ page: currentPage, params: pageParams }, '', `/${currentPage}`);
+  }, [currentPage, pageParams]);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
