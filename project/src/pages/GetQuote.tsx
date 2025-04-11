@@ -234,6 +234,21 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
     }
   };
 
+  const getEventTypeStats = (eventType: string) => {
+    const stats = {
+      'wedding': 'Helped plan 1,000+ dream weddings',
+      'corporate-stay': 'Organized 850+ successful corporate stays',
+      'trip': 'Arranged 500+ memorable trips',
+      'conference': 'Hosted 1,000+ professional conferences',
+      'sports-event': 'Managed 1,00+ exciting sports events',
+      'family-reunion': 'Coordinated 100+ family reunions',
+      'birthday': 'Celebrated 800+ special birthdays',
+      'anniversary': 'Commemorated 500+ anniversaries',
+      'other': 'Created countless memorable events'
+    };
+    return stats[eventType as keyof typeof stats] || 'Helped plan countless successful events';
+  };
+
   const renderStep1 = () => (
     <>
       <div className="form-group">
@@ -502,12 +517,14 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="bg-white/95 rounded-2xl shadow-xl p-8 border border-gray-100">
           <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-              Request a Quote
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4 animate-fade-in">
+              {formData.eventType ? `Requesting a Quote for ${formData.eventType.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}` : 'Request a Quote'}
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               {step === 1 
-                ? "Let's start with your basic information"
+                ? formData.eventType 
+                  ? getEventTypeStats(formData.eventType)
+                  : "Let's start with your basic information"
                 : "Now, tell us more about your event requirements"}
             </p>
             <div className="flex justify-center mt-4">
