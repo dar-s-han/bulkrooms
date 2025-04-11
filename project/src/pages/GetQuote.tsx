@@ -33,6 +33,16 @@ interface FormData {
 interface LocationInfo {
   ip: string;
   country: string;
+  countryCode: string;
+}
+
+interface LocationSuggestion {
+  entity_name: string;
+  type: string;
+  hierarchy: string;
+  entity_id: string;
+  location: string;
+  class: string;
 }
 
 const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
@@ -41,6 +51,10 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
+  const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [activeLocationIndex, setActiveLocationIndex] = useState<number>(-1);
+  const [activeInputIndex, setActiveInputIndex] = useState<number>(-1);
   const [formData, setFormData] = useState<FormData>({
     contactName: '',
     email: '',
@@ -105,7 +119,8 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
         .then(data => {
           setLocationInfo({
             ip: data.ip,
-            country: data.country_name
+            country: data.country_name,
+            countryCode: data.country_code
           });
         })
         .catch(error => {
@@ -227,6 +242,73 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
       } finally {
         setIsSubmitting(false);
       }
+    }
+  };
+
+  const fetchLocationSuggestions = async (query: string, countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://www.skyscanner.net/g/autosuggest-search/api/v1/search-hotel/${countryCode}/en-GB/${query}?rf=map&vrows=10`
+      );
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setSuggestions(data.map((place: any) => ({
+          entity_name: place.entity_name,
+          type: place.type,
+          hierarchy: place.hierarchy,
+          entity_id: place.entity_id,
+          location: place.location,
+          class: place.class
+        })));
+        setShowSuggestions(true);
+      }
+    } catch (error) {
+      console.error('Error fetching location suggestions:', error);
+    }
+  };
+
+  const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const { value } = e.target;
+    const newLocations = [...formData.locations];
+    newLocations[index] = value;
+    setFormData({
+      ...formData,
+      locations: newLocations
+    });
+
+    if (value.length > 0 && locationInfo?.countryCode) {
+      fetchLocationSuggestions(value, locationInfo.countryCode);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: LocationSuggestion, index: number) => {
+    const newLocations = [...formData.locations];
+    newLocations[index] = suggestion.entity_name;
+    setFormData({
+      ...formData,
+      locations: newLocations
+    });
+    setShowSuggestions(false);
+    setSuggestions([]);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveLocationIndex(prev => 
+        prev < suggestions.length - 1 ? prev + 1 : prev
+      );
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveLocationIndex(prev => prev > 0 ? prev - 1 : prev);
+    } else if (e.key === 'Enter' && activeLocationIndex >= 0) {
+      e.preventDefault();
+      handleSuggestionClick(suggestions[activeLocationIndex], index);
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
     }
   };
 
@@ -391,12 +473,23 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
         </label>
         <div className="space-y-3">
           {formData.locations.map((location, index) => (
-            <div key={index} className="flex items-center gap-2">
+            <div key={index} className="flex items-center gap-2 relative">
               <input
                 type="text"
                 name={`location-${index}`}
                 value={location}
-                onChange={handleChange}
+                onChange={(e) => handleLocationChange(e, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                onFocus={() => {
+                  setShowSuggestions(true);
+                  setActiveInputIndex(index);
+                }}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setShowSuggestions(false);
+                    setActiveInputIndex(-1);
+                  }, 200);
+                }}
                 className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
                 required
                 placeholder="City or region"
@@ -410,6 +503,56 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
                 >
                   <X className="h-5 w-5" />
                 </button>
+              )}
+              {showSuggestions && suggestions.length > 0 && activeInputIndex === index && (
+                <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-10 overflow-hidden" style={{ top: 'calc(100% + 4px)' }}>
+                  {suggestions.map((suggestion, idx) => {
+                    const hierarchyParts = suggestion.hierarchy.split('|');
+                    const subtitle = hierarchyParts.filter(part => part !== suggestion.entity_name).join(', ');
+                    
+                    return (
+                      <div
+                        key={suggestion.entity_id}
+                        className={`px-4 py-3 cursor-pointer hover:bg-gray-50 flex items-start gap-3 ${
+                          idx === activeLocationIndex ? 'bg-gray-50' : ''
+                        } ${idx !== suggestions.length - 1 ? 'border-b border-gray-100' : ''}`}
+                        onClick={() => handleSuggestionClick(suggestion, index)}
+                      >
+                        <div className="text-gray-400 mt-1">
+                          {suggestion.type === 'city' && (
+                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M4 20V4C4 3.45 4.196 2.979 4.588 2.587C4.98 2.195 5.45067 1.99934 6 2H18C18.55 2 19.021 2.196 19.413 2.588C19.805 2.98 20.0007 3.45067 20 4V20H4ZM6 18H18V4H6V18ZM8 17H10V15H8V17ZM8 13H10V11H8V13ZM8 9H10V7H8V9ZM12 17H14V15H12V17ZM12 13H14V11H12V13ZM12 9H14V7H12V9ZM16 17H18V15H16V17ZM16 13H18V11H16V13ZM16 9H18V7H16V9Z" fill="currentColor"/>
+                            </svg>
+                          )}
+                          {suggestion.type === 'airport' && (
+                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M12 2L4 12H7L9 22H11L13 12L15 22H17L19 12H22L14 2H12Z" fill="currentColor"/>
+                            </svg>
+                          )}
+                          {suggestion.type === 'hotel' && (
+                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M7 14C8.1 14 9 13.1 9 12C9 10.9 8.1 10 7 10C5.9 10 5 10.9 5 12C5 13.1 5.9 14 7 14ZM12.5 3H2V21H4V19H20V21H22V8C22 5.24 19.76 3 17 3H12.5ZM4 17V5H12.5V17H4ZM20 17H14.5V5H17C18.66 5 20 6.34 20 8V17Z" fill="currentColor"/>
+                            </svg>
+                          )}
+                          {!['city', 'airport', 'hotel'].includes(suggestion.type) && (
+                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12ZM12 4C16.2 4 20 7.22 20 11.2C20 16.19 12 24 12 24C12 24 4 16.19 4 11.2C4 7.22 7.8 4 12 4Z" fill="currentColor"/>
+                            </svg>
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-medium text-gray-900">{suggestion.entity_name}</div>
+                          {subtitle && (
+                            <div className="text-sm text-gray-500">{subtitle}</div>
+                          )}
+                        </div>
+                        <div className="text-xs text-gray-400 self-center uppercase whitespace-nowrap">
+                          {suggestion.type.replace('-', ' ')}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               )}
             </div>
           ))}
