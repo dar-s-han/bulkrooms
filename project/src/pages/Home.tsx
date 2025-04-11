@@ -556,7 +556,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <div className="absolute -top-6 left-8">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
                   <img 
-                    src="https://media.licdn.com/dms/image/v2/D5635AQFCnliMMCChaQ/profile-framedphoto-shrink_800_800/B56ZWPjex_GQAg-/0/1741870198204?e=1744966800&v=beta&t=TKHrQr8IyO5XfQtuUtKg2U_31kblgmeXidXT6jGsVVk" 
+                    src="public/assets/images/testimonials/vaishnavi.jpg" 
                     alt="Vaishnavi Somani"
                     className="w-full h-full object-cover"
                   />
@@ -586,7 +586,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <div className="absolute -top-6 left-8">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
                   <img 
-                    src="https://media.licdn.com/dms/image/v2/D5603AQFycsRBoi_e9A/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1703441076527?e=1749686400&v=beta&t=h_7gloJdt2bfIno3fs_Utb6JsDwJxKefbT0rP3zp6sA" 
+                    src="public/assets/images/testimonials/adithyaa.jpg" 
                     alt="Adithyaa Sriram"
                     className="w-full h-full object-cover"
                   />
@@ -616,7 +616,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <div className="absolute -top-6 left-8">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
                   <img 
-                    src="https://media.licdn.com/dms/image/v2/D5603AQE8FyxuWifV9w/profile-displayphoto-shrink_800_800/B56ZYVf5tEGoA8-/0/1744117413670?e=1749686400&v=beta&t=17sowF0iMffTvF8jspP4sdq3Q255NSpDsK1E-z_eB4U"
+                    src="public/assets/images/testimonials/parth.jpg" 
                     alt="Parth Garg"
                     className="w-full h-full object-cover"
                   />
