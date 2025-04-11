@@ -31,9 +31,6 @@ interface LocationSuggestion {
 const NumbersSection = memo(() => {
   const [hours, setHours] = useState(1620000);
   const [savings, setSavings] = useState(13550000);
-  const [initialAnimation, setInitialAnimation] = useState(!localStorage.getItem('initialAnimationCompleted'));
-  const [animatedHours, setAnimatedHours] = useState(0);
-  const [animatedSavings, setAnimatedSavings] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -43,8 +40,6 @@ const NumbersSection = memo(() => {
     const storedSavings = Number(localStorage.getItem('totalSavings') || '13550000');
     setHours(storedHours);
     setSavings(storedSavings);
-    setAnimatedHours(storedHours % 10);
-    setAnimatedSavings(storedSavings % 100);
     setIsInitialized(true);
   }, []);
 
@@ -76,86 +71,41 @@ const NumbersSection = memo(() => {
   useEffect(() => {
     if (!isInitialized) return;
 
-    // Initial fast animation (only runs once)
-    if (initialAnimation && !localStorage.getItem('initialAnimationCompleted')) {
-      const startValues = {
-        hours: hours,
-        savings: savings
-      };
-
-      const targetValues = {
-        hours: 1621000,
-        savings: 13560000
-      };
-
-      let startTime: number;
-      const duration = 2000; // 2 seconds
+    // Normal incremental counting with smoother transitions
+    const interval = setInterval(() => {
+      const hoursIncrement = Math.random() < 0.03 ? 1 : 0;
+      const savingsIncrement = Math.floor(Math.random() * 6) + 10;
       
-      const animate = (timestamp: number) => {
-        if (!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / duration, 1);
-        
-        // Ease-out cubic function for smoother animation
-        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-        const easedProgress = easeOutCubic(progress);
-        
-        const newHours = Math.floor(startValues.hours + (targetValues.hours - startValues.hours) * easedProgress);
-        const newSavings = Math.floor(startValues.savings + (targetValues.savings - startValues.savings) * easedProgress);
-        
-        setHours(newHours);
-        setSavings(newSavings);
-        setAnimatedHours(newHours % 10);
-        setAnimatedSavings(newSavings % 100);
-        
-        localStorage.setItem('totalHours', newHours.toString());
-        localStorage.setItem('totalSavings', newSavings.toString());
-        
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          setInitialAnimation(false);
-          localStorage.setItem('initialAnimationCompleted', 'true');
-        }
-      };
+      const newHours = hours + hoursIncrement;
+      const newSavings = savings + savingsIncrement;
       
-      requestAnimationFrame(animate);
-    } else {
-      // Normal incremental counting with smoother transitions
-      const interval = setInterval(() => {
-        const hoursIncrement = Math.random() < 0.03 ? 1 : 0;
-        const savingsIncrement = Math.floor(Math.random() * 6) + 10;
-        
-        const newHours = hours + hoursIncrement;
-        const newSavings = savings + savingsIncrement;
-        
-        // Smooth transition for hours
-        const hoursTransition = setInterval(() => {
-          setHours(prev => {
-            const diff = newHours - prev;
-            return prev + Math.sign(diff) * Math.min(Math.abs(diff), 10);
-          });
-        }, 50);
-        
-        // Smooth transition for savings
-        const savingsTransition = setInterval(() => {
-          setSavings(prev => {
-            const diff = newSavings - prev;
-            return prev + Math.sign(diff) * Math.min(Math.abs(diff), 100);
-          });
-        }, 50);
-        
-        setTimeout(() => {
-          clearInterval(hoursTransition);
-          clearInterval(savingsTransition);
-        }, 1000);
-        
-        localStorage.setItem('totalHours', newHours.toString());
-        localStorage.setItem('totalSavings', newSavings.toString());
-      }, 15000);
+      // Smooth transition for hours
+      const hoursTransition = setInterval(() => {
+        setHours(prev => {
+          const diff = newHours - prev;
+          return prev + Math.sign(diff) * Math.min(Math.abs(diff), 10);
+        });
+      }, 50);
+      
+      // Smooth transition for savings
+      const savingsTransition = setInterval(() => {
+        setSavings(prev => {
+          const diff = newSavings - prev;
+          return prev + Math.sign(diff) * Math.min(Math.abs(diff), 100);
+        });
+      }, 50);
+      
+      setTimeout(() => {
+        clearInterval(hoursTransition);
+        clearInterval(savingsTransition);
+      }, 1000);
+      
+      localStorage.setItem('totalHours', newHours.toString());
+      localStorage.setItem('totalSavings', newSavings.toString());
+    }, 15000);
 
-      return () => clearInterval(interval);
-    }
-  }, [hours, savings, initialAnimation, isInitialized]);
+    return () => clearInterval(interval);
+  }, [hours, savings, isInitialized]);
 
   if (!isInitialized) {
     return (
@@ -271,9 +221,6 @@ NumbersSection.displayName = 'NumbersSection';
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [hours, setHours] = useState(1620000);
   const [savings, setSavings] = useState(13550000);
-  const [initialAnimation, setInitialAnimation] = useState(!localStorage.getItem('initialAnimationCompleted'));
-  const [animatedHours, setAnimatedHours] = useState(0);
-  const [animatedSavings, setAnimatedSavings] = useState(0);
   const [searchLocation, setSearchLocation] = useState('');
   const [searchEventType, setSearchEventType] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -309,54 +256,27 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     const storedSavings = Number(localStorage.getItem('totalSavings') || '13550000');
     setHours(storedHours);
     setSavings(storedSavings);
-    setAnimatedHours(storedHours % 10);
-    setAnimatedSavings(storedSavings % 100);
 
-    // Initial fast animation (only runs once)
-    if (initialAnimation && !localStorage.getItem('initialAnimationCompleted')) {
-      const animationInterval = setInterval(() => {
-        const newHours = hours + 10;
-        const newSavings = savings + 100;
-        
-        setHours(newHours);
-        setSavings(newSavings);
-        setAnimatedHours(newHours % 10);
-        setAnimatedSavings(newSavings % 100);
-        
-        localStorage.setItem('totalHours', newHours.toString());
-        localStorage.setItem('totalSavings', newSavings.toString());
-      }, 100);
+    // Normal incremental counting
+    const interval = setInterval(() => {
+      // Hours increment once every few minutes (random between 3-5 minutes)
+      const hoursIncrement = Math.random() < 0.03 ? 1 : 0; // 3% chance to increment every 5 seconds
+      
+      // Savings increment randomly between 10-15 dollars every 15 seconds
+      const savingsIncrement = Math.floor(Math.random() * 6) + 10; // Random between 10-15
+      
+      const newHours = hours + hoursIncrement;
+      const newSavings = savings + savingsIncrement;
+      
+      setHours(newHours);
+      setSavings(newSavings);
+      
+      localStorage.setItem('totalHours', newHours.toString());
+      localStorage.setItem('totalSavings', newSavings.toString());
+    }, 15000);
 
-      // Stop initial animation after 2 seconds and mark it as completed
-      setTimeout(() => {
-        clearInterval(animationInterval);
-        setInitialAnimation(false);
-        localStorage.setItem('initialAnimationCompleted', 'true');
-      }, 2000);
-    } else {
-      // Normal incremental counting
-      const interval = setInterval(() => {
-        // Hours increment once every few minutes (random between 3-5 minutes)
-        const hoursIncrement = Math.random() < 0.03 ? 1 : 0; // 3% chance to increment every 5 seconds
-        
-        // Savings increment randomly between 10-15 dollars every 15 seconds
-        const savingsIncrement = Math.floor(Math.random() * 6) + 10; // Random between 10-15
-        
-        const newHours = hours + hoursIncrement;
-        const newSavings = savings + savingsIncrement;
-        
-        setHours(newHours);
-        setSavings(newSavings);
-        setAnimatedHours(newHours % 10);
-        setAnimatedSavings(newSavings % 100);
-        
-        localStorage.setItem('totalHours', newHours.toString());
-        localStorage.setItem('totalSavings', newSavings.toString());
-      }, 15000);
-
-      return () => clearInterval(interval);
-    }
-  }, [hours, savings, initialAnimation]);
+    return () => clearInterval(interval);
+  }, [hours, savings]);
 
   // Close sidebar when clicking outside
   useEffect(() => {
