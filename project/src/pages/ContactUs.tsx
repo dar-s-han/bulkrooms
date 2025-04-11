@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, MapPin, PhoneCall, Mail, ArrowUpRight } from 'lucide-react';
+import { Building2, MapPin, PhoneCall, Mail, ArrowUpRight, ArrowLeft } from 'lucide-react';
 
 interface ContactUsProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy') => void;
@@ -67,11 +67,20 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <nav className="bg-white/80 shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <div 
-            onClick={() => onNavigate('home')}
-            className="flex items-center gap-2 cursor-pointer w-fit hover:opacity-80 transition-opacity"
-          >
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">BulkRooms</span>
+          <div className="flex items-center justify-between">
+            <div 
+              onClick={() => onNavigate('home')}
+              className="flex items-center gap-2 cursor-pointer w-fit hover:opacity-80 transition-opacity"
+            >
+              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">BulkRooms</span>
+            </div>
+            <button
+              onClick={() => onNavigate('home')}
+              className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors"
+            >
+              <ArrowLeft className="h-5 w-5" />
+              <span>Back to Home</span>
+            </button>
           </div>
         </div>
       </nav>
@@ -169,9 +178,9 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg text-gray-800">WhatsApp</h3>
-                  <p className="text-gray-900 mt-1">+91 835605265</p>
+                  <p className="text-gray-900 mt-1">+91 7425875024</p>
                   <a 
-                    href="https://wa.me/918356052653?text=Hello%20BulkRooms%2C%20I%20would%20like%20to%20inquire%20about%20your%20services"
+                    href="https://wa.me/917425875024?text=Hello%20BulkRooms%2C%20I%20would%20like%20to%20inquire%20about%20your%20services"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 mt-2 text-blue-600 hover:text-blue-700 transition-colors duration-200 font-medium"

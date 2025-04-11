@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Building2, Clock, Hotel, MessageSquareQuote, PhoneCall, Users, Zap, List, Tag } from 'lucide-react';
+import { Building2, Clock, Hotel, MessageSquareQuote, PhoneCall, Users, Zap, List, Tag, X, ChevronRight } from 'lucide-react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import CountUp from 'react-countup';
 import { motion } from 'framer-motion';
@@ -9,7 +9,7 @@ import FeatureCard from '../components/FeatureCard';
 import { siteConfig } from '../metadata';
 
 interface HomeProps {
-  onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy', params?: any) => void;
+  onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy' | 'careers' | 'terms-of-service', params?: any) => void;
 }
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
@@ -20,6 +20,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [animatedSavings, setAnimatedSavings] = useState(0);
   const [searchLocation, setSearchLocation] = useState('');
   const [searchEventType, setSearchEventType] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [expandedFaqs, setExpandedFaqs] = useState<number[]>([]);
 
   useEffect(() => {
     // Set document metadata
@@ -96,6 +98,25 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     }
   }, [hours, savings, initialAnimation]);
 
+  // Close sidebar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const sidebar = document.getElementById('sidebar');
+      const toggleButton = document.getElementById('sidebar-toggle');
+      
+      if (isSidebarOpen && 
+          sidebar && 
+          toggleButton && 
+          !sidebar.contains(event.target as Node) && 
+          !toggleButton.contains(event.target as Node)) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSidebarOpen]);
+
   // Helper function to format numbers with animated parts
   const formatNumber = (number: number, animatedPart: number, digits: number) => {
     const staticPart = Math.floor(number / Math.pow(10, digits));
@@ -121,8 +142,153 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     onNavigate('get-quote', params);
   };
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsSidebarOpen(false);
+    }
+  };
+
+  const toggleFaq = (index: number) => {
+    setExpandedFaqs(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    );
+  };
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white relative">
+      {/* Sidebar Navigation */}
+      <div 
+        id="sidebar"
+        className={`fixed right-0 top-0 h-full w-72 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${
+          isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="p-4 h-full flex flex-col">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold text-gray-800">BulkRooms</h2>
+            <button 
+              onClick={() => setIsSidebarOpen(false)}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label="Close sidebar"
+            >
+              <X className="h-5 w-5 text-gray-600" />
+            </button>
+          </div>
+          <nav className="space-y-1 flex-1">
+            <div className="space-y-1">
+              <button 
+                onClick={() => {
+                  onNavigate('home');
+                  setIsSidebarOpen(false);
+                }}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <Building2 className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <span className="text-gray-700 font-medium">Home</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600" />
+              </button>
+
+              <button 
+                onClick={() => scrollToSection('process')}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <Clock className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <span className="text-gray-700 font-medium">How to Book</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600" />
+              </button>
+
+              <button 
+                onClick={() => scrollToSection('why-book')}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <Zap className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <span className="text-gray-700 font-medium">Why Book With Us</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600" />
+              </button>
+
+              <button 
+                onClick={() => scrollToSection('testimonials')}
+                className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-blue-50 transition-colors text-left group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <MessageSquareQuote className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <span className="text-gray-700 font-medium">Testimonials</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600" />
+              </button>
+
+              <button 
+                onClick={() => {
+                  onNavigate('get-quote');
+                  setIsSidebarOpen(false);
+                }}
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors text-left group mt-4"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                    <Tag className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="text-white font-medium">Get Quote</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-white/80 group-hover:text-white" />
+              </button>
+            </div>
+          </nav>
+        </div>
+      </div>
+
+      {/* Sidebar Toggle Button */}
+      <button 
+        id="sidebar-toggle"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className="fixed right-4 top-4 z-50 p-3 rounded-lg bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-300"
+        aria-label="Toggle sidebar"
+      >
+        <div className="relative w-6 h-6">
+          <span 
+            className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-300 ${
+              isSidebarOpen ? 'rotate-45 top-3' : 'top-1'
+            }`}
+          />
+          <span 
+            className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-300 ${
+              isSidebarOpen ? 'opacity-0' : 'top-3'
+            }`}
+          />
+          <span 
+            className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-300 ${
+              isSidebarOpen ? '-rotate-45 top-3' : 'top-5'
+            }`}
+          />
+        </div>
+      </button>
+
+      {/* Overlay when sidebar is open */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Hero Section */}
       <header className="relative h-[90vh] overflow-hidden">
         <div className="absolute inset-0">
@@ -138,20 +304,6 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         <nav className="relative z-10 flex flex-wrap justify-between items-center px-4 sm:px-6 py-4 max-w-7xl mx-auto">
           <div className="text-white text-xl sm:text-2xl font-bold flex items-center gap-2">
             BulkRooms
-          </div>
-          <div className="flex gap-2 sm:gap-4">
-            <button 
-              onClick={handleQuickQuote}
-              className="bg-white text-blue-600 px-4 sm:px-6 py-2 rounded-full hover:bg-gray-100 transition relative z-30 text-sm sm:text-base"
-            >
-              Get Quick Quote
-            </button>
-            <button 
-              onClick={() => onNavigate('contact-us')}
-              className="bg-blue-600 text-white px-4 sm:px-6 py-2 rounded-full hover:bg-blue-700 transition relative z-30 text-sm sm:text-base"
-            >
-              Contact Us
-            </button>
           </div>
         </nav>
 
@@ -364,13 +516,16 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
             <div className="fade-in transform hover:scale-105 transition-transform duration-300 flex flex-col" style={{ transitionDelay: '200ms' }}>
               <div className="text-4xl font-bold text-purple-600 mb-4 text-center">1</div>
-              <div className="bg-white p-8 rounded-2xl text-center h-full shadow-lg hover:shadow-xl transition-shadow">
+              <button 
+                onClick={() => onNavigate('get-quote')}
+                className="bg-white p-8 rounded-2xl text-center h-full shadow-lg hover:shadow-xl transition-shadow cursor-pointer w-full"
+              >
                 <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <MessageSquareQuote className="h-8 w-8 text-purple-600" />
                 </div>
                 <h3 className="text-xl font-semibold text-purple-900 mb-4">Send Request</h3>
                 <p className="text-gray-600">Tell us your requirements and we'll start working on finding the perfect venues for you</p>
-              </div>
+              </button>
             </div>
             <div className="fade-in transform hover:scale-105 transition-transform duration-300 flex flex-col" style={{ transitionDelay: '400ms' }}>
               <div className="text-4xl font-bold text-indigo-600 mb-4 text-center">2</div>
@@ -450,48 +605,185 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Footer Section */}
-      <footer className="bg-gray-900 text-white py-12 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col items-center gap-6 sm:gap-8">
-            <div className="grid sm:grid-cols-2 gap-8 sm:gap-12 w-full max-w-4xl">
-              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
-                <h3 className="text-lg sm:text-xl font-semibold">Need Quick Pricing?</h3>
-                <p className="text-gray-300 mb-2 text-sm sm:text-base">Get instant quotes for your group booking in minutes. Compare rates from multiple hotels.</p>
-                <button 
-                  onClick={() => onNavigate('get-quote')}
-                  className="bg-white text-blue-600 px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:bg-gray-200 transition text-base sm:text-lg font-semibold w-full sm:w-auto"
+      {/* FAQ Section */}
+      <section className="py-12 sm:py-16 px-4 sm:px-6 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-xl sm:text-2xl font-bold text-center mb-2 sm:mb-3 fade-in text-indigo-900">Frequently Asked Questions</h2>
+          <p className="text-sm sm:text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-2xl mx-auto fade-in">
+            Find answers to common questions about our group booking services.
+          </p>
+          <div className="space-y-4">
+            {[
+              {
+                question: "How quickly can I get quotes for my group booking?",
+                answer: "We typically provide quotes within 24 hours of receiving your request. For urgent requests, we can often provide initial quotes within 4-6 hours."
+              },
+              {
+                question: "What types of group bookings do you handle?",
+                answer: "We handle all types of group bookings including corporate events, weddings, conferences, sports teams, family reunions, and more. Our network includes hotels suitable for any group size or event type."
+              },
+              {
+                question: "What information do I need to provide for a group booking request?",
+                answer: "To get the most accurate quotes, please provide: number of rooms needed, dates of stay, preferred location, room type preferences, any special requirements, and your contact information."
+              },
+              {
+                question: "Is there a minimum number of rooms required for group bookings?",
+                answer: "While we can assist with bookings of any size, our best rates typically start with a minimum of 10 rooms. However, we can still help with smaller groups and will do our best to secure competitive rates."
+              },
+              {
+                question: "What happens after I receive the quotes?",
+                answer: "Once you receive the quotes, you can review them and ask any questions. When you're ready to proceed, we'll help you finalize the booking and handle all the necessary arrangements with the hotel."
+              }
+            ].map((faq, index) => (
+              <div 
+                key={index}
+                className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow duration-300 fade-in"
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <div 
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={() => toggleFaq(index)}
                 >
-                  Get Instant Quote
-                </button>
+                  <h3 className="text-base font-semibold text-indigo-900">{faq.question}</h3>
+                  <button 
+                    className="p-1.5 rounded-full hover:bg-gray-200 transition-colors"
+                    aria-label={expandedFaqs.includes(index) ? "Collapse answer" : "Expand answer"}
+                  >
+                    <svg 
+                      className={`w-4 h-4 text-indigo-600 transition-transform duration-300 ${
+                        expandedFaqs.includes(index) ? 'rotate-180' : ''
+                      }`}
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                </div>
+                <div 
+                  className={`overflow-hidden transition-all duration-300 ${
+                    expandedFaqs.includes(index) ? 'max-h-96 mt-3' : 'max-h-0'
+                  }`}
+                >
+                  <p className="text-sm text-gray-600">{faq.answer}</p>
+                </div>
               </div>
-              <div className="flex flex-col items-center text-center gap-3 sm:gap-4">
-                <h3 className="text-lg sm:text-xl font-semibold">Looking for something else?</h3>
-                <p className="text-gray-300 mb-2 text-sm sm:text-base">Speak with our group booking specialists who can help plan your perfect stay.</p>
-                <button 
-                  onClick={() => onNavigate('contact-us')}
-                  className="bg-blue-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full hover:bg-blue-700 transition text-base sm:text-lg font-semibold w-full sm:w-auto"
-                >
-                  Contact Us
-                </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer Section */}
+      <footer className="bg-gray-900 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+            {/* Company Info Column */}
+            <div className="col-span-1">
+              <h2 className="text-2xl font-bold mb-4">BulkRooms</h2>
+              <p className="text-gray-400 mb-6">Revolutionizing group hotel bookings with a seamless and secure platform for maximizing your savings.</p>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                </a>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                  </svg>
+                </a>
               </div>
             </div>
-            <div className="w-full border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-              <div className="flex justify-center gap-6 mb-4">
-                <button 
-                  onClick={() => onNavigate('privacy-policy')}
-                  className="hover:text-white transition"
-                >
+
+            {/* Product Column */}
+            <div className="col-span-1">
+              <h3 className="text-lg font-semibold mb-4">PRODUCT</h3>
+              <ul className="space-y-3">
+                <li>
+                  <button onClick={() => scrollToSection('features')} className="text-gray-400 hover:text-white transition-colors">Features</button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('process')} className="text-gray-400 hover:text-white transition-colors">How it Works</button>
+                </li>
+                <li>
+                  <button onClick={() => onNavigate('get-quote')} className="text-gray-400 hover:text-white transition-colors">Get Quote</button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('faq')} className="text-gray-400 hover:text-white transition-colors">FAQs</button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Company Column */}
+            <div className="col-span-1">
+              <h3 className="text-lg font-semibold mb-4">COMPANY</h3>
+              <ul className="space-y-3">
+                <li>
+                  <button onClick={() => scrollToSection('about')} className="text-gray-400 hover:text-white transition-colors">About</button>
+                </li>
+                <li>
+                  <button onClick={() => onNavigate('contact-us')} className="text-gray-400 hover:text-white transition-colors">Contact</button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('testimonials')} className="text-gray-400 hover:text-white transition-colors">Testimonials</button>
+                </li>
+                <li>
+                  <button onClick={() => onNavigate('careers')} className="text-gray-400 hover:text-white transition-colors">Careers</button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact Info Column */}
+            <div className="col-span-1">
+              <h3 className="text-lg font-semibold mb-4">CONTACT</h3>
+              <div className="space-y-3 text-gray-400">
+                <div className="flex items-start gap-2">
+                  <svg className="h-6 w-6 mt-1 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <div>
+                    <p>HSR Layout, Bangalore</p>
+                    <p>New York, USA</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <PhoneCall className="h-6 w-6 shrink-0" />
+                  <p>+91 7425875024</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <p>info@bulkrooms.com</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="border-t border-gray-800 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="text-gray-400 text-sm">
+                © 2025 BulkRooms. All rights reserved.
+              </div>
+              <div className="flex gap-6">
+                <button onClick={() => onNavigate('privacy-policy')} className="text-gray-400 hover:text-white transition-colors text-sm">
                   Privacy Policy
                 </button>
-                <button 
-                  onClick={() => onNavigate('cookie-policy')}
-                  className="hover:text-white transition"
-                >
+                <button onClick={() => onNavigate('terms-of-service')} className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Terms of Service
+                </button>
+                <button onClick={() => onNavigate('cookie-policy')} className="text-gray-400 hover:text-white transition-colors text-sm">
                   Cookie Policy
                 </button>
               </div>
-              © 2025 BulkRooms. All rights reserved.
             </div>
           </div>
         </div>
