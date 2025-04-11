@@ -556,7 +556,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <div className="absolute -top-6 left-8">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
                   <img 
-                    src="public/assets/images/testimonials/vaishnavi.jpg" 
+                    src="/assets/images/testimonials/vaishnavi.jpg" 
                     alt="Vaishnavi Somani"
                     className="w-full h-full object-cover"
                   />
@@ -586,7 +586,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <div className="absolute -top-6 left-8">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
                   <img 
-                    src="public/assets/images/testimonials/adithyaa.jpg" 
+                    src="/assets/images/testimonials/adithyaa.jpg" 
                     alt="Adithyaa Sriram"
                     className="w-full h-full object-cover"
                   />
@@ -616,7 +616,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <div className="absolute -top-6 left-8">
                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
                   <img 
-                    src="public/assets/images/testimonials/parth.jpg" 
+                    src="/assets/images/testimonials/parth.jpg" 
                     alt="Parth Garg"
                     className="w-full h-full object-cover"
                   />
