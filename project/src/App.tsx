@@ -7,12 +7,13 @@ import QuoteThankYou from './pages/QuoteThankYou';
 import ContactUsThankYou from './pages/ContactUsThankYou';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import CookiePolicy from './pages/CookiePolicy';
+import Careers from './pages/Careers';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy' | 'careers'>('home');
   const [pageParams, setPageParams] = useState<any>(null);
 
-  const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy', params?: any) => {
+  const navigateTo = (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you' | 'contact-us-thank-you' | 'privacy-policy' | 'cookie-policy' | 'careers', params?: any) => {
     console.log("App: Navigating to", page, "with params:", params);
     setCurrentPage(page);
     if (params) {
@@ -70,6 +71,8 @@ function App() {
       return <PrivacyPolicy onNavigate={navigateTo} />;
     case 'cookie-policy':
       return <CookiePolicy onNavigate={navigateTo} />;
+    case 'careers':
+      return <Careers onNavigate={navigateTo} />;
     default:
       return <Home onNavigate={navigateTo} />;
   }

@@ -725,9 +725,6 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <h3 className="text-lg font-semibold mb-4">COMPANY</h3>
               <ul className="space-y-3">
                 <li>
-                  <button onClick={() => scrollToSection('about')} className="text-gray-400 hover:text-white transition-colors">About</button>
-                </li>
-                <li>
                   <button onClick={() => onNavigate('contact-us')} className="text-gray-400 hover:text-white transition-colors">Contact</button>
                 </li>
                 <li>
@@ -749,8 +746,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   <div>
-                    <p>HSR Layout, Bangalore</p>
-                    <p>New York, USA</p>
+                    <p>Bangalore, India</p>
+                    <p>New York, United States</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
