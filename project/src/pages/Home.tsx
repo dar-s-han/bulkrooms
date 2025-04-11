@@ -447,7 +447,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   />
                   {showSuggestions && suggestions.length > 0 && (
                     <div className="absolute inset-x-0 z-[100]">
-                      <div className="mt-1 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden max-h-[300px] overflow-y-auto">
+                      <div className="mt-1 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden max-h-[200px] overflow-y-auto">
                         {suggestions.map((suggestion, idx) => {
                           const hierarchyParts = suggestion.hierarchy.split('|');
                           const subtitle = hierarchyParts.filter(part => part !== suggestion.entity_name).join(', ');
@@ -455,40 +455,40 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                           return (
                             <div
                               key={suggestion.entity_id}
-                              className={`px-4 py-3 cursor-pointer hover:bg-gray-50 flex items-start gap-3 ${
+                              className={`px-3 py-2 cursor-pointer hover:bg-gray-50 flex items-start gap-2 ${
                                 idx === activeLocationIndex ? 'bg-gray-50' : ''
                               } ${idx !== suggestions.length - 1 ? 'border-b border-gray-100' : ''}`}
                               onClick={() => handleSuggestionClick(suggestion)}
                             >
-                              <div className="text-gray-400 mt-1">
+                              <div className="text-gray-400 mt-0.5">
                                 {suggestion.type === 'city' && (
-                                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M4 20V4C4 3.45 4.196 2.979 4.588 2.587C4.98 2.195 5.45067 1.99934 6 2H18C18.55 2 19.021 2.196 19.413 2.588C19.805 2.98 20.0007 3.45067 20 4V20H4ZM6 18H18V4H6V18ZM8 17H10V15H8V17ZM8 13H10V11H8V13ZM8 9H10V7H8V9ZM12 17H14V15H12V17ZM12 13H14V11H12V13ZM12 9H14V7H12V9ZM16 17H18V15H16V17ZM16 13H18V11H16V13ZM16 9H18V7H16V9Z" fill="currentColor"/>
                                   </svg>
                                 )}
                                 {suggestion.type === 'airport' && (
-                                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 2L4 12H7L9 22H11L13 12L15 22H17L19 12H22L14 2H12Z" fill="currentColor"/>
                                   </svg>
                                 )}
                                 {suggestion.type === 'hotel' && (
-                                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7 14C8.1 14 9 13.1 9 12C9 10.9 8.1 10 7 10C5.9 10 5 10.9 5 12C5 13.1 5.9 14 7 14ZM12.5 3H2V21H4V19H20V21H22V8C22 5.24 19.76 3 17 3H12.5ZM4 17V5H12.5V17H4ZM20 17H14.5V5H17C18.66 5 20 6.34 20 8V17Z" fill="currentColor"/>
                                   </svg>
                                 )}
                                 {!['city', 'airport', 'hotel'].includes(suggestion.type) && (
-                                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12ZM12 4C16.2 4 20 7.22 20 11.2C20 16.19 12 24 12 24C12 24 4 16.19 4 11.2C4 7.22 7.8 4 12 4Z" fill="currentColor"/>
                                   </svg>
                                 )}
                               </div>
                               <div className="flex-1">
-                                <div className="font-medium text-gray-900">{suggestion.entity_name}</div>
+                                <div className="font-medium text-gray-900 text-sm">{suggestion.entity_name}</div>
                                 {subtitle && (
-                                  <div className="text-sm text-gray-500">{subtitle}</div>
+                                  <div className="text-xs text-gray-500">{subtitle}</div>
                                 )}
                               </div>
-                              <div className="text-xs text-gray-400 self-center uppercase whitespace-nowrap">
+                              <div className="text-[10px] text-gray-400 self-center uppercase whitespace-nowrap">
                                 {suggestion.type.replace('-', ' ')}
                               </div>
                             </div>
