@@ -12,6 +12,21 @@ interface HomeProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy' | 'careers' | 'terms-of-service', params?: any) => void;
 }
 
+interface LocationInfo {
+  ip: string;
+  country: string;
+  countryCode: string;
+}
+
+interface LocationSuggestion {
+  entity_name: string;
+  type: string;
+  hierarchy: string;
+  entity_id: string;
+  location: string;
+  class: string;
+}
+
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [hours, setHours] = useState(1620000);
   const [savings, setSavings] = useState(13550000);
@@ -22,6 +37,10 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [searchEventType, setSearchEventType] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedFaqs, setExpandedFaqs] = useState<number[]>([]);
+  const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
+  const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [activeLocationIndex, setActiveLocationIndex] = useState<number>(-1);
 
   useEffect(() => {
     // Set document metadata
@@ -156,6 +175,83 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         ? prev.filter(i => i !== index)
         : [...prev, index]
     );
+  };
+
+  // Fetch IP and country information
+  useEffect(() => {
+    const fetchLocationInfo = () => {
+      fetch('https://ipapi.co/json/')
+        .then(response => response.json())
+        .then(data => {
+          setLocationInfo({
+            ip: data.ip,
+            country: data.country_name,
+            countryCode: data.country_code
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching location info:', error);
+        });
+    };
+
+    fetchLocationInfo();
+  }, []);
+
+  const fetchLocationSuggestions = async (query: string, countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://www.skyscanner.net/g/autosuggest-search/api/v1/search-hotel/${countryCode}/en-GB/${query}?rf=map&vrows=10`
+      );
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setSuggestions(data.map((place: any) => ({
+          entity_name: place.entity_name,
+          type: place.type,
+          hierarchy: place.hierarchy,
+          entity_id: place.entity_id,
+          location: place.location,
+          class: place.class
+        })));
+        setShowSuggestions(true);
+      }
+    } catch (error) {
+      console.error('Error fetching location suggestions:', error);
+    }
+  };
+
+  const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setSearchLocation(value);
+
+    if (value.length > 0 && locationInfo?.countryCode) {
+      fetchLocationSuggestions(value, locationInfo.countryCode);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: LocationSuggestion) => {
+    setSearchLocation(suggestion.entity_name);
+    setShowSuggestions(false);
+    setSuggestions([]);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveLocationIndex(prev => 
+        prev < suggestions.length - 1 ? prev + 1 : prev
+      );
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveLocationIndex(prev => prev > 0 ? prev - 1 : prev);
+    } else if (e.key === 'Enter' && activeLocationIndex >= 0) {
+      e.preventDefault();
+      handleSuggestionClick(suggestions[activeLocationIndex]);
+    } else if (e.key === 'Escape') {
+      setShowSuggestions(false);
+    }
   };
 
   return (
@@ -309,7 +405,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
         <div className="relative z-10 flex items-center justify-center h-full px-4 -mt-8 sm:-mt-12 md:-mt-16 max-w-7xl mx-auto">
           {/* Centered Text content */}
-          <div className="text-center w-full max-w-3xl">
+          <div className="text-center w-full max-w-3xl relative">
             <p className="text-white text-xl sm:text-2xl mb-2 sm:mb-4 font-semibold">
               Tired of endless follow-ups?
             </p>
@@ -320,7 +416,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <span className="mt-2 inline-block text-3xl sm:text-4xl md:text-6xl">without any Follow-Ups</span>
             </h1>
             {/* Search Bar */}
-            <div className="bg-white/90 backdrop-blur-md rounded-xl p-2 mb-6 sm:mb-8 shadow-lg mx-auto max-w-3xl mt-8 sm:mt-10">
+            <div className="bg-white/90 backdrop-blur-md rounded-xl p-2 mb-6 sm:mb-8 shadow-lg mx-auto max-w-3xl mt-8 sm:mt-10 relative z-50">
               <div className="grid grid-cols-1 gap-2 sm:gap-1 sm:grid-cols-2">
                 <div className="relative">
                   <label htmlFor="location" className="sr-only">Location</label>
@@ -333,8 +429,67 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     placeholder="Country, city, or region" 
                     className="w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 bg-transparent text-sm sm:text-base"
                     value={searchLocation}
-                    onChange={(e) => setSearchLocation(e.target.value)}
+                    onChange={handleLocationChange}
+                    onKeyDown={handleKeyDown}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        setShowSuggestions(false);
+                      }, 200);
+                    }}
                   />
+                  {showSuggestions && suggestions.length > 0 && (
+                    <div className="absolute inset-x-0 z-[100]">
+                      <div className="mt-1 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden max-h-[300px] overflow-y-auto">
+                        {suggestions.map((suggestion, idx) => {
+                          const hierarchyParts = suggestion.hierarchy.split('|');
+                          const subtitle = hierarchyParts.filter(part => part !== suggestion.entity_name).join(', ');
+                          
+                          return (
+                            <div
+                              key={suggestion.entity_id}
+                              className={`px-4 py-3 cursor-pointer hover:bg-gray-50 flex items-start gap-3 ${
+                                idx === activeLocationIndex ? 'bg-gray-50' : ''
+                              } ${idx !== suggestions.length - 1 ? 'border-b border-gray-100' : ''}`}
+                              onClick={() => handleSuggestionClick(suggestion)}
+                            >
+                              <div className="text-gray-400 mt-1">
+                                {suggestion.type === 'city' && (
+                                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 20V4C4 3.45 4.196 2.979 4.588 2.587C4.98 2.195 5.45067 1.99934 6 2H18C18.55 2 19.021 2.196 19.413 2.588C19.805 2.98 20.0007 3.45067 20 4V20H4ZM6 18H18V4H6V18ZM8 17H10V15H8V17ZM8 13H10V11H8V13ZM8 9H10V7H8V9ZM12 17H14V15H12V17ZM12 13H14V11H12V13ZM12 9H14V7H12V9ZM16 17H18V15H16V17ZM16 13H18V11H16V13ZM16 9H18V7H16V9Z" fill="currentColor"/>
+                                  </svg>
+                                )}
+                                {suggestion.type === 'airport' && (
+                                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L4 12H7L9 22H11L13 12L15 22H17L19 12H22L14 2H12Z" fill="currentColor"/>
+                                  </svg>
+                                )}
+                                {suggestion.type === 'hotel' && (
+                                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 14C8.1 14 9 13.1 9 12C9 10.9 8.1 10 7 10C5.9 10 5 10.9 5 12C5 13.1 5.9 14 7 14ZM12.5 3H2V21H4V19H20V21H22V8C22 5.24 19.76 3 17 3H12.5ZM4 17V5H12.5V17H4ZM20 17H14.5V5H17C18.66 5 20 6.34 20 8V17Z" fill="currentColor"/>
+                                  </svg>
+                                )}
+                                {!['city', 'airport', 'hotel'].includes(suggestion.type) && (
+                                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12ZM12 4C16.2 4 20 7.22 20 11.2C20 16.19 12 24 12 24C12 24 4 16.19 4 11.2C4 7.22 7.8 4 12 4Z" fill="currentColor"/>
+                                  </svg>
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-medium text-gray-900">{suggestion.entity_name}</div>
+                                {subtitle && (
+                                  <div className="text-sm text-gray-500">{subtitle}</div>
+                                )}
+                              </div>
+                              <div className="text-xs text-gray-400 self-center uppercase whitespace-nowrap">
+                                {suggestion.type.replace('-', ' ')}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="relative">
                   <label htmlFor="eventType" className="sr-only">Event Type</label>
@@ -368,7 +523,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
             <button 
               onClick={handleQuickQuote}
-              className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-blue-700 transition relative z-20 shadow-lg hover:shadow-xl transform hover:scale-105 duration-200"
+              className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-medium hover:bg-blue-700 transition relative z-40 shadow-lg hover:shadow-xl transform hover:scale-105 duration-200"
             >
               Get Quick Quote
             </button>
@@ -377,7 +532,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </header>
 
       {/* Numbers Section */}
-      <section className="py-12 sm:py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <section className="py-12 sm:py-16 bg-gradient-to-r from-blue-50 to-indigo-50 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
             <div className="text-center">
