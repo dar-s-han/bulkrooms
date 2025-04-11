@@ -106,13 +106,11 @@ const BookingTypesSection: React.FC = () => {
     hidden: { 
       opacity: 0,
       y: 50,
-      rotateX: -15,
-      scale: 0.8
+      scale: 0.95
     },
     visible: {
       opacity: 1,
       y: 0,
-      rotateX: 0,
       scale: 1,
       transition: {
         type: "spring",
@@ -122,9 +120,8 @@ const BookingTypesSection: React.FC = () => {
       }
     },
     hover: {
-      y: -10,
-      rotateX: 5,
-      scale: 1.02,
+      y: -5,
+      scale: 1.01,
       transition: {
         type: "spring",
         stiffness: 400,
