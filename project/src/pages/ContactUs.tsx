@@ -190,7 +190,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
                 <div>
                   <h3 className="font-semibold text-lg text-gray-800">Office Location</h3>
                   <p className="text-gray-600 mt-1">
-                    Bengaluru, India
+                    Bengaluru, India | New York, United States
                   </p>
                 </div>
               </div>

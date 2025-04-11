@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, memo } from 'react';
 import { Building2, Clock, Hotel, MessageSquareQuote, PhoneCall, Users, Zap, List, Tag, X, ChevronRight } from 'lucide-react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import CountUp from 'react-countup';
@@ -26,6 +26,255 @@ interface LocationSuggestion {
   location: string;
   class: string;
 }
+
+// Create a separate NumbersSection component
+const NumbersSection = memo(() => {
+  const [hours, setHours] = useState(1620000);
+  const [savings, setSavings] = useState(13550000);
+  const [initialAnimation, setInitialAnimation] = useState(!localStorage.getItem('initialAnimationCompleted'));
+  const [animatedHours, setAnimatedHours] = useState(0);
+  const [animatedSavings, setAnimatedSavings] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Initialize values from localStorage first
+  useEffect(() => {
+    const storedHours = Number(localStorage.getItem('totalHours') || '1620000');
+    const storedSavings = Number(localStorage.getItem('totalSavings') || '13550000');
+    setHours(storedHours);
+    setSavings(storedSavings);
+    setAnimatedHours(storedHours % 10);
+    setAnimatedSavings(storedSavings % 100);
+    setIsInitialized(true);
+  }, []);
+
+  // Intersection Observer to trigger animation when section is visible
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const element = document.getElementById('numbers-section');
+    if (element) {
+      observer.observe(element);
+    }
+
+    return () => {
+      if (element) {
+        observer.unobserve(element);
+      }
+    };
+  }, [isInitialized]);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    // Initial fast animation (only runs once)
+    if (initialAnimation && !localStorage.getItem('initialAnimationCompleted')) {
+      const startValues = {
+        hours: hours,
+        savings: savings
+      };
+
+      const targetValues = {
+        hours: 1621000,
+        savings: 13560000
+      };
+
+      let startTime: number;
+      const duration = 2000; // 2 seconds
+      
+      const animate = (timestamp: number) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        
+        // Ease-out cubic function for smoother animation
+        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+        const easedProgress = easeOutCubic(progress);
+        
+        const newHours = Math.floor(startValues.hours + (targetValues.hours - startValues.hours) * easedProgress);
+        const newSavings = Math.floor(startValues.savings + (targetValues.savings - startValues.savings) * easedProgress);
+        
+        setHours(newHours);
+        setSavings(newSavings);
+        setAnimatedHours(newHours % 10);
+        setAnimatedSavings(newSavings % 100);
+        
+        localStorage.setItem('totalHours', newHours.toString());
+        localStorage.setItem('totalSavings', newSavings.toString());
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setInitialAnimation(false);
+          localStorage.setItem('initialAnimationCompleted', 'true');
+        }
+      };
+      
+      requestAnimationFrame(animate);
+    } else {
+      // Normal incremental counting with smoother transitions
+      const interval = setInterval(() => {
+        const hoursIncrement = Math.random() < 0.03 ? 1 : 0;
+        const savingsIncrement = Math.floor(Math.random() * 6) + 10;
+        
+        const newHours = hours + hoursIncrement;
+        const newSavings = savings + savingsIncrement;
+        
+        // Smooth transition for hours
+        const hoursTransition = setInterval(() => {
+          setHours(prev => {
+            const diff = newHours - prev;
+            return prev + Math.sign(diff) * Math.min(Math.abs(diff), 10);
+          });
+        }, 50);
+        
+        // Smooth transition for savings
+        const savingsTransition = setInterval(() => {
+          setSavings(prev => {
+            const diff = newSavings - prev;
+            return prev + Math.sign(diff) * Math.min(Math.abs(diff), 100);
+          });
+        }, 50);
+        
+        setTimeout(() => {
+          clearInterval(hoursTransition);
+          clearInterval(savingsTransition);
+        }, 1000);
+        
+        localStorage.setItem('totalHours', newHours.toString());
+        localStorage.setItem('totalSavings', newSavings.toString());
+      }, 15000);
+
+      return () => clearInterval(interval);
+    }
+  }, [hours, savings, initialAnimation, isInitialized]);
+
+  if (!isInitialized) {
+    return (
+      <section 
+        id="numbers-section"
+        className="py-12 sm:py-16 bg-gradient-to-r from-blue-50 to-indigo-50 z-10 relative overflow-hidden"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
+            <div className="text-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+                <h3 className="text-4xl font-bold text-blue-900 mb-2">
+                  {hours.toLocaleString()}+
+                </h3>
+                <p className="text-xl text-gray-600">Hours Saved on Research</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+                <h3 className="text-4xl font-bold text-blue-900 mb-2">
+                  ${savings.toLocaleString()}
+                </h3>
+                <p className="text-xl text-gray-600">Saved on Bulk Bookings</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section 
+      id="numbers-section"
+      className="py-12 sm:py-16 bg-gradient-to-r from-blue-50 to-indigo-50 z-10 relative overflow-hidden"
+    >
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-blue-200 rounded-full"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ 
+              opacity: isVisible ? 1 : 0,
+              y: isVisible ? 0 : 20
+            }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <motion.div
+              className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <h3 className="text-4xl font-bold text-blue-900 mb-2">
+                <CountUp 
+                  end={hours} 
+                  duration={1.5}
+                  separator=","
+                  formattingFn={(value) => Math.floor(value).toLocaleString()}
+                />+
+              </h3>
+              <p className="text-xl text-gray-600">Hours Saved on Research</p>
+            </motion.div>
+          </motion.div>
+
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ 
+              opacity: isVisible ? 1 : 0,
+              y: isVisible ? 0 : 20
+            }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <motion.div
+              className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <h3 className="text-4xl font-bold text-blue-900 mb-2">
+                <CountUp 
+                  end={savings} 
+                  duration={1.5}
+                  separator=","
+                  formattingFn={(value) => `$ ${Math.floor(value).toLocaleString()}`}
+                />
+              </h3>
+              <p className="text-xl text-gray-600">Saved on Bulk Bookings</p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+});
+
+NumbersSection.displayName = 'NumbersSection';
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [hours, setHours] = useState(1620000);
@@ -111,7 +360,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         
         localStorage.setItem('totalHours', newHours.toString());
         localStorage.setItem('totalSavings', newSavings.toString());
-      }, 15000); // Check every 15 seconds
+      }, 15000);
 
       return () => clearInterval(interval);
     }
@@ -538,35 +787,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
       </header>
 
-      {/* Numbers Section */}
-      <section className="py-12 sm:py-16 bg-gradient-to-r from-blue-50 to-indigo-50 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
-            <div className="text-center">
-              <h3 className="text-4xl font-bold text-blue-900 mb-2">
-                <CountUp 
-                  end={hours} 
-                  duration={2} 
-                  separator=","
-                  formattingFn={(value) => Math.floor(value).toLocaleString()}
-                />+
-              </h3>
-              <p className="text-xl text-gray-600">Hours Saved on Research</p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-4xl font-bold text-blue-900 mb-2">
-                <CountUp 
-                  end={savings} 
-                  duration={2} 
-                  separator=","
-                  formattingFn={(value) => `$ ${Math.floor(value).toLocaleString()}`}
-                />
-              </h3>
-              <p className="text-xl text-gray-600">Saved on Bulk Bookings</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Replace the old Numbers Section with the new memoized component */}
+      <NumbersSection />
 
       {/* Booking Types Section */}
       <div className="relative z-10 bg-white">
@@ -946,10 +1168,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <div>
-                    <p>Bangalore, India</p>
-                    <p>New York, United States</p>
-                  </div>
+                  <p>Bangalore, India | New York, US</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <PhoneCall className="h-6 w-6 shrink-0" />
