@@ -166,7 +166,7 @@ const NumbersSection = memo(() => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
             <div className="text-center">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+              <div className="backdrop-blur-sm rounded-3xl p-8">
                 <h3 className="text-4xl font-bold text-blue-900 mb-2">
                   {hours.toLocaleString()}+
                 </h3>
@@ -174,7 +174,7 @@ const NumbersSection = memo(() => {
               </div>
             </div>
             <div className="text-center">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+              <div className="backdrop-blur-sm rounded-3xl p-8">
                 <h3 className="text-4xl font-bold text-blue-900 mb-2">
                   ${savings.toLocaleString()}
                 </h3>
@@ -226,11 +226,7 @@ const NumbersSection = memo(() => {
             }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <motion.div
-              className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
+            <div className="backdrop-blur-sm rounded-3xl p-8">
               <h3 className="text-4xl font-bold text-blue-900 mb-2">
                 <CountUp 
                   end={hours} 
@@ -240,7 +236,7 @@ const NumbersSection = memo(() => {
                 />+
               </h3>
               <p className="text-xl text-gray-600">Hours Saved on Research</p>
-            </motion.div>
+            </div>
           </motion.div>
 
           <motion.div 
@@ -252,11 +248,7 @@ const NumbersSection = memo(() => {
             }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <motion.div
-              className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
+            <div className="backdrop-blur-sm rounded-3xl p-8">
               <h3 className="text-4xl font-bold text-blue-900 mb-2">
                 <CountUp 
                   end={savings} 
@@ -266,7 +258,7 @@ const NumbersSection = memo(() => {
                 />
               </h3>
               <p className="text-xl text-gray-600">Saved on Bulk Bookings</p>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
