@@ -606,7 +606,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 bg-white">
+      <section id="faq" className="py-12 sm:py-16 px-4 sm:px-6 bg-white">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-xl sm:text-2xl font-bold text-center mb-2 sm:mb-3 fade-in text-indigo-900">Frequently Asked Questions</h2>
           <p className="text-sm sm:text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-2xl mx-auto fade-in">
@@ -706,10 +706,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <h3 className="text-lg font-semibold mb-4">PRODUCT</h3>
               <ul className="space-y-3">
                 <li>
-                  <button onClick={() => scrollToSection('features')} className="text-gray-400 hover:text-white transition-colors">Features</button>
-                </li>
-                <li>
-                  <button onClick={() => scrollToSection('process')} className="text-gray-400 hover:text-white transition-colors">How it Works</button>
+                  <button onClick={() => scrollToSection('why-book')} className="text-gray-400 hover:text-white transition-colors">Features</button>
                 </li>
                 <li>
                   <button onClick={() => onNavigate('get-quote')} className="text-gray-400 hover:text-white transition-colors">Get Quote</button>
