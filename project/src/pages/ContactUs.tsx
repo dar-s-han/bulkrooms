@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Building2, MapPin, PhoneCall, Mail, ArrowUpRight, ArrowLeft } from 'lucide-react';
 
 interface ContactUsProps {
@@ -14,6 +14,27 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [locationInfo, setLocationInfo] = useState<{ ip: string; country: string; countryCode: string } | null>(null);
+
+  // Fetch IP and country information
+  useEffect(() => {
+    const fetchLocationInfo = () => {
+      fetch('https://ipapi.co/json/')
+        .then(response => response.json())
+        .then(data => {
+          setLocationInfo({
+            ip: data.ip,
+            country: data.country_name,
+            countryCode: data.country_code
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching location info:', error);
+        });
+    };
+
+    fetchLocationInfo();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,13 +48,14 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
         name: formData.name,
         email: formData.email,
         message: formData.message,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        ipAddress: locationInfo?.ip || 'Unknown'
       };
 
       console.log('Submitting data:', submissionData);
 
       // Send data to Google Sheets
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbx_nYCWFAHc5HlZTl5rNO9ISRqV7STIEbxF3yqAvK9nEgHOf2UhcrDbhSmD5AdMGVdI/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyNq4jGpxeifTPKFCkd6SmhwdXrU1L49vKRWQfr-GWxYnMo9xBYHQEtuZBPjFs_gv0m/exec';
       
       const response = await fetch(scriptURL, {
         method: 'POST',

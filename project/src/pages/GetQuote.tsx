@@ -215,13 +215,14 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
           locations: formData.locations.join(', '),
           roomsNeeded: `${formData.roomsNeeded} ± ${formData.roomsVariation}`,
           additionalRequirements: formData.additionalRequirements,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          ipAddress: locationInfo?.ip || 'Unknown'
         };
 
         console.log('Submitting data:', submissionData);
 
         // Send data to Google Sheets
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbx_nYCWFAHc5HlZTl5rNO9ISRqV7STIEbxF3yqAvK9nEgHOf2UhcrDbhSmD5AdMGVdI/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyNq4jGpxeifTPKFCkd6SmhwdXrU1L49vKRWQfr-GWxYnMo9xBYHQEtuZBPjFs_gv0m/exec';
         
         const response = await fetch(scriptURL, {
           method: 'POST',
@@ -757,12 +758,6 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
             {submitError && (
               <div className="bg-red-50 text-red-700 px-4 py-3 rounded-md">
                 {submitError}
-              </div>
-            )}
-
-            {locationInfo && (
-              <div className="text-sm text-gray-500 text-center mt-4">
-                <p>Your IP: {locationInfo.ip} | Country: {locationInfo.country}</p>
               </div>
             )}
 
