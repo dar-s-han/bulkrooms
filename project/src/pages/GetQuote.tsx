@@ -3,6 +3,17 @@ import { Building2, ArrowLeft, Plus, X, Calendar } from 'lucide-react';
 import { DatePicker } from "@/components/ui/date-picker";
 import { DateRange } from "react-day-picker";
 
+// Declare gtag function for Google Analytics
+declare global {
+  interface Window {
+    gtag: (command: string, eventName: string, eventParams?: {
+      event_category?: string;
+      event_label?: string;
+      value?: number;
+    }) => void;
+  }
+}
+
 interface GetQuoteProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you', params?: any) => void;
   params?: {
@@ -236,6 +247,17 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
         // Since 'no-cors' mode doesn't give us access to response details,
         // we'll assume success if no error is thrown
         console.log('Form submitted successfully');
+        
+        // Track Google Analytics event
+        if (window.gtag) {
+          window.gtag('config', 'G-9N08T76Q5G');
+          window.gtag('event', 'quote_submit_click', {
+            'event_category': 'Quote',
+            'event_label': formData.eventType,
+            'value': 1
+          });
+        }
+        
         onNavigate('thank-you');
       } catch (error) {
         console.error('Error submitting form:', error);
