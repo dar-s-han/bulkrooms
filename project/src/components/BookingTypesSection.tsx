@@ -18,6 +18,17 @@ const BookingTypesSection: React.FC = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = React.useRef<NodeJS.Timeout>();
 
+  const trackInteraction = (type: string, title: string) => {
+    if (window.gtag) {
+      window.gtag('config', 'G-9N08T76Q5G');
+      window.gtag('event', `booking_type_${title.toLowerCase().replace(/\s+/g, '_')}_${type.toLowerCase()}`, {
+        'event_category': 'Home Page',
+        'event_label': `Booking Type Section - ${type} - ${title}`,
+        'value': 1
+      });
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolling(true);
@@ -213,8 +224,14 @@ const BookingTypesSection: React.FC = () => {
               variants={cardVariants}
               whileHover={!isScrolling ? "hover" : "visible"}
               className="relative bg-white rounded-2xl p-6 shadow-lg transition-all duration-300 overflow-hidden perspective-1000"
-              onMouseEnter={() => !isScrolling && setHoveredIndex(index)}
+              onMouseEnter={() => {
+                if (!isScrolling) {
+                  setHoveredIndex(index);
+                  trackInteraction('Hover', type.title);
+                }
+              }}
               onMouseLeave={() => !isScrolling && setHoveredIndex(null)}
+              onClick={() => trackInteraction('Click', type.title)}
               style={{
                 transformStyle: 'preserve-3d',
                 boxShadow: !isScrolling && hoveredIndex === index 
