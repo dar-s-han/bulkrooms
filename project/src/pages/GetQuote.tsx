@@ -257,6 +257,16 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
             'value': 1
           });
         }
+
+        // Track Google Analytics event
+        // if (window.gtag) {
+        //   window.gtag('config', 'AW-17005675512/-pfSCMPVobgaEPiH-Kw_');
+        //   window.gtag('event', 'conversion', {
+        //     'event_category': 'Quote',
+        //     // 'event_label': formData.eventType,
+        //     'value': 1
+        //   });
+        // }
         
         onNavigate('thank-you');
       } catch (error) {
