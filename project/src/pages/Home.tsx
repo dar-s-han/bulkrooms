@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, memo } from 'react';
-import { Building2, Clock, Hotel, MessageSquareQuote, PhoneCall, Users, Zap, List, Tag, X, ChevronRight } from 'lucide-react';
+import { Building2, Clock, Hotel, MessageSquareQuote, PhoneCall, Users, Zap, List, Tag, X, ChevronRight, BrainCircuit } from 'lucide-react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import CountUp from 'react-countup';
 import { motion } from 'framer-motion';
@@ -7,6 +7,7 @@ import BookingTypesSection from '../components/BookingTypesSection';
 import ServiceCard from '../components/ServiceCard';
 import FeatureCard from '../components/FeatureCard';
 import { siteConfig } from '../metadata';
+import { ShimmerButton } from "@/components/ui/shimmer-button";
 
 interface HomeProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'privacy-policy' | 'cookie-policy' | 'careers' | 'terms-of-service', params?: any) => void;
@@ -571,20 +572,29 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
         </nav>
 
-        <div className="relative z-10 flex items-center justify-center h-full px-4 -mt-8 sm:-mt-12 md:-mt-16 max-w-7xl mx-auto">
+        <div className="relative z-10 flex items-center justify-center h-full px-4 -mt-16 sm:-mt-20 md:-mt-24 max-w-7xl mx-auto">
           {/* Centered Text content */}
-          <div className="text-center w-full max-w-3xl relative">
-            <p className="text-white text-xl sm:text-2xl mb-2 sm:mb-4 font-semibold">
-              Tired of endless follow-ups?
-            </p>
-            <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold text-white mb-16 sm:mb-20 leading-tight sm:leading-relaxed">
+          <div className="text-center w-full max-w-3xl relative flex flex-col items-center justify-center">
+            <ShimmerButton className="shadow-2xl mb-2 bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
+              <div className="flex items-center justify-center gap-2">
+                <span className="whitespace-pre-wrap text-center text-sm font-normal leading-none tracking-wider text-white lg:text-base flex items-center">
+                  Powered by
+                  <span className="ml-3 font-bold tracking-widest text-black text-xl lg:text-2xl">
+                    AI
+                  </span>
+                </span>
+              </div>
+            </ShimmerButton>
+            <h1 className="text-3xl sm:text-4xl md:text-7xl font-normal text-white mb-4 leading-tight sm:leading-relaxed">
               Get Quotes within{" "}
               <span className="line-through">weeks</span>
-              <span className="text-green-400 ml-2 sm:ml-4">hours</span>,
-              <span className="mt-2 inline-block text-3xl sm:text-4xl md:text-6xl">without any Follow-Ups</span>
+              <span className="text-green-400 ml-2 sm:ml-4">hours</span>
             </h1>
+            <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-4 sm:mb-2">
+              Let AI streamline your bulk hotel bookings saving you time, money, and hassle on group bookings.
+            </p>
             {/* Search Bar */}
-            <div className="bg-white/90 backdrop-blur-md rounded-xl p-2 mb-6 sm:mb-8 shadow-lg mx-auto max-w-3xl mt-8 sm:mt-10 relative z-50">
+            <div className="bg-white/90 backdrop-blur-md rounded-xl p-1 mb-4 sm:mb-6 shadow-lg mx-auto max-w-4xl mt-4 sm:mt-5 relative z-50">
               <div className="grid grid-cols-1 gap-2 sm:gap-1 sm:grid-cols-2">
                 <div className="relative">
                   <label htmlFor="location" className="sr-only">Location</label>
