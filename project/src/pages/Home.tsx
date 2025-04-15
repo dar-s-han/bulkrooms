@@ -713,7 +713,17 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     id="eventType" 
                     className="w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 appearance-none bg-transparent text-sm sm:text-base"
                     value={searchEventType}
-                    onChange={(e) => setSearchEventType(e.target.value)}
+                    onChange={(e) => {
+                      setSearchEventType(e.target.value);
+                      if (window.gtag) {
+                        window.gtag('config', 'G-9N08T76Q5G');
+                        window.gtag('event', 'home_page_event_type_chosen', {
+                          'event_category': 'Home Page',
+                          'event_label': 'Event Type Chosen',
+                          'value': 1
+                        });
+                      }
+                    }}
                   >
                     <option value="">Select event type</option>
                     <option value="wedding">Wedding</option>
