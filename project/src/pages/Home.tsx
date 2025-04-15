@@ -579,7 +579,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <div className="flex items-center justify-center gap-2">
                 <span className="whitespace-pre-wrap text-center text-sm font-normal leading-none tracking-wider text-white lg:text-base flex items-center">
                   Powered by
-                  <span className="ml-3 font-bold tracking-widest text-black text-xl lg:text-2xl">
+                  <span className="ml-3 font-bold tracking-widest text-green-400 text-xl lg:text-2xl">
                     AI
                   </span>
                 </span>
