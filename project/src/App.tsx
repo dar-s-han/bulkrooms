@@ -87,6 +87,17 @@ function App() {
     return () => observer.disconnect();
   }, [currentPage]); // Re-run when page changes
 
+  useEffect(() => {
+    if (currentPage === 'contact-us' && window.gtag) {
+      window.gtag('config', 'G-9N08T76Q5G');
+      window.gtag('event', 'contact_us_page_opened', {
+        'event_category': 'Contact Us Section',
+        'event_label': 'Contact Us Page',
+        'value': 1
+      });
+    }
+  }, [currentPage]);
+
   switch (currentPage) {
     case 'home':
       return <Home onNavigate={navigateTo} />;

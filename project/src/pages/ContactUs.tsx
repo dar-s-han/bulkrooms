@@ -42,6 +42,16 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
       setIsSubmitting(true);
       setSubmitError('');
 
+      // Track Google Analytics event
+      if (window.gtag) {
+        window.gtag('config', 'G-9N08T76Q5G');
+        window.gtag('event', 'contact_us_submit_button_clicked', {
+          'event_category': 'Contact Us Section',
+          'event_label': 'Contact Us Page',
+          'value': 1
+        });
+      }
+
       // Prepare the data to send to Google Sheets
       const submissionData = {
         sheetName: 'ContactUsSubmission',

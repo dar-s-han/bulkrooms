@@ -347,6 +347,14 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         ? prev.filter(i => i !== index)
         : [...prev, index]
     );
+    if (window.gtag) {
+      window.gtag('config', 'G-9N08T76Q5G');
+      window.gtag('event', 'FAQ_opened', {
+        'event_category': 'Home Page',
+        'event_label': 'FAQ Check',
+        'value': 1
+      });
+    }
   };
 
   // Fetch IP and country information
@@ -533,7 +541,17 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       {/* Sidebar Toggle Button */}
       <button 
         id="sidebar-toggle"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        onClick={() => {
+          setIsSidebarOpen(!isSidebarOpen);
+          if (window.gtag) {
+            window.gtag('config', 'G-9N08T76Q5G');
+            window.gtag('event', 'hero_section_nav_bar_opened', {
+              'event_category': 'Hero Section',
+              'event_label': 'Nav Bar Button',
+              'value': 1
+            });
+          }
+        }}
         className="fixed right-4 top-4 z-50 p-3 rounded-lg bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white transition-all duration-300"
         aria-label="Toggle sidebar"
       >
@@ -889,6 +907,16 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-700 transition-colors"
+                    onClick={() => {
+                      if (window.gtag) {
+                        window.gtag('config', 'G-9N08T76Q5G');
+                        window.gtag('event', 'testimonials_checked', {
+                          'event_category': 'Home Page',
+                          'event_label': 'Testimonials Check',
+                          'value': 1
+                        });
+                      }
+                    }}
                   >
                     <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
@@ -919,6 +947,16 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-700 transition-colors"
+                    onClick={() => {
+                      if (window.gtag) {
+                        window.gtag('config', 'G-9N08T76Q5G');
+                        window.gtag('event', 'testimonials_checked', {
+                          'event_category': 'Home Page',
+                          'event_label': 'Testimonials Check',
+                          'value': 1
+                        });
+                      }
+                    }}
                   >
                     <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
@@ -949,6 +987,16 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-700 transition-colors"
+                    onClick={() => {
+                      if (window.gtag) {
+                        window.gtag('config', 'G-9N08T76Q5G');
+                        window.gtag('event', 'testimonials_checked', {
+                          'event_category': 'Home Page',
+                          'event_label': 'Testimonials Check',
+                          'value': 1
+                        });
+                      }
+                    }}
                   >
                     <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
