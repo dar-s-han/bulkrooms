@@ -310,6 +310,16 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   };
 
   const handleQuickQuote = () => {
+    // Track Google Analytics event
+    if (window.gtag) {
+      window.gtag('config', 'G-9N08T76Q5G');
+      window.gtag('event', 'hero_section_button_click', {
+        'event_category': 'Hero Section',
+        'event_label': 'Get Quick Quote',
+        'value': 1
+      });
+    }
+
     // Pass location and eventType values to the GetQuote page
     const params = { 
       location: searchLocation || '', 
