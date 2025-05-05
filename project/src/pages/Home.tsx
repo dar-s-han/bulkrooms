@@ -328,7 +328,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         location: searchLocation || '',
         phone: searchPhone || '',
         countryCode: searchCountryCode || '+91',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        ipAddress: locationInfo?.ip || ''
       };
 
       // Send data to Google Sheets
