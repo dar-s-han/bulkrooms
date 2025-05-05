@@ -73,7 +73,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
     email: '',
     phone: '',
     countryCode: '+91',
-    eventType: '',
+    eventType: 'wedding',
     otherEventType: '',
     adults: '25',
     variation: '2',
