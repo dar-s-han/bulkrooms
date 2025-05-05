@@ -65,11 +65,10 @@ const ContactUs: React.FC<ContactUsProps> = ({ onNavigate }) => {
       console.log('Submitting data:', submissionData);
 
       // Send data to Google Sheets
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbyNq4jGpxeifTPKFCkd6SmhwdXrU1L49vKRWQfr-GWxYnMo9xBYHQEtuZBPjFs_gv0m/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxS6tna_aXRBRHEcGszzKbknkEpaL9MG9nW2GRhW_AgsVf8a0QzgXAALRY5bvUf1cTW/exec';
       
       const response = await fetch(scriptURL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },

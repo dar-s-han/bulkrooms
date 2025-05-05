@@ -223,13 +223,14 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [hours, setHours] = useState(1620000);
   const [savings, setSavings] = useState(13550000);
   const [searchLocation, setSearchLocation] = useState('');
-  const [searchEventType, setSearchEventType] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedFaqs, setExpandedFaqs] = useState<number[]>([]);
   const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
   const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [activeLocationIndex, setActiveLocationIndex] = useState<number>(-1);
+  const [searchPhone, setSearchPhone] = useState('');
+  const [searchCountryCode, setSearchCountryCode] = useState('+91');
 
   useEffect(() => {
     // Set document metadata
@@ -309,7 +310,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     return `${staticPart}${padding}${animatedStr}`;
   };
 
-  const handleQuickQuote = () => {
+  const handleQuickQuote = async () => {
     // Track Google Analytics event
     if (window.gtag) {
       window.gtag('config', 'G-9N08T76Q5G');
@@ -320,17 +321,44 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       });
     }
 
-    // Pass location and eventType values to the GetQuote page
-    const params = { 
-      location: searchLocation || '', 
-      eventType: searchEventType || '' 
-    };
-    console.log("Home: Passing params to GetQuote:", {
-      searchLocation,
-      searchEventType,
-      params
-    });
-    onNavigate('get-quote', params);
+    try {
+      // Prepare the data to send to Google Sheets
+      const submissionData = {
+        sheetName: 'frontPageLeads',
+        location: searchLocation || '',
+        phone: searchPhone || '',
+        countryCode: searchCountryCode || '+91',
+        timestamp: new Date().toISOString()
+      };
+
+      // Send data to Google Sheets
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxS6tna_aXRBRHEcGszzKbknkEpaL9MG9nW2GRhW_AgsVf8a0QzgXAALRY5bvUf1cTW/exec';
+      
+      await fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData)
+      });
+
+      // Pass location and phone values to the GetQuote page
+      const params = {
+        location: searchLocation || '',
+        phone: searchPhone || '',
+        countryCode: searchCountryCode || '+91'
+      };
+      onNavigate('get-quote', params);
+    } catch (error) {
+      console.error('Error submitting to Google Sheets:', error);
+      // Still navigate to GetQuote page even if Google Sheets submission fails
+      const params = {
+        location: searchLocation || '',
+        phone: searchPhone || '',
+        countryCode: searchCountryCode || '+91'
+      };
+      onNavigate('get-quote', params);
+    }
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -705,40 +733,36 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   )}
                 </div>
                 <div className="relative">
-                  <label htmlFor="eventType" className="sr-only">Event Type</label>
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Users className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <select 
-                    id="eventType" 
-                    className="w-full pl-10 pr-4 py-3 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 appearance-none bg-transparent text-sm sm:text-base"
-                    value={searchEventType}
-                    onChange={(e) => {
-                      setSearchEventType(e.target.value);
-                      if (window.gtag) {
-                        window.gtag('config', 'G-9N08T76Q5G');
-                        window.gtag('event', 'home_page_event_type_chosen', {
-                          'event_category': 'Home Page',
-                          'event_label': 'Event Type Chosen',
-                          'value': 1
-                        });
-                      }
-                    }}
-                  >
-                    <option value="">Select event type</option>
-                    <option value="wedding">Wedding</option>
-                    <option value="corporate-stay">Corporate Stay</option>
-                    <option value="trip">Trip</option>
-                    <option value="conference">Conference</option>
-                    <option value="sports-event">Sports Event</option>
-                    <option value="family-reunion">Family Reunion</option>
-                    <option value="birthday">Birthday</option>
-                    <option value="anniversary">Anniversary</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
+                  <label htmlFor="phone" className="sr-only">Phone Number</label>
+                  <div className="flex rounded-xl overflow-hidden border border-gray-200 focus-within:ring-2 focus-within:ring-blue-500 bg-white">
+                    <select
+                      id="countryCode"
+                      value={searchCountryCode}
+                      onChange={e => setSearchCountryCode(e.target.value)}
+                      className="px-3 py-3 bg-white border-0 focus:ring-0 text-sm w-28"
+                      required
+                    >
+                      <option value="+1">US/Canada (+1)</option>
+                      <option value="+44">UK (+44)</option>
+                      <option value="+91">India (+91)</option>
+                      <option value="+61">Australia (+61)</option>
+                      <option value="+81">Japan (+81)</option>
+                      <option value="+49">Germany (+49)</option>
+                      <option value="+33">France (+33)</option>
+                      <option value="+971">UAE (+971)</option>
+                      <option value="+65">Singapore (+65)</option>
+                      <option value="+86">China (+86)</option>
+                    </select>
+                    <input
+                      type="tel"
+                      id="phone"
+                      placeholder="Phone number"
+                      className="flex-1 px-3 py-3 border-0 focus:ring-0 text-sm sm:text-base bg-white"
+                      value={searchPhone}
+                      onChange={e => setSearchPhone(e.target.value)}
+                      required
+                      style={{ minWidth: 0 }}
+                    />
                   </div>
                 </div>
               </div>

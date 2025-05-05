@@ -18,7 +18,8 @@ interface GetQuoteProps {
   onNavigate: (page: 'home' | 'contact-us' | 'get-quote' | 'thank-you', params?: any) => void;
   params?: {
     location?: string;
-    eventType?: string;
+    phone?: string;
+    countryCode?: string;
   };
 }
 
@@ -27,6 +28,7 @@ interface FormData {
   contactName: string;
   email: string;
   phone: string;
+  countryCode: string;
   eventType: string;
   otherEventType: string;
   adults: string;
@@ -70,6 +72,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
     contactName: '',
     email: '',
     phone: '',
+    countryCode: '+91',
     eventType: '',
     otherEventType: '',
     adults: '25',
@@ -93,31 +96,26 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
       // Set location if provided
       if (params.location && params.location.trim() !== '') {
         console.log("GetQuote: Setting location:", params.location);
-        setFormData(prev => {
-          const newData = {
-            ...prev,
-            locations: [params.location || '']
-          };
-          console.log("GetQuote: Updated formData with location:", newData);
-          return newData;
-        });
+        setFormData(prev => ({
+          ...prev,
+          locations: [params.location || '']
+        }));
       }
       
-      // Set event type if provided and valid
-      if (params.eventType && params.eventType.trim() !== '') {
-        const validEventTypes = ['wedding', 'corporate-stay', 'trip', 'conference', 'sports-event', 
-                               'family-reunion', 'birthday', 'anniversary', 'other'];
-        if (validEventTypes.includes(params.eventType)) {
-          console.log("GetQuote: Setting event type:", params.eventType);
-          setFormData(prev => {
-            const newData = {
-              ...prev,
-              eventType: params.eventType || ''
-            };
-            console.log("GetQuote: Updated formData with event type:", newData);
-            return newData;
-          });
-        }
+      // Set phone if provided
+      if (params.phone && params.phone.trim() !== '') {
+        setFormData(prev => ({
+          ...prev,
+          phone: params.phone || ''
+        }));
+      }
+      
+      // Set countryCode if provided
+      if (params.countryCode && params.countryCode.trim() !== '') {
+        setFormData(prev => ({
+          ...prev,
+          countryCode: params.countryCode || '+91'
+        }));
       }
     }
   }, [params]);
@@ -216,7 +214,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
           sheetName: 'GetQuoteSubmission',
           contactName: formData.contactName,
           email: formData.email,
-          phone: formData.phone,
+          phone: `${formData.countryCode} ${formData.phone}`,
           eventType: formData.eventType === 'other' ? formData.otherEventType : formData.eventType,
           adults: `${formData.adults} ± ${formData.variation}`,
           dateType: formData.dateType,
@@ -233,11 +231,10 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
         console.log('Submitting data:', submissionData);
 
         // Send data to Google Sheets
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyNq4jGpxeifTPKFCkd6SmhwdXrU1L49vKRWQfr-GWxYnMo9xBYHQEtuZBPjFs_gv0m/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxS6tna_aXRBRHEcGszzKbknkEpaL9MG9nW2GRhW_AgsVf8a0QzgXAALRY5bvUf1cTW/exec';
         
         const response = await fetch(scriptURL, {
           method: 'POST',
-          mode: 'no-cors',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -402,23 +399,52 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
     return stats[eventType as keyof typeof stats] || 'Helped plan countless successful events';
   };
 
+  const countryCodes = [
+    { code: '+1', label: 'US/Canada (+1)' },
+    { code: '+44', label: 'UK (+44)' },
+    { code: '+91', label: 'India (+91)' },
+    { code: '+61', label: 'Australia (+61)' },
+    { code: '+81', label: 'Japan (+81)' },
+    { code: '+49', label: 'Germany (+49)' },
+    { code: '+33', label: 'France (+33)' },
+    { code: '+971', label: 'UAE (+971)' },
+    { code: '+65', label: 'Singapore (+65)' },
+    { code: '+86', label: 'China (+86)' },
+    // Add more as needed
+  ];
+
   const renderStep1 = () => (
     <>
       <div className="form-group">
-        <label htmlFor="email" className="block text-base font-medium text-gray-700 mb-2">
-          Email Address
-          <span className="text-gray-500 text-sm block mt-1">If you're not booking for corporate, put your personal email</span>
+        <label htmlFor="phone" className="block text-base font-medium text-gray-700 mb-2">
+          Phone Number
+          <span className="text-gray-500 text-sm block mt-1">Please enter your phone number (with country code if outside India)</span>
         </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-base"
-          required
-          placeholder="Enter your email address"
-        />
+        <div className="flex rounded-xl overflow-hidden border border-gray-200 focus-within:ring-2 focus-within:ring-blue-500 bg-white">
+          <select
+            name="countryCode"
+            id="countryCode"
+            value={formData.countryCode}
+            onChange={handleChange}
+            className="px-3 py-3 bg-white border-0 focus:ring-0 text-sm w-28"
+            required
+          >
+            {countryCodes.map((c) => (
+              <option key={c.code} value={c.code}>{c.label}</option>
+            ))}
+          </select>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="flex-1 px-3 py-3 border-0 focus:ring-0 text-sm sm:text-base bg-white"
+            required
+            placeholder="Enter your phone number"
+            style={{ minWidth: 0 }}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -759,7 +785,7 @@ const GetQuote: React.FC<GetQuoteProps> = ({ onNavigate, params }) => {
                 />
                 <button
                   onClick={() => {
-                    if (step !== 2 && formData.email && dateRange?.from && dateRange?.to) {
+                    if (step !== 2 && formData.phone && dateRange?.from && dateRange?.to) {
                       setDateError('');
                       setFormData({
                         ...formData,
