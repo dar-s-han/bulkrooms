@@ -245,6 +245,15 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     }
     metaDescription.setAttribute('content', siteConfig.description);
     
+    // Add canonical tag
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', siteConfig.url);
+    
     // Ensure meta keywords exists
     let metaKeywords = document.querySelector('meta[name="keywords"]');
     if (!metaKeywords) {
