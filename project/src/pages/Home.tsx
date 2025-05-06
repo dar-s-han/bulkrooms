@@ -235,8 +235,24 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   useEffect(() => {
     // Set document metadata
     document.title = siteConfig.name;
-    document.querySelector('meta[name="description"]')?.setAttribute('content', siteConfig.description);
-    document.querySelector('meta[name="keywords"]')?.setAttribute('content', siteConfig.keywords.join(', '));
+    
+    // Ensure meta description exists
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', siteConfig.description);
+    
+    // Ensure meta keywords exists
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.setAttribute('content', siteConfig.keywords.join(', '));
     
     // Open Graph metadata
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', siteConfig.openGraph.title);
@@ -252,7 +268,7 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', siteConfig.twitter.description);
     document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', siteConfig.twitter.images[0]);
     document.querySelector('meta[name="twitter:creator"]')?.setAttribute('content', siteConfig.twitter.creator);
-
+    
     // Initialize values from localStorage
     const storedHours = Number(localStorage.getItem('totalHours') || '1620000');
     const storedSavings = Number(localStorage.getItem('totalSavings') || '13550000');
@@ -1065,23 +1081,35 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             {[
               {
                 question: "How quickly can I get quotes for my group booking?",
-                answer: "We typically provide quotes within 24 hours of receiving your request. For urgent requests, we can often provide initial quotes within 4-6 hours."
+                answer: "We typically provide quotes within 24 hours of receiving your request. For urgent requests, we can often provide initial quotes within 4-6 hours. Our AI-powered system processes your requirements instantly and matches them with our extensive network of hotels. We understand that time is of the essence for group bookings, which is why we've optimized our process to deliver quick, accurate quotes while ensuring you get the best possible rates for your group."
               },
               {
                 question: "What types of group bookings do you handle?",
-                answer: "We handle all types of group bookings including corporate events, weddings, conferences, sports teams, family reunions, and more. Our network includes hotels suitable for any group size or event type."
+                answer: "We handle all types of group bookings including corporate events, weddings, conferences, sports teams, family reunions, and more. Our network includes hotels suitable for any group size or event type. Whether you're planning a small corporate retreat for 20 people or a large conference for 500 attendees, we have the expertise and connections to find the perfect accommodations. We also specialize in handling special requirements such as accessibility needs, dietary restrictions, and specific room configurations."
               },
               {
                 question: "What information do I need to provide for a group booking request?",
-                answer: "To get the most accurate quotes, please provide: number of rooms needed, dates of stay, preferred location, room type preferences, any special requirements, and your contact information."
+                answer: "To get the most accurate quotes, please provide: number of rooms needed, dates of stay, preferred location, room type preferences, any special requirements, and your contact information. Additionally, it's helpful to know your budget range, any specific amenities you require (like meeting rooms, dining facilities, or recreational areas), and whether you need transportation services. The more details you provide, the better we can match you with the perfect hotel options that meet all your group's needs."
               },
               {
                 question: "Is there a minimum number of rooms required for group bookings?",
-                answer: "While we can assist with bookings of any size, our best rates typically start with a minimum of 10 rooms. However, we can still help with smaller groups and will do our best to secure competitive rates."
+                answer: "While we can assist with bookings of any size, our best rates typically start with a minimum of 10 rooms. However, we can still help with smaller groups and will do our best to secure competitive rates. For groups of 5-9 rooms, we can often negotiate special rates, and for larger groups of 20+ rooms, we can provide additional benefits like complimentary upgrades, meeting space, or welcome amenities. Our flexible approach ensures that groups of all sizes can benefit from our booking services."
               },
               {
                 question: "What happens after I receive the quotes?",
-                answer: "Once you receive the quotes, you can review them and ask any questions. When you're ready to proceed, we'll help you finalize the booking and handle all the necessary arrangements with the hotel."
+                answer: "Once you receive the quotes, you can review them and ask any questions. When you're ready to proceed, we'll help you finalize the booking and handle all the necessary arrangements with the hotel. Our team will guide you through the entire process, from reviewing the terms and conditions to arranging special requests and managing the payment process. We'll also provide you with a detailed booking confirmation and stay in touch to ensure everything is perfect for your group's stay."
+              },
+              {
+                question: "How do you ensure the best rates for group bookings?",
+                answer: "We leverage our extensive network of hotel partnerships and our AI-powered pricing system to secure the best possible rates for your group. Our system analyzes multiple factors including seasonal demand, hotel occupancy rates, and special promotions to find the most competitive prices. Additionally, we have direct relationships with many hotels, allowing us to bypass third-party booking fees and pass those savings directly to you. We also monitor market rates and can help you time your booking for optimal pricing."
+              },
+              {
+                question: "What if I need to make changes to my group booking?",
+                answer: "We understand that plans can change, and we're here to help you manage any modifications to your booking. Whether you need to adjust the number of rooms, change dates, or modify special requirements, our team will work with the hotel to accommodate your needs. We'll help you understand any potential impact on rates or availability and ensure a smooth transition. Our flexible booking policies are designed to make group travel planning as stress-free as possible."
+              },
+              {
+                question: "Do you offer any additional services for group bookings?",
+                answer: "Yes, we offer a comprehensive range of additional services to enhance your group's experience. These include arranging airport transfers, organizing team-building activities, setting up meeting rooms with AV equipment, coordinating group dining experiences, and providing local transportation options. We can also help with special requests like welcome packages, branded materials, or custom room amenities. Our goal is to handle all the details so you can focus on your group's purpose for traveling."
               }
             ].map((faq, index) => (
               <div 
