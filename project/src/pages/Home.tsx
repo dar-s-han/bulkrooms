@@ -1079,13 +1079,50 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-12 sm:py-16 px-4 sm:px-6 bg-[#f8f9ff] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiLz48Y2lyY2xlIGZpbGw9IiNlZWVlZWUiIGZpbGwtb3BhY2l0eT0iMC4yIiBjeD0iMjAiIGN5PSIyMCIgcj0iMyIvPjwvZz48L3N2Zz4=')]"></div>
-        <div className="max-w-3xl mx-auto relative">
-          <h2 className="text-xl sm:text-2xl font-bold text-center mb-2 sm:mb-3 text-indigo-900">Frequently Asked Questions</h2>
-          <p className="text-sm sm:text-base text-gray-600 text-center mb-6 sm:mb-8 max-w-2xl mx-auto">
-            Find answers to common questions about our group booking services.
-          </p>
+      <section id="faq" className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-blue-200 rounded-full"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -20, 0],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="max-w-4xl mx-auto relative">
+          <div className="text-center mb-12">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-3xl sm:text-4xl font-bold text-indigo-900 mb-4"
+            >
+              Frequently Asked Questions
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg text-gray-600 max-w-2xl mx-auto"
+            >
+              Find answers to common questions about our group booking services.
+            </motion.p>
+          </div>
+
           <div className="space-y-4">
             {[
               {
@@ -1118,45 +1155,115 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               },
               {
                 question: "Do you offer any additional services for group bookings?",
-                answer: "Yes, we offer a comprehensive range of additional services to enhance your group's experience. These include arranging airport transfers, organizing team-building activities, setting up meeting rooms with AV equipment, coordinating group dining experiences, and providing local transportation options. We can also help with special requests like welcome packages, branded materials, or custom room amenities. Our goal is to handle all the details so you can focus on your group's purpose for traveling."
+                answer: "We specialize exclusively in hotel booking services for groups. Our focus is on securing the best possible rates and accommodations for your group. We work directly with hotels to negotiate special group rates and ensure smooth booking processes. While we don't provide additional services like transportation or event planning, we excel at what we do best - finding and securing the perfect hotel accommodations for your group."
+              },
+              {
+                question: "What are the best hotels in Jaipur for destination weddings?",
+                answer: "Jaipur offers numerous luxury hotels perfect for destination weddings. We can help you find the best venues like the Rambagh Palace, Oberoi Rajvilas, or ITC Rajputana that offer stunning palace-like settings, spacious banquet halls, and excellent accommodation for your guests. Our team can negotiate special wedding packages that include room blocks, catering services, and venue decoration. We'll ensure you get the best rates for your wedding party while maintaining the royal Rajasthani experience."
+              },
+              {
+                question: "How far in advance should I book hotels for a Goa destination wedding?",
+                answer: "For Goa destination weddings, we recommend booking at least 6-12 months in advance, especially if your wedding is during peak season (October to March). Popular beachfront properties like Taj Exotica, Grand Hyatt Goa, and Leela Goa get booked quickly. We can help secure room blocks at these premium properties and negotiate special wedding rates. Our team will also ensure you get the best beach-facing rooms for your guests and coordinate with the hotel for wedding-related arrangements."
+              },
+              {
+                question: "What are the accommodation options for a destination wedding in Rishikesh?",
+                answer: "Rishikesh offers unique wedding venues ranging from luxury riverside resorts to spiritual retreat centers. We can help you find the perfect accommodation at properties like Ananda in the Himalayas, Aloha on the Ganges, or The Glasshouse on the Ganges. These venues offer stunning views of the Ganges and Himalayas, perfect for both intimate and grand celebrations. We'll handle room blocks for your guests and ensure special rates for extended stays, including pre and post-wedding activities."
+              },
+              {
+                question: "Can you help with group bookings for a Delhi destination wedding?",
+                answer: "Absolutely! Delhi has excellent wedding venues like The Leela Palace, The Oberoi, and The Taj Palace. We can help you secure room blocks at these luxury properties and negotiate special wedding rates. Our team will coordinate with multiple hotels to accommodate your guest list, arrange airport transfers, and handle special requests. We'll ensure your guests have comfortable stays while maintaining the grandeur of your Delhi wedding celebration."
+              },
+              {
+                question: "What are the best months for destination weddings in Udaipur?",
+                answer: "The best months for Udaipur destination weddings are October to March, when the weather is pleasant. We can help you find the perfect venue at iconic properties like The Oberoi Udaivilas, Taj Lake Palace, or Leela Palace Udaipur. These hotels offer stunning lake views and palace-like settings. We'll negotiate special wedding packages that include room blocks, venue decoration, and catering services. Our team will ensure your guests have a magical experience in the City of Lakes."
+              },
+              {
+                question: "How can I get the best rates for a destination wedding in Kerala?",
+                answer: "For Kerala destination weddings, we can help you secure the best rates at luxury properties like Kumarakom Lake Resort, Vivanta by Taj Bekal, or The Leela Kovalam. We'll negotiate special wedding packages that include room blocks, traditional Kerala wedding ceremonies, and ayurvedic spa treatments for your guests. Our team will coordinate with multiple hotels to accommodate your guest list and ensure everyone experiences the best of God's Own Country."
+              },
+              {
+                question: "What are the accommodation options for a destination wedding in Jodhpur?",
+                answer: "Jodhpur offers magnificent wedding venues like Umaid Bhawan Palace, Taj Hari Mahal, and RAAS. We can help you secure room blocks at these heritage properties and negotiate special wedding rates. Our team will coordinate with the hotels to arrange traditional Rajasthani wedding ceremonies, cultural performances, and local experiences for your guests. We'll ensure your guests have a royal experience in the Blue City while maintaining the best possible rates."
+              },
+              {
+                question: "Can you help with group bookings for a destination wedding in Agra?",
+                answer: "Yes! Agra has beautiful wedding venues like The Oberoi Amarvilas, ITC Mughal, and Jaypee Palace. We can help you secure room blocks at these luxury properties with views of the Taj Mahal. Our team will negotiate special wedding packages that include room blocks, venue decoration, and catering services. We'll coordinate with multiple hotels to accommodate your guest list and ensure everyone has a memorable experience in the City of Love."
+              },
+              {
+                question: "What are the best hotels for a destination wedding in Varanasi?",
+                answer: "Varanasi offers unique wedding venues like BrijRama Palace, Taj Nadesar Palace, and Radisson Hotel. We can help you find the perfect accommodation for your spiritual wedding celebration. We'll negotiate special wedding packages that include room blocks, traditional ceremonies, and boat rides on the Ganges. Our team will coordinate with multiple hotels to accommodate your guest list and ensure everyone experiences the spiritual essence of the city while maintaining the best possible rates."
+              },
+              {
+                question: "How can I get the best rates for a destination wedding in Shimla?",
+                answer: "For Shimla destination weddings, we can help you secure the best rates at luxury properties like The Oberoi Cecil, Wildflower Hall, or Radisson Hotel. We'll negotiate special wedding packages that include room blocks, mountain-view venues, and local experiences for your guests. Our team will coordinate with multiple hotels to accommodate your guest list and ensure everyone enjoys the scenic beauty of the Queen of Hills while maintaining competitive rates."
               }
             ].map((faq, index) => (
-              <div 
+              <motion.div 
                 key={index}
-                className="bg-white/80 backdrop-blur-sm rounded-lg p-4 hover:shadow-md transition-shadow duration-300"
-                style={{ transitionDelay: `${index * 100}ms` }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white/80 backdrop-blur-sm rounded-xl p-6 hover:shadow-lg transition-all duration-300 border border-gray-100"
               >
                 <div 
-                  className="flex items-center justify-between cursor-pointer"
+                  className="flex items-center justify-between cursor-pointer group"
                   onClick={() => toggleFaq(index)}
                 >
-                  <h3 className="text-base font-semibold text-indigo-900">{faq.question}</h3>
+                  <h3 className="text-lg font-semibold text-indigo-900 group-hover:text-indigo-700 transition-colors">
+                    {faq.question}
+                  </h3>
                   <button 
-                    className="p-1.5 rounded-full hover:bg-gray-200 transition-colors"
+                    className="p-2 rounded-full hover:bg-indigo-50 transition-colors"
                     aria-label={expandedFaqs.includes(index) ? "Collapse answer" : "Expand answer"}
                   >
-                    <svg 
-                      className={`w-4 h-4 text-indigo-600 transition-transform duration-300 ${
-                        expandedFaqs.includes(index) ? 'rotate-180' : ''
-                      }`}
+                    <motion.svg 
+                      className="w-5 h-5 text-indigo-600"
                       fill="none" 
                       viewBox="0 0 24 24" 
                       stroke="currentColor"
+                      animate={{ rotate: expandedFaqs.includes(index) ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    </motion.svg>
                   </button>
                 </div>
-                <div 
-                  className={`overflow-hidden transition-all duration-300 ${
-                    expandedFaqs.includes(index) ? 'max-h-96 mt-3' : 'max-h-0'
-                  }`}
+                <motion.div 
+                  initial={false}
+                  animate={{ 
+                    height: expandedFaqs.includes(index) ? "auto" : 0,
+                    opacity: expandedFaqs.includes(index) ? 1 : 0,
+                    marginTop: expandedFaqs.includes(index) ? "1rem" : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
                 >
-                  <p className="text-sm text-gray-600">{faq.answer}</p>
-                </div>
-              </div>
+                  <p className="text-gray-600 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
+
+          {/* Contact CTA */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-12 text-center"
+          >
+            <p className="text-gray-600 mb-4">Still have questions?</p>
+            <button 
+              onClick={() => onNavigate('contact-us')}
+              className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-full text-lg font-medium hover:bg-indigo-700 transition-all duration-300 hover:shadow-lg hover:scale-105"
+            >
+              Contact Us
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+          </motion.div>
         </div>
       </section>
 
