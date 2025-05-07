@@ -23,6 +23,14 @@ const QuoteThankYou: React.FC<QuoteThankYouProps> = ({ onNavigate }) => {
     return () => clearInterval(timer);
   }, [onNavigate]);
 
+  useEffect(() => {
+    if (window.gtag) {
+      window.gtag('event', 'conversion', {
+        'send_to': 'AW-319383489/-_JUC0rD88MaEMHPpZgB'
+      });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm">
