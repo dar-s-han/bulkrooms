@@ -1126,6 +1126,38 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <div className="space-y-4">
             {[
               {
+                question: "How do I book hotels for my wedding guests?",
+                answer: "Booking hotels for wedding guests is simple with BulkRooms. Just provide us with your wedding dates, number of rooms needed, and preferred location. We'll work with multiple hotels to secure special wedding rates and room blocks. Our team will handle all the coordination, ensuring your guests have comfortable accommodations at the best possible rates. We can also arrange special amenities like welcome gifts, group transportation, and early check-in/late check-out options for your guests."
+              },
+              {
+                question: "What are the benefits of booking wedding guest rooms in bulk?",
+                answer: "Booking wedding guest rooms in bulk offers several advantages: 1) Special group rates that are typically 15-30% lower than individual bookings, 2) Guaranteed room availability for all your guests, 3) Flexible booking policies with better cancellation terms, 4) Dedicated group coordinator to handle all arrangements, 5) Possibility of complimentary upgrades and amenities, 6) Simplified payment process with group billing options, and 7) Better negotiation power for additional services like welcome drinks or breakfast packages."
+              },
+              {
+                question: "How far in advance should I book hotels for wedding guests?",
+                answer: "We recommend booking wedding guest accommodations 2-3 months in advance, especially if your wedding is during peak season or in popular destinations. This ensures you get the best rates and room availability. For destination weddings in popular locations like Goa, Jaipur, or Udaipur, booking 3-6 months ahead is ideal. For city weddings, 1-3 months should be sufficient. Early booking also gives your guests more time to plan their travel and take advantage of better flight rates."
+              },
+              {
+                question: "Can I get special rates for wedding guest accommodations?",
+                answer: "Yes, we specialize in securing special wedding rates for group bookings. Our team negotiates with hotels to provide exclusive wedding packages that include: 1) Discounted room rates for your entire guest list, 2) Complimentary room upgrades for VIP guests, 3) Special welcome amenities, 4) Group transportation services, 5) Flexible booking policies, and 6) Additional benefits like spa credits or dining discounts. We work with a wide network of hotels to ensure you get the best possible rates for your wedding guests."
+              },
+              {
+                question: "What information do I need to provide for wedding guest bookings?",
+                answer: "To help us secure the best accommodations for your wedding guests, please provide: 1) Wedding dates and venue location, 2) Estimated number of rooms needed, 3) Preferred hotel locations (proximity to wedding venue), 4) Room type preferences (standard, deluxe, suite), 5) Special requirements (accessibility, family rooms), 6) Budget range per room, 7) Any specific amenities needed (pool, spa, restaurant), and 8) Expected check-in/check-out dates for guests. The more details you provide, the better we can match you with the perfect hotel options."
+              },
+              {
+                question: "How do you handle wedding guest room assignments?",
+                answer: "We offer flexible room assignment options for wedding guests: 1) Room Block System: We reserve a block of rooms at special rates, and guests can book directly using a unique booking code, 2) Master Account: You can manage all bookings through a single account, 3) Individual Bookings: Guests can book their preferred room types while still getting the group rate. We provide a dedicated coordinator to manage room assignments, handle special requests, and ensure smooth check-in/check-out processes for all your guests."
+              },
+              {
+                question: "What happens if some wedding guests need to cancel?",
+                answer: "We understand that guest lists can change, and we work with hotels to provide flexible cancellation policies for wedding bookings. Typically, we negotiate: 1) Free cancellation up to 30 days before the wedding, 2) Partial refund policies for last-minute cancellations, 3) Ability to reduce the room block up to a certain date, 4) Option to transfer rooms to other guests if needed. We'll help you understand the specific cancellation terms for your booking and ensure you're not penalized for reasonable changes to your guest list."
+              },
+              {
+                question: "Can you help with transportation for wedding guests?",
+                answer: "Yes, we can coordinate transportation services for your wedding guests. We can arrange: 1) Airport transfers for arriving and departing guests, 2) Shuttle services between hotels and wedding venues, 3) Group transportation for wedding events, 4) Special rates for car rentals, and 5) Coordination with local transportation providers. We'll work with the hotels to ensure smooth transportation logistics for all your guests, making their stay more convenient and enjoyable."
+              },
+              {
                 question: "How quickly can I get quotes for my group booking?",
                 answer: "We typically provide quotes within 24 hours of receiving your request. For urgent requests, we can often provide initial quotes within 4-6 hours. Our AI-powered system processes your requirements instantly and matches them with our extensive network of hotels. We understand that time is of the essence for group bookings, which is why we've optimized our process to deliver quick, accurate quotes while ensuring you get the best possible rates for your group."
               },
