@@ -26,7 +26,7 @@ const QuoteThankYou: React.FC<QuoteThankYouProps> = ({ onNavigate }) => {
   useEffect(() => {
     if (window.gtag) {
       window.gtag('event', 'conversion', {
-        'send_to': 'AW-319383489/-_JUC0rD88MaEMHPpZgB'
+        'send_to': 'AW-319383489/-_JJCOrD88MaEMHPpZgB'
       });
     }
   }, []);
